@@ -1,6 +1,6 @@
 {
-  "name": "api.laraveltutorial",
-  "domain": "api.laraveltutorial.loc",
+  "name": "api.laravelexamples",
+  "domain": "api.laravelexamples.loc",
   "webserver": "nginx",
   "document_root": "public",
   "php": {
