@@ -6,41 +6,37 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-	
-        Schema::create('blg_category', function (Blueprint $table) {
+        Schema::create('cont_page', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
 			$table->charset = 'utf8';
 			$table->collation = 'utf8_general_ci';
-            $table->bigIncrements('category_id');
-			$table->integer('parent_id')->default(0);
+            $table->bigIncrements('page_id');
+			$table->tinyInteger('membership')->default(0);
+			$table->tinyInteger('legal')->default(0);
 			$table->string('code', 255);
+			$table->string('html', 255);
 			$table->string('image', 255);
+			$table->integer('viewed')->default(0);
 			$table->integer('sort_order')->default(0);
-			$table->integer('membership')->default(0);
 			$table->integer('layout_id')->default(0);
 			$table->tinyInteger('status')->default(0);
 			$table->timestamp('date_modified', 0);
 			$table->timestamp('date_created', 0);
         });
 		
-        Schema::create('blg_category_translation', function (Blueprint $table) {
+        Schema::create('cont_page_translation', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
 			$table->charset = 'utf8';
 			$table->collation = 'utf8_general_ci';
-            $table->bigIncrements('category_translation_id');
-			$table->integer('category_id')->default(0);
+            $table->bigIncrements('page_translation_id');
+			$table->integer('page_id')->default(0);
 			$table->string('language_code', 255);
 			$table->string('name', 255);
 			$table->string('summary', 255);
 			$table->text('description');
+			$table->string('tag', 255);
 			$table->string('keyword', 255);
 			$table->string('meta_title', 255);
 			$table->string('meta_description', 255);
@@ -49,7 +45,33 @@ return new class extends Migration
 			$table->timestamp('date_created', 0);
         });
 		
-        Schema::create('blg_post', function (Blueprint $table) {
+        Schema::create('cont_page_image', function (Blueprint $table) {
+			$table->engine = 'InnoDB';
+			$table->charset = 'utf8';
+			$table->collation = 'utf8_general_ci';
+            $table->bigIncrements('page_image_id');
+			$table->integer('page_id')->default(0);
+            $table->string('file', 255);
+			$table->integer('sort_order')->default(0);
+			$table->timestamp('date_modified', 0);
+			$table->timestamp('date_created', 0);
+        });
+		
+        Schema::create('cont_page_video', function (Blueprint $table) {
+			$table->engine = 'InnoDB';
+			$table->charset = 'utf8';
+			$table->collation = 'utf8_general_ci';
+            $table->bigIncrements('page_video_id');
+			$table->integer('page_id')->default(0);
+            $table->enum('source', ['code', 'url', 'file', 'embed']);
+            $table->string('content', 255);
+            $table->string('name', 255);
+			$table->integer('sort_order')->default(0);
+			$table->timestamp('date_modified', 0);
+			$table->timestamp('date_created', 0);
+        });
+
+        Schema::create('cont_blog_post', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
 			$table->charset = 'utf8';
 			$table->collation = 'utf8_general_ci';
@@ -65,7 +87,7 @@ return new class extends Migration
 			$table->timestamp('date_created', 0);
         });
 		
-        Schema::create('blg_post_translation', function (Blueprint $table) {
+        Schema::create('cont_blog_post_translation', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
 			$table->charset = 'utf8';
 			$table->collation = 'utf8_general_ci';
@@ -84,7 +106,7 @@ return new class extends Migration
 			$table->timestamp('date_created', 0);
         });
 		
-        Schema::create('blg_post_category', function (Blueprint $table) {
+        Schema::create('cont_blog_post_category', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
 			$table->charset = 'utf8';
 			$table->collation = 'utf8_general_ci';
@@ -95,7 +117,7 @@ return new class extends Migration
 			$table->timestamp('date_created', 0);
         });
 		
-        Schema::create('blg_post_image', function (Blueprint $table) {
+        Schema::create('cont_blog_post_image', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
 			$table->charset = 'utf8';
 			$table->collation = 'utf8_general_ci';
@@ -107,7 +129,7 @@ return new class extends Migration
 			$table->timestamp('date_created', 0);
         });
 		
-        Schema::create('blg_post_video', function (Blueprint $table) {
+        Schema::create('cont_blog_post_video', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
 			$table->charset = 'utf8';
 			$table->collation = 'utf8_general_ci';
@@ -121,7 +143,7 @@ return new class extends Migration
 			$table->timestamp('date_created', 0);
         });
 		
-        Schema::create('blg_post_related', function (Blueprint $table) {
+        Schema::create('cont_blog_post_related', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
 			$table->charset = 'utf8';
 			$table->collation = 'utf8_general_ci';
@@ -132,7 +154,7 @@ return new class extends Migration
 			$table->timestamp('date_created', 0);
         });
 		
-        Schema::create('blg_post_product', function (Blueprint $table) {
+        Schema::create('cont_blog_post_product', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
 			$table->charset = 'utf8';
 			$table->collation = 'utf8_general_ci';
@@ -143,7 +165,7 @@ return new class extends Migration
 			$table->timestamp('date_created', 0);
         });
 		
-        Schema::create('blg_comment', function (Blueprint $table) {
+        Schema::create('cont_blog_comment', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
 			$table->charset = 'utf8';
 			$table->collation = 'utf8_general_ci';
@@ -158,28 +180,23 @@ return new class extends Migration
 			$table->timestamp('date_modified', 0);
 			$table->timestamp('date_created', 0);
         });
-	
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('blg_category');
-        Schema::dropIfExists('blg_category_translation');
-		
-        Schema::dropIfExists('blg_post');
-        Schema::dropIfExists('blg_post_translation');
-        Schema::dropIfExists('blg_post_category');
-        Schema::dropIfExists('blg_post_image');
-        Schema::dropIfExists('blg_post_video');
-        Schema::dropIfExists('blg_post_related');
-        Schema::dropIfExists('blg_post_product');
-		
-        Schema::dropIfExists('blg_comment');
-    }
+        Schema::dropIfExists('cont_page');
+        Schema::dropIfExists('cont_page_translation');
+        Schema::dropIfExists('cont_page_image');
+        Schema::dropIfExists('cont_page_video');
 
+        Schema::dropIfExists('cont_blog_post');
+        Schema::dropIfExists('cont_blog_post_translation');
+        Schema::dropIfExists('cont_blog_post_category');
+        Schema::dropIfExists('cont_blog_post_image');
+        Schema::dropIfExists('cont_blog_post_video');
+        Schema::dropIfExists('cont_blog_post_related');
+        Schema::dropIfExists('cont_blog_post_product');
+		
+        Schema::dropIfExists('cont_blog_comment');
+    }
 };

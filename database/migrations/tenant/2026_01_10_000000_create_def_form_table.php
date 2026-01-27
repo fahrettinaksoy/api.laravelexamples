@@ -6,16 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-	
-        Schema::create('dfntn_form_form_element', function (Blueprint $table) {
+        Schema::create('def_form_form_element', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
 			$table->charset = 'utf8';
 			$table->collation = 'utf8_general_ci';
@@ -27,7 +20,7 @@ return new class extends Migration
 			$table->timestamp('date_created', 0);
         });
 		
-		Schema::create('dfntn_form_form_element_translation', function (Blueprint $table) {
+		Schema::create('def_form_form_element_translation', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
 			$table->charset = 'utf8';
 			$table->collation = 'utf8_general_ci';
@@ -38,18 +31,12 @@ return new class extends Migration
 			$table->timestamp('date_modified', 0);
 			$table->timestamp('date_created', 0);
         });
-	
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('dfntn_form_form_element');
-        Schema::dropIfExists('dfntn_form_form_element_translation');
+        Schema::dropIfExists('def_form_form_element');
+        Schema::dropIfExists('def_form_form_element_translation');
     }
 
 };
