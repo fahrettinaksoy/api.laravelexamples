@@ -7,15 +7,21 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     protected $connection = 'conn_tnt';
-	
+
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_CHANNEL_TYPE = 'def_mktp_channel_type';
+
     private const TABLE_CHANNEL_TYPE_TRANSLATION = 'def_mktp_channel_type_translation';
+
     private const TABLE_CHANNEL_SERVICE = 'def_mktp_channel_service';
+
     private const TABLE_CHANNEL_SERVICE_TRANSLATION = 'def_mktp_channel_service_translation';
+
     private const TABLE_MARKETPLACE_CATEGORY = 'def_mktp_category';
 
     public function up(): void
@@ -30,7 +36,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->string('code', 100)->unique()->comment('Sınıf/Kod adı (class)');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -50,7 +56,7 @@ return new class extends Migration
             $table->unsignedBigInteger('channel_type_id')->comment('Tip kimliği');
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('name', 255)->comment('Tip adı');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -72,7 +78,7 @@ return new class extends Migration
             $table->string('code', 100)->unique()->comment('Servis kodu');
             $table->text('element')->nullable()->comment('Yapılandırma elementleri (JSON/HTML)');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -93,7 +99,7 @@ return new class extends Migration
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('name', 255)->comment('Servis adı');
             $table->string('summary', 255)->nullable()->comment('Kısa açıklama');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -120,7 +126,7 @@ return new class extends Migration
             $table->string('category_parent_code', 255)->nullable()->comment('Pazaryerisindeki üst kategori kodu');
             $table->string('category_name', 500)->comment('Kategori adı');
             $table->text('category_path')->nullable()->comment('Kategori yolu');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');

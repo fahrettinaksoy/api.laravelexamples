@@ -7,14 +7,19 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     protected $connection = 'conn_tnt';
-	
+
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_GENDER = 'def_gen_gender';
+
     private const TABLE_GENDER_TRANSLATION = 'def_gen_gender_translation';
+
     private const TABLE_BANK = 'def_gen_bank';
+
     private const TABLE_CARGO = 'def_gen_cargo';
 
     public function up(): void
@@ -29,7 +34,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->string('code', 50)->unique()->comment('Benzersiz kod (male, female vb.)');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -50,7 +55,7 @@ return new class extends Migration
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('name', 100)->comment('Cinsiyet adı');
             $table->text('description')->nullable()->comment('Açıklama');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -82,7 +87,7 @@ return new class extends Migration
             $table->string('telephone_number', 50)->nullable()->comment('Telefon');
             $table->string('fax_number', 50)->nullable()->comment('Faks');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -110,7 +115,7 @@ return new class extends Migration
             $table->string('telephone_number', 50)->nullable()->comment('Telefon');
             $table->string('fax_number', 50)->nullable()->comment('Faks');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');

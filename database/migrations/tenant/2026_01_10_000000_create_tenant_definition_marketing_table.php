@@ -7,14 +7,19 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     protected $connection = 'conn_tnt';
-	
+
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_CAMPAIGN_TYPE = 'def_mkt_campaign_type';
+
     private const TABLE_CAMPAIGN_TYPE_TRANSLATION = 'def_mkt_campaign_type_translation';
+
     private const TABLE_GIFT_VOUCHER_THEME = 'def_mkt_gift_voucher_theme';
+
     private const TABLE_GIFT_VOUCHER_THEME_TRANSLATION = 'def_mkt_gift_voucher_theme_translation';
 
     public function up(): void
@@ -33,7 +38,7 @@ return new class extends Migration
             $table->text('settings')->nullable()->comment('Varsayılan ayarlar (JSON)');
             $table->unsignedSmallInteger('sort_order')->default(0)->comment('Sıralama');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -55,7 +60,7 @@ return new class extends Migration
             $table->string('name', 255)->comment('Kampanya türü adı');
             $table->string('summary', 255)->nullable()->comment('Özet');
             $table->text('description')->nullable()->comment('Açıklama');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -79,7 +84,7 @@ return new class extends Migration
             $table->string('image_url', 255)->nullable()->comment('Görsel URL');
             $table->text('content')->nullable()->comment('HTML/JSON İçerik');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -100,7 +105,7 @@ return new class extends Migration
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('name', 255)->comment('Tema adı');
             $table->text('description')->nullable()->comment('Açıklama');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');

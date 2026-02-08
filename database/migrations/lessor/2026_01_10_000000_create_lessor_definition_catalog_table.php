@@ -15,35 +15,42 @@ return new class extends Migration
 
     // Ürün Tekrarlayan Tip Tanımlamaları
     private const PRODUCT_RECURRING_TYPE_TABLE = 'dfntn_ctlg_prdct_recurring_type';
+
     private const PRODUCT_RECURRING_TYPE_TRANSLATION_TABLE = 'dfntn_ctlg_prdct_recurring_type_translation';
 
     // Ürün Tipi Tanımlamaları
     private const PRODUCT_TYPE_TABLE = 'dfntn_ctlg_prdct_type';
+
     private const PRODUCT_TYPE_TRANSLATION_TABLE = 'dfntn_ctlg_prdct_type_translation';
 
     // Ürün Durum Tanımlamaları (Condition)
     private const PRODUCT_CONDITION_TABLE = 'dfntn_ctlg_prdct_condition';
+
     private const PRODUCT_CONDITION_TRANSLATION_TABLE = 'dfntn_ctlg_prdct_condition_translation';
 
     // Ürün Stoksuz Satış Tanımlamaları (Stockless)
     private const PRODUCT_STOCKLESS_TABLE = 'dfntn_ctlg_prdct_stockless';
+
     private const PRODUCT_STOCKLESS_TRANSLATION_TABLE = 'dfntn_ctlg_prdct_stockless_translation';
 
     // Ürün Alan Tipi Tanımlamaları (Field Type)
     private const PRODUCT_FIELD_TYPE_TABLE = 'dfntn_ctlg_prdct_field_type';
+
     private const PRODUCT_FIELD_TYPE_TRANSLATION_TABLE = 'dfntn_ctlg_prdct_field_type_translation';
 
     // Ürün Nitelik (Attribute) Şablonları, Grupları ve Değişkenleri
     private const PRODUCT_ATTRIBUTE_TEMPLATE_TABLE = 'dfntn_ctlg_prdct_attribute_template';
+
     private const PRODUCT_ATTRIBUTE_GROUP_TABLE = 'dfntn_ctlg_prdct_attribute_group';
+
     private const PRODUCT_ATTRIBUTE_GROUP_TRANSLATION_TABLE = 'dfntn_ctlg_prdct_attribute_group_translation';
+
     private const PRODUCT_ATTRIBUTE_VARIABLE_TABLE = 'dfntn_ctlg_prdct_attribute_variable';
+
     private const PRODUCT_ATTRIBUTE_VARIABLE_TRANSLATION_TABLE = 'dfntn_ctlg_prdct_attribute_variable_translation';
 
     /**
      * Migration'ı çalıştır. Gerekli tüm katalog ürün tanımlama tablolarını belirtilen 'conn_lsr' bağlantısı üzerinde oluşturur.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -349,8 +356,6 @@ return new class extends Migration
     /**
      * Migration'ı geri al. Tabloları belirtilen 'conn_lsr' bağlantısı üzerinden siler.
      * Bağımlılık sırasına dikkat edilerek silinme işlemi yapılır.
-     *
-     * @return void
      */
     public function down(): void
     {

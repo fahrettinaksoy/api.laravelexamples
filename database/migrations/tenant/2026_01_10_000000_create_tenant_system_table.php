@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     protected $connection = 'conn_tnt';
-	
+
     public function up()
     {
         Schema::create('sys_application_value', function (Blueprint $table) {
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->index('created_by', 'idx_application_created_by');
             $table->index('updated_by', 'idx_application_updated_by');
         });
-		
+
         Schema::create('sys_setting_value', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';
@@ -56,7 +56,7 @@ return new class extends Migration
             $table->index('updated_by', 'idx_setting_updated_by');
             $table->index('serialized', 'idx_setting_serialized');
         });
-		
+
         Schema::create('sys_company_value', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';
@@ -76,50 +76,50 @@ return new class extends Migration
             $table->index('created_by', 'idx_company_created_by');
             $table->index('updated_by', 'idx_company_updated_by');
         });
-		
+
         Schema::create('sys_method', function (Blueprint $table) {
-			$table->engine = 'InnoDB';
-			$table->charset = 'utf8';
-			$table->collation = 'utf8_general_ci';
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8';
+            $table->collation = 'utf8_general_ci';
             $table->bigIncrements('method_id');
-			$table->string('method_group', 255);
-			$table->string('method_type', 255);
-			$table->text('setting');
-			$table->integer('sort_order')->default(0);
-			$table->tinyInteger('status')->default(0);
-			$table->timestamp('date_modified', 0);
-			$table->timestamp('date_created', 0);
+            $table->string('method_group', 255);
+            $table->string('method_type', 255);
+            $table->text('setting');
+            $table->integer('sort_order')->default(0);
+            $table->tinyInteger('status')->default(0);
+            $table->timestamp('date_modified', 0);
+            $table->timestamp('date_created', 0);
         });
-		
+
         Schema::create('sys_plugin', function (Blueprint $table) {
-			$table->engine = 'InnoDB';
-			$table->charset = 'utf8';
-			$table->collation = 'utf8_general_ci';
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8';
+            $table->collation = 'utf8_general_ci';
             $table->bigIncrements('plugin_id');
-			$table->string('plugin_group', 255);
-			$table->string('plugin_type', 255);
-			$table->text('setting');
-			$table->integer('sort_order')->default(0);
-			$table->tinyInteger('status')->default(0);
-			$table->timestamp('date_modified', 0);
-			$table->timestamp('date_created', 0);
+            $table->string('plugin_group', 255);
+            $table->string('plugin_type', 255);
+            $table->text('setting');
+            $table->integer('sort_order')->default(0);
+            $table->tinyInteger('status')->default(0);
+            $table->timestamp('date_modified', 0);
+            $table->timestamp('date_created', 0);
         });
-		
+
         Schema::create('sys_widget', function (Blueprint $table) {
-			$table->engine = 'InnoDB';
-			$table->charset = 'utf8';
-			$table->collation = 'utf8_general_ci';
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8';
+            $table->collation = 'utf8_general_ci';
             $table->bigIncrements('widget_id');
-			$table->string('widget_type', 255);
-			$table->string('name', 255);
-			$table->string('css', 255);
-			$table->string('html', 255);
-			$table->text('setting');
-			$table->tinyInteger('status')->default(0);
-			$table->timestamp('date_modified', 0);
-			$table->timestamp('date_created', 0);
+            $table->string('widget_type', 255);
+            $table->string('name', 255);
+            $table->string('css', 255);
+            $table->string('html', 255);
+            $table->text('setting');
+            $table->tinyInteger('status')->default(0);
+            $table->timestamp('date_modified', 0);
+            $table->timestamp('date_created', 0);
         });
-	
+
         Schema::create('sys_variable_value', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';
@@ -147,10 +147,10 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('sys_application_value');
-		
+
         Schema::dropIfExists('sys_setting_value');
         Schema::dropIfExists('sys_company_value');
-		
+
         Schema::dropIfExists('sys_method');
         Schema::dropIfExists('sys_plugin');
         Schema::dropIfExists('sys_widget');

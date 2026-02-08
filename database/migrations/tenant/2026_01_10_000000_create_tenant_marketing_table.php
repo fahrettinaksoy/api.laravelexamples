@@ -7,23 +7,33 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     protected $connection = 'conn_tnt';
-	
+
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_CAMPAIGN = 'mkt_campaign';
+
     private const TABLE_CAMPAIGN_HISTORY = 'mkt_campaign_history';
+
     private const TABLE_CAMPAIGN_TRANSLATION = 'mkt_campaign_translation';
+
     private const TABLE_CAMPAIGN_PRODUCT = 'mkt_campaign_product';
-    
+
     private const TABLE_COUPON = 'mkt_coupon';
+
     private const TABLE_COUPON_HISTORY = 'mkt_coupon_history';
+
     private const TABLE_COUPON_PRODUCT = 'mkt_coupon_product';
+
     private const TABLE_COUPON_CATEGORY = 'mkt_coupon_category';
+
     private const TABLE_COUPON_BRAND = 'mkt_coupon_brand';
+
     private const TABLE_COUPON_ACCOUNT_GROUP = 'mkt_coupon_account_group';
-    
+
     private const TABLE_GIFT_VOUCHER = 'mkt_gift_voucher';
 
     public function up(): void
@@ -45,7 +55,7 @@ return new class extends Migration
             $table->timestamp('end_date')->nullable()->comment('Bitiş tarihi');
             $table->integer('sort_order')->default(0)->comment('Sıralama');
             $table->boolean('status')->default(false)->index()->comment('Durum (false: Pasif, true: Aktif)');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -76,13 +86,13 @@ return new class extends Migration
             $table->string('meta_title', 255)->nullable()->comment('SEO başlık');
             $table->string('meta_description', 500)->nullable()->comment('SEO açıklama');
             $table->string('meta_keyword', 255)->nullable()->comment('SEO anahtar kelimeler');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->unique(['campaign_id', 'language_code'], 'idx_campaign_lang_unique');
             $table->index('deleted_at', 'idx_campaign_trans_soft_delete');
             $table->fullText(['name', 'description'], 'idx_campaign_fulltext');
@@ -102,7 +112,7 @@ return new class extends Migration
             $table->string('code', 50)->nullable()->comment('Kullanılan kampanya kodu');
             $table->decimal('amount', 19, 4)->comment('İndirim tutarı');
             $table->char('currency_code', 3)->default('USD')->comment('Para birimi');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -124,7 +134,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('campaign_id')->comment('Kampanya kimliği');
             $table->unsignedBigInteger('product_id')->comment('Ürün kimliği');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -154,7 +164,7 @@ return new class extends Migration
             $table->unsignedInteger('uses_total')->default(0)->comment('Toplam kullanım limiti');
             $table->unsignedInteger('uses_customer')->default(0)->comment('Müşteri başı kullanım limiti');
             $table->boolean('status')->default(false)->index()->comment('Durum (Aktif/Pasif)');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -177,7 +187,7 @@ return new class extends Migration
             $table->unsignedBigInteger('order_id')->comment('Sipariş kimliği');
             $table->unsignedBigInteger('account_id')->comment('Müşteri/Hesap kimliği');
             $table->decimal('amount', 19, 4)->comment('İndirim tutarı');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -198,13 +208,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('coupon_id')->comment('Kupon kimliği');
             $table->unsignedBigInteger('product_id')->comment('Ürün kimliği');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->unique(['coupon_id', 'product_id'], 'idx_coupon_product_unique');
             $table->index('deleted_at', 'idx_coupon_prod_soft_delete');
         });
@@ -219,13 +229,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('coupon_id')->comment('Kupon kimliği');
             $table->unsignedBigInteger('category_id')->comment('Kategori kimliği');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->unique(['coupon_id', 'category_id'], 'idx_coupon_category_unique');
             $table->index('deleted_at', 'idx_coupon_cat_soft_delete');
         });
@@ -240,13 +250,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('coupon_id')->comment('Kupon kimliği');
             $table->unsignedBigInteger('brand_id')->comment('Marka kimliği');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->unique(['coupon_id', 'brand_id'], 'idx_coupon_brand_unique');
             $table->index('deleted_at', 'idx_coupon_brand_soft_delete');
         });
@@ -261,13 +271,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('coupon_id')->comment('Kupon kimliği');
             $table->unsignedBigInteger('account_group_id')->comment('Müşteri grubu kimliği');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->unique(['coupon_id', 'account_group_id'], 'idx_coupon_acc_grp_unique');
             $table->index('deleted_at', 'idx_coupon_acc_grp_soft_delete');
         });
@@ -290,7 +300,7 @@ return new class extends Migration
             $table->text('message')->nullable()->comment('Mesaj');
             $table->decimal('amount', 19, 4)->comment('Tutar');
             $table->boolean('status')->default(true)->comment('Durum (Aktif/Pasif)');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');

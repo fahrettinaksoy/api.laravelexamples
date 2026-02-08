@@ -7,13 +7,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     protected $connection = 'conn_tnt';
-	
+
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_BLOCK = 'def_wms_block';
+
     private const TABLE_AREA = 'def_wms_area';
+
     private const TABLE_SHELF = 'def_wms_shelf';
 
     public function up(): void
@@ -36,7 +40,7 @@ return new class extends Migration
             $table->decimal('height', 10, 2)->nullable()->comment('Yükseklik (cm/m)');
             $table->text('description')->nullable()->comment('Açıklama');
             $table->boolean('status')->default(true)->index()->comment('Durum (Aktif/Pasif)');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -65,7 +69,7 @@ return new class extends Migration
             $table->decimal('height', 10, 2)->nullable()->comment('Yükseklik');
             $table->text('description')->nullable()->comment('Açıklama');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -95,7 +99,7 @@ return new class extends Migration
             $table->decimal('max_weight', 10, 2)->nullable()->comment('Maksimum ağırlık kapasitesi');
             $table->text('description')->nullable()->comment('Açıklama');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');

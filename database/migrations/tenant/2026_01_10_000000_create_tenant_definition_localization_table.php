@@ -7,39 +7,55 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     protected $connection = 'conn_tnt';
-	
+
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_LANGUAGE = 'def_loc_language';
+
     private const TABLE_CURRENCY = 'def_loc_currency';
+
     private const TABLE_COUNTRY = 'def_loc_country';
+
     private const TABLE_CITY = 'def_loc_city';
+
     private const TABLE_DISTRICT = 'def_loc_district';
+
     private const TABLE_GEO = 'def_loc_geo';
+
     private const TABLE_GEO_ZONE = 'def_loc_geo_zone';
-    
+
     private const TABLE_LENGTH_CLASS = 'def_loc_length_class';
+
     private const TABLE_LENGTH_CLASS_TRANSLATION = 'def_loc_length_class_translation';
-    
+
     private const TABLE_WEIGHT_CLASS = 'def_loc_weight_class';
+
     private const TABLE_WEIGHT_CLASS_TRANSLATION = 'def_loc_weight_class_translation';
-    
+
     private const TABLE_UNIT = 'def_loc_unit';
+
     private const TABLE_UNIT_TRANSLATION = 'def_loc_unit_translation';
-    
+
     private const TABLE_TAX_CLASS = 'def_loc_tax_class';
+
     private const TABLE_TAX_CLASS_TRANSLATION = 'def_loc_tax_class_translation';
+
     private const TABLE_TAX_CLASS_ACCOUNT_GROUP = 'def_loc_tax_class_account_group';
-    
+
     private const TABLE_TAX_RATE = 'def_loc_tax_rate';
+
     private const TABLE_TAX_RATE_ACCOUNT_GROUP = 'def_loc_tax_rate_account_group';
-    
+
     private const TABLE_ADDRESS_TYPE = 'def_loc_address_type';
+
     private const TABLE_ADDRESS_TYPE_TRANSLATION = 'def_loc_address_type_translation';
-    
+
     private const TABLE_TAXPAYER_TYPE = 'def_loc_taxpayer_type';
+
     private const TABLE_TAXPAYER_TYPE_TRANSLATION = 'def_loc_taxpayer_type_translation';
 
     public function up(): void
@@ -60,7 +76,7 @@ return new class extends Migration
             $table->string('locale', 20)->nullable()->comment('Locale (tr_TR.UTF-8)');
             $table->unsignedInteger('sort_order')->default(0)->comment('Sıralama');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -88,7 +104,7 @@ return new class extends Migration
             $table->decimal('value', 15, 8)->default(1)->comment('Kur değeri');
             $table->boolean('is_default')->default(false)->comment('Varsayılan para birimi mi?');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -113,7 +129,7 @@ return new class extends Migration
             $table->string('address_format', 500)->nullable()->comment('Adres format şablonu');
             $table->boolean('postcode_required')->default(false)->comment('Posta kodu zorunlu mu?');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -135,7 +151,7 @@ return new class extends Migration
             $table->string('name', 255)->comment('Şehir adı');
             $table->string('code', 50)->nullable()->comment('Plaka/Bölge kodu');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -158,7 +174,7 @@ return new class extends Migration
             $table->string('code', 50)->nullable()->comment('İlçe kodu');
             $table->string('postcode', 20)->nullable()->comment('Posta kodu');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -179,7 +195,7 @@ return new class extends Migration
             $table->string('name', 255)->comment('Bölge adı');
             $table->text('description')->nullable()->comment('Açıklama');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -201,7 +217,7 @@ return new class extends Migration
             $table->unsignedBigInteger('country_id')->default(0)->index()->comment('Ülke kimliği');
             $table->unsignedBigInteger('city_id')->default(0)->index()->comment('Şehir kimliği');
             $table->unsignedBigInteger('district_id')->default(0)->comment('İlçe kimliği');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -221,13 +237,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->decimal('value', 15, 8)->default(1)->comment('Değer çarpanı');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_len_class_soft_delete');
         });
 
@@ -242,7 +258,7 @@ return new class extends Migration
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('name', 100)->comment('Birim adı (cm, m)');
             $table->string('unit', 20)->comment('Birim sembolü');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -263,13 +279,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->decimal('value', 15, 8)->default(1)->comment('Değer çarpanı');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_wgt_class_soft_delete');
         });
 
@@ -284,7 +300,7 @@ return new class extends Migration
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('name', 100)->comment('Birim adı (kg, gr)');
             $table->string('unit', 20)->comment('Birim sembolü');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -305,13 +321,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->decimal('value', 15, 8)->default(1)->comment('Değer');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_unit_soft_delete');
         });
 
@@ -325,7 +341,7 @@ return new class extends Migration
             $table->unsignedBigInteger('unit_id')->comment('Birim kimliği');
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('name', 100)->comment('Birim adı');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -348,13 +364,13 @@ return new class extends Migration
             $table->text('description')->nullable()->comment('Açıklama');
             $table->integer('sort_order')->default(0)->comment('Sıralama');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_tax_class_soft_delete');
         });
 
@@ -369,7 +385,7 @@ return new class extends Migration
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('name', 255)->comment('Ad');
             $table->text('description')->nullable()->comment('Açıklama');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -392,13 +408,13 @@ return new class extends Migration
             $table->string('name', 255)->comment('Oran adı (KDV %18)');
             $table->decimal('rate', 15, 4)->default(0)->comment('Vergi oranı');
             $table->char('type', 1)->default('P')->comment('Tip: P=Yüzde, F=Sabit');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_tax_rate_soft_delete');
         });
 
@@ -412,10 +428,10 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('tax_class_id')->comment('Vergi sınıfı');
             $table->unsignedBigInteger('account_group_id')->comment('Müşteri grubu');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
-            
+
             $table->unique(['tax_class_id', 'account_group_id'], 'idx_tc_ag_unique');
         });
 
@@ -429,10 +445,10 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('tax_rate_id')->comment('Vergi oranı');
             $table->unsignedBigInteger('account_group_id')->comment('Müşteri grubu');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
-            
+
             $table->unique(['tax_rate_id', 'account_group_id'], 'idx_tr_ag_unique');
         });
 
@@ -446,13 +462,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->string('code', 50)->unique()->comment('Tip kodu');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_addr_type_soft_delete');
         });
 
@@ -466,7 +482,7 @@ return new class extends Migration
             $table->unsignedBigInteger('address_type_id')->comment('Adres tipi kimliği');
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('name', 255)->comment('Ad');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -487,13 +503,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->string('code', 50)->unique()->comment('Tip kodu');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_taxpayer_type_soft_delete');
         });
 
@@ -507,7 +523,7 @@ return new class extends Migration
             $table->unsignedBigInteger('taxpayer_type_id')->comment('Mükellef tipi kimliği');
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('name', 255)->comment('Ad');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');

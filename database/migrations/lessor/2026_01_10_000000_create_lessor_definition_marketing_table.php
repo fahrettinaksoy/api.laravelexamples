@@ -15,16 +15,16 @@ return new class extends Migration
 
     // Kampanya Tipi Tanımlamaları
     private const CAMPAIGN_TYPE_TABLE = 'dfntn_mrktng_campaign_type';
+
     private const CAMPAIGN_TYPE_TRANSLATION_TABLE = 'dfntn_mrktng_campaign_type_translation';
 
     // Hediye Çeki Teması Tanımlamaları
     private const GIFT_VOUCHER_THEME_TABLE = 'dfntn_mrktng_gift_voucher_theme';
+
     private const GIFT_VOUCHER_THEME_TRANSLATION_TABLE = 'dfntn_mrktng_gift_voucher_theme_translation';
 
     /**
      * Migration'ı çalıştır. Gerekli tüm pazarlama tanımlama tablolarını belirtilen 'conn_lsr' bağlantısı üzerinde oluşturur.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -107,8 +107,6 @@ return new class extends Migration
     /**
      * Migration'ı geri al. Tabloları belirtilen 'conn_lsr' bağlantısı üzerinden siler.
      * Bağımlılık sırasına dikkat edilerek silinme işlemi yapılır.
-     *
-     * @return void
      */
     public function down(): void
     {

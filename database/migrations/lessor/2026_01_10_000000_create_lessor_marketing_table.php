@@ -15,14 +15,15 @@ return new class extends Migration
 
     // Kampanya Tabloları
     private const CAMPAIGN_TABLE = 'mrktng_campaign';
+
     private const CAMPAIGN_HISTORY_TABLE = 'mrktng_campaign_history';
+
     private const CAMPAIGN_TRANSLATION_TABLE = 'mrktng_campaign_translation';
+
     private const CAMPAIGN_PRODUCT_TABLE = 'mrktng_campaign_product';
 
     /**
      * Migration'ı çalıştır. Gerekli tüm pazarlama kampanya tablolarını belirtilen 'conn_lsr' bağlantısı üzerinde oluşturur.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -117,8 +118,6 @@ return new class extends Migration
     /**
      * Migration'ı geri al. Tabloları belirtilen 'conn_lsr' bağlantısı üzerinden siler.
      * Bu metot sadece bu migration'da oluşturulan tabloları silecektir.
-     *
-     * @return void
      */
     public function down(): void
     {

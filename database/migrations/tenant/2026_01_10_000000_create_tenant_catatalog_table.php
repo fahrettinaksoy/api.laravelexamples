@@ -9,41 +9,71 @@ return new class extends Migration
     protected $connection = 'conn_tnt';
 
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_PRODUCT = 'cat_product';
+
     private const TABLE_PRODUCT_TRANSLATION = 'cat_product_translation';
+
     private const TABLE_PRODUCT_IMAGE = 'cat_product_image';
+
     private const TABLE_PRODUCT_VIDEO = 'cat_product_video';
+
     private const TABLE_PRODUCT_ATTRIBUTE = 'cat_product_attribute';
+
     private const TABLE_PRODUCT_ATTRIBUTE_TRANSLATION = 'cat_product_attribute_translation';
+
     private const TABLE_PRODUCT_FIELD = 'cat_product_field';
+
     private const TABLE_PRODUCT_FIELD_TRANSLATION = 'cat_product_field_translation';
+
     private const TABLE_PRODUCT_FILTER_VALUE = 'cat_product_filter_value';
+
     private const TABLE_PRODUCT_OPTION = 'cat_product_option';
+
     private const TABLE_PRODUCT_OPTION_VALUE = 'cat_product_option_value';
+
     private const TABLE_PRODUCT_VARIANT = 'cat_product_variant';
+
     private const TABLE_PRODUCT_VARIANT_STOCK = 'cat_product_variant_stock';
+
     private const TABLE_PRODUCT_VARIANT_VARIABLE = 'cat_product_variant_variable';
+
     private const TABLE_PRODUCT_GROUPED = 'cat_product_grouped';
+
     private const TABLE_PRODUCT_BUNDLE = 'cat_product_bundle';
+
     private const TABLE_PRODUCT_RELATED = 'cat_product_related';
+
     private const TABLE_PRODUCT_ACCESSORY = 'cat_product_accessory';
+
     private const TABLE_PRODUCT_POST = 'cat_product_post';
+
     private const TABLE_PRODUCT_FAQ = 'cat_product_faq';
+
     private const TABLE_PRODUCT_DOCUMENT = 'cat_product_document';
+
     private const TABLE_PRODUCT_DOCUMENT_TRANSLATION = 'cat_product_document_translation';
+
     private const TABLE_PRODUCT_RECURRING = 'cat_product_recurring';
+
     private const TABLE_PRODUCT_ACCOUNT_PRICE = 'cat_product_account_price';
+
     private const TABLE_PRODUCT_REWARD = 'cat_product_reward';
+
     private const TABLE_PRODUCT_ACTIVITY = 'cat_product_activity';
 
     private const TABLE_DOWNLOAD = 'cat_download';
+
     private const TABLE_DOWNLOAD_TRANSLATION = 'cat_download_translation';
+
     private const TABLE_PRODUCT_DOWNLOAD = 'cat_product_download';
-    
+
     private const TABLE_WAREHOUSE = 'cat_warehouse';
+
     private const TABLE_REVIEW = 'cat_review';
 
     public function up(): void
@@ -103,7 +133,7 @@ return new class extends Migration
             $table->boolean('status')->default(true)->index()->comment('Ürün genel durumu');
             $table->boolean('is_published')->default(false)->index()->comment('Yayında mı?');
             $table->timestamp('available_at')->nullable()->comment('Satışa açılma tarihi');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Son güncelleyen kullanıcı');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -134,7 +164,7 @@ return new class extends Migration
             $table->string('meta_title', 255)->nullable()->comment('SEO Başlık');
             $table->text('meta_description')->nullable()->comment('SEO Açıklama');
             $table->string('meta_keyword', 500)->nullable()->comment('SEO Anahtar Kelimeler');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -160,7 +190,7 @@ return new class extends Migration
             $table->string('alt', 255)->nullable()->comment('Alternatif metin');
             $table->unsignedInteger('sort_order')->default(0)->comment('Görüntüleme sırası');
             $table->boolean('is_cover')->default(false)->comment('Bu görsel kapak mı?');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -182,7 +212,7 @@ return new class extends Migration
             $table->string('content', 1000)->comment('Video ID veya URL');
             $table->string('thumbnail', 500)->nullable()->comment('Video önizleme görseli');
             $table->unsignedInteger('sort_order')->default(0)->comment('Görüntüleme sırası');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -201,13 +231,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('product_id')->index()->comment('Bağlı olduğu ürün ID');
             $table->unsignedBigInteger('attribute_id')->comment('Global özellik tanım ID\'si');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index(['product_id', 'attribute_id'], 'idx_prod_attr_lookup');
             $table->index('deleted_at', 'idx_prod_attr_soft_delete');
         });
@@ -223,13 +253,13 @@ return new class extends Migration
             $table->unsignedBigInteger('product_attribute_id')->comment('Bağlı özellik ID');
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->text('text')->comment('Özellik değeri');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->unique(['product_attribute_id', 'language_code'], 'idx_prod_attr_trans_unique');
             $table->index('deleted_at', 'idx_prod_attr_trans_soft_delete');
         });
@@ -246,7 +276,7 @@ return new class extends Migration
             $table->unsignedInteger('field_type_id')->comment('Alan tipi ID');
             $table->string('image', 500)->nullable()->comment('Alan görseli');
             $table->unsignedInteger('sort_order')->default(0)->comment('Görüntüleme sırası');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -267,13 +297,13 @@ return new class extends Migration
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('name', 255)->comment('Alan etiketi');
             $table->text('value')->nullable()->comment('Alan değeri');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->unique(['product_field_id', 'language_code'], 'idx_prod_field_trans_unique');
             $table->index('deleted_at', 'idx_prod_field_trans_soft_delete');
         });
@@ -288,13 +318,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('product_id')->index()->comment('Bağlı olduğu ürün ID');
             $table->unsignedBigInteger('filter_value_id')->index()->comment('Seçili filtre değeri ID');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->unique(['product_id', 'filter_value_id'], 'idx_prod_filter_unique');
             $table->index('deleted_at', 'idx_prod_filter_soft_delete');
         });
@@ -312,7 +342,7 @@ return new class extends Migration
             $table->boolean('required')->default(false)->comment('Seçim zorunlu mu?');
             $table->string('value', 255)->nullable()->comment('Varsayılan metin değeri');
             $table->unsignedInteger('sort_order')->default(0)->comment('Görüntüleme sırası');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -338,7 +368,7 @@ return new class extends Migration
             $table->decimal('weight_modifier', 10, 3)->default(0)->comment('Ağırlık farkı');
             $table->char('weight_modifier_type', 1)->default('+')->comment('Ağırlık farkı tipi');
             $table->unsignedInteger('sort_order')->default(0)->comment('Görüntüleme sırası');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -359,7 +389,7 @@ return new class extends Migration
             $table->string('name', 255)->comment('Varyant Grup Adı');
             $table->unsignedInteger('variant_id')->comment('Global varyant ID');
             $table->unsignedInteger('sort_order')->default(0)->comment('Görüntüleme sırası');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -382,13 +412,13 @@ return new class extends Migration
             $table->integer('quantity')->default(0)->index()->comment('Varyant stoğu');
             $table->decimal('price', 19, 4)->default(0)->comment('Kombinasyon fiyatı');
             $table->string('image', 500)->nullable()->comment('Özel görsel');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_prod_var_stock_soft_delete');
         });
 
@@ -404,7 +434,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->comment('Ürün ID');
             $table->unsignedBigInteger('variant_id')->comment('Varyant ID');
             $table->unsignedBigInteger('variant_value_id')->comment('Varyant değer ID');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -426,7 +456,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->comment('Ana (Grup) Ürün');
             $table->unsignedBigInteger('grouped_id')->comment('Bağlı alt ürün');
             $table->unsignedInteger('sort_order')->default(0)->comment('Sıralama');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -448,7 +478,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->comment('Paket Ürün');
             $table->unsignedBigInteger('bundle_id')->comment('Paket içindeki ürün');
             $table->unsignedInteger('quantity')->default(1)->comment('Paketteki adet');
-             
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -468,7 +498,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('product_id')->index()->comment('Ana ürün');
             $table->unsignedBigInteger('related_id')->comment('Tavsiye edilen ürün');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -489,7 +519,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('product_id')->index()->comment('Ana ürün');
             $table->unsignedBigInteger('accessory_id')->comment('Aksesuar ürün');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -509,7 +539,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('product_id')->index()->comment('Ürün ID');
             $table->unsignedBigInteger('post_id')->comment('Yazı ID');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -529,7 +559,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('product_id')->index()->comment('Ürün ID');
             $table->unsignedBigInteger('faq_id')->comment('Soru ID');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -552,13 +582,13 @@ return new class extends Migration
             $table->string('filename', 255)->comment('Orijinal dosya adı');
             $table->unsignedInteger('sort_order')->default(0)->comment('Sıralama');
             $table->boolean('status')->default(true)->comment('Aktiflik durumu');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_prod_doc_soft_delete');
         });
 
@@ -573,7 +603,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_document_id')->comment('Bağlı doküman ID');
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('name', 255)->comment('Doküman görünen adı');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -594,7 +624,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->index()->comment('Ürün ID');
             $table->unsignedBigInteger('recurring_id')->comment('Ödeme periyodu ID');
             $table->unsignedBigInteger('account_group_id')->comment('Hangi müşteri grubu için');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -616,13 +646,13 @@ return new class extends Migration
             $table->unsignedBigInteger('account_group_id')->comment('Müşteri grubu ID');
             $table->decimal('price', 19, 4)->comment('Özel fiyat');
             $table->char('currency_code', 3)->default('TRY')->comment('Para birimi');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->unique(['product_id', 'account_group_id'], 'idx_prod_acc_price_unique');
             $table->index('deleted_at', 'idx_prod_acc_price_soft_delete');
         });
@@ -638,7 +668,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->index()->comment('Ürün ID');
             $table->unsignedBigInteger('account_group_id')->comment('Müşteri grubu ID');
             $table->unsignedInteger('points')->default(0)->comment('Kazanılacak puan');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -662,7 +692,7 @@ return new class extends Migration
             $table->text('description')->nullable()->comment('Açıklama');
             $table->decimal('price', 19, 4)->default(0)->comment('İşlem anındaki fiyat');
             $table->integer('quantity_change')->default(0)->comment('Stok değişim miktarı');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -685,13 +715,13 @@ return new class extends Migration
             $table->string('mask', 255)->nullable()->comment('Kullanıcıya gösterilecek dosya adı');
             $table->unsignedInteger('download_count')->default(0)->comment('İndirilme sayısı');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_dl_soft_delete');
         });
 
@@ -706,7 +736,7 @@ return new class extends Migration
             $table->unsignedBigInteger('download_id')->comment('Bağlı dosya ID');
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('name', 255)->comment('Dosya görünen adı');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -726,7 +756,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('product_id')->index()->comment('Ürün ID');
             $table->unsignedBigInteger('download_id')->comment('Dosya ID');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -750,13 +780,13 @@ return new class extends Migration
             $table->unsignedInteger('city_id')->default(0)->comment('Şehir ID');
             $table->text('address')->nullable()->comment('Açık adres');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_warehouse_soft_delete');
         });
 
@@ -774,13 +804,13 @@ return new class extends Migration
             $table->text('text')->comment('Yorum içeriği');
             $table->unsignedTinyInteger('rating')->default(0)->comment('Puan (1-5)');
             $table->boolean('status')->default(false)->index()->comment('Onay durumu (False:Onay Bekliyor)');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index(['product_id', 'status'], 'idx_review_prod_status');
             $table->index('deleted_at', 'idx_review_soft_delete');
         });

@@ -9,24 +9,43 @@ return new class extends Migration
     protected $connection = 'conn_lsr';
 
     private const SAFE_TABLE = 'accntng_safe';
+
     private const SAFE_BANK_TABLE = 'accntng_safe_bank';
+
     private const SAFE_ACTIVITY_TABLE = 'accntng_safe_activity';
+
     private const LOAN_TABLE = 'accntng_loan';
+
     private const CHECK_TABLE = 'accntng_check';
+
     private const PERSONNEL_TABLE = 'accntng_personnel';
+
     private const PERSONNEL_SALARY_TABLE = 'accntng_personnel_salary';
+
     private const PERSONNEL_CONTACT_TABLE = 'accntng_personnel_contact';
+
     private const PERSONNEL_BANK_ACCOUNT_TABLE = 'accntng_personnel_bank_account';
+
     private const PERSONNEL_DOCUMENT_TABLE = 'accntng_personnel_document';
+
     private const ORDER_TABLE = 'accntng_order';
+
     private const ORDER_ITEM_TABLE = 'accntng_order_item';
+
     private const ORDER_FINANCIAL_TABLE = 'accntng_order_financial';
+
     private const ORDER_CONTACT_TABLE = 'accntng_order_contact';
+
     private const ORDER_ACTIVITY_TABLE = 'accntng_order_activity';
+
     private const INVOICE_TABLE = 'accntng_invoice';
+
     private const INVOICE_ITEM_TABLE = 'accntng_invoice_item';
+
     private const INVOICE_FINANCIAL_TABLE = 'accntng_invoice_financial';
+
     private const INVOICE_CONTACT_TABLE = 'accntng_invoice_contact';
+
     private const RECURRING_TABLE = 'accntng_recurring';
 
     public function up(): void

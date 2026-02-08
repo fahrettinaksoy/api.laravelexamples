@@ -9,35 +9,55 @@ return new class extends Migration
     protected $connection = 'conn_tnt';
 
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_CASH = 'acc_cash';
+
     private const TABLE_CASH_TRANSACTION = 'acc_cash_transaction';
+
     private const TABLE_CHECK = 'acc_check';
+
     private const TABLE_LOAN = 'acc_loan';
 
     private const TABLE_EMPLOYEE = 'acc_employee';
+
     private const TABLE_EMPLOYEE_SALARY = 'acc_employee_salary';
+
     private const TABLE_EMPLOYEE_CONTACT = 'acc_employee_contact';
+
     private const TABLE_EMPLOYEE_BANK_ACCOUNT = 'acc_employee_bank_account';
+
     private const TABLE_EMPLOYEE_DOCUMENT = 'acc_employee_document';
 
     private const TABLE_ORDER = 'acc_order';
+
     private const TABLE_ORDER_ITEM = 'acc_order_item';
+
     private const TABLE_ORDER_FINANCIAL = 'acc_order_financial';
+
     private const TABLE_ORDER_CONTACT = 'acc_order_contact';
+
     private const TABLE_ORDER_ACTIVITY = 'acc_order_activity';
+
     private const TABLE_ORDER_SHIPMENT = 'acc_order_shipment';
+
     private const TABLE_ORDER_SHIPMENT_ITEM = 'acc_order_shipment_item';
 
     private const TABLE_INVOICE = 'acc_invoice';
+
     private const TABLE_INVOICE_ITEM = 'acc_invoice_item';
+
     private const TABLE_INVOICE_FINANCIAL = 'acc_invoice_financial';
+
     private const TABLE_INVOICE_CONTACT = 'acc_invoice_contact';
 
     private const TABLE_REFUND = 'acc_refund';
+
     private const TABLE_DEMAND = 'acc_demand';
+
     private const TABLE_RECURRING = 'acc_recurring';
 
     public function up(): void
@@ -73,7 +93,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Silinme tarihi (Soft Delete)');
-            
+
             $table->index('deleted_at', 'idx_cash_soft_delete');
         });
 
@@ -98,13 +118,13 @@ return new class extends Migration
             $table->string('title', 255)->nullable()->comment('İşlem başlığı');
             $table->text('description')->nullable()->comment('Açıklama');
             $table->date('date_activity')->comment('İşlem tarihi');
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index(['cash_id', 'date_activity'], 'idx_cash_trans_date');
             $table->index('deleted_at', 'idx_cash_trans_soft_delete');
         });
@@ -135,7 +155,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_check_soft_delete');
         });
 
@@ -154,13 +174,13 @@ return new class extends Migration
             $table->char('currency_code', 3)->default('TRY');
             $table->date('date_due')->nullable();
             $table->unsignedTinyInteger('status')->default(0);
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_loan_soft_delete');
         });
 
@@ -185,13 +205,13 @@ return new class extends Migration
             $table->date('date_start')->nullable()->comment('İşe başlama');
             $table->date('date_end')->nullable()->comment('İşten ayrılma');
             $table->boolean('status')->default(true);
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_employee_soft_delete');
         });
 
@@ -207,13 +227,13 @@ return new class extends Migration
             $table->decimal('amount', 19, 4);
             $table->date('period')->comment('Maaş dönemi');
             $table->boolean('is_paid')->default(false);
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_emp_salary_soft_delete');
         });
 
@@ -230,13 +250,13 @@ return new class extends Migration
             $table->string('city', 100)->nullable();
             $table->string('country', 100)->nullable();
             $table->string('zip_code', 20)->nullable();
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_emp_contact_soft_delete');
         });
 
@@ -252,34 +272,34 @@ return new class extends Migration
             $table->string('bank_name', 100);
             $table->string('iban', 50)->nullable();
             $table->string('account_number', 50)->nullable();
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
         });
-        
-        Schema::create(self::TABLE_EMPLOYEE_BANK_ACCOUNT, function (Blueprint $table) {
-             $table->comment('Personel banka hesapları');
-             $table->engine = self::ENGINE;
-             $table->charset = self::CHARSET;
-             $table->collation = self::COLLATION;
 
-             $table->bigIncrements('employee_bank_account_id');
-             $table->uuid('uuid')->unique();
-             $table->unsignedBigInteger('employee_id')->index();
-             $table->string('bank_name', 100);
-             $table->string('iban', 50)->nullable();
-             $table->string('account_number', 50)->nullable();
-             
-             $table->unsignedBigInteger('created_by')->nullable();
-             $table->unsignedBigInteger('updated_by')->nullable();
-             $table->timestamp('created_at')->useCurrent();
-             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
-             $table->timestamp('deleted_at')->nullable();
-             
-             $table->index('deleted_at', 'idx_emp_bank_soft_delete');
+        Schema::create(self::TABLE_EMPLOYEE_BANK_ACCOUNT, function (Blueprint $table) {
+            $table->comment('Personel banka hesapları');
+            $table->engine = self::ENGINE;
+            $table->charset = self::CHARSET;
+            $table->collation = self::COLLATION;
+
+            $table->bigIncrements('employee_bank_account_id');
+            $table->uuid('uuid')->unique();
+            $table->unsignedBigInteger('employee_id')->index();
+            $table->string('bank_name', 100);
+            $table->string('iban', 50)->nullable();
+            $table->string('account_number', 50)->nullable();
+
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamp('deleted_at')->nullable();
+
+            $table->index('deleted_at', 'idx_emp_bank_soft_delete');
         });
 
         Schema::create(self::TABLE_EMPLOYEE_DOCUMENT, function (Blueprint $table) {
@@ -294,13 +314,13 @@ return new class extends Migration
             $table->string('name', 255);
             $table->string('file', 500);
             $table->string('type', 50)->nullable();
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_emp_doc_soft_delete');
         });
 
@@ -328,13 +348,13 @@ return new class extends Migration
             $table->text('comment')->nullable();
             $table->string('ip_address', 50)->nullable();
             $table->string('user_agent', 255)->nullable();
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_order_soft_delete');
         });
 
@@ -362,7 +382,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_order_item_soft_delete');
         });
 
@@ -379,13 +399,13 @@ return new class extends Migration
             $table->string('code', 50)->comment('shipping, tax, discount');
             $table->decimal('amount', 19, 4);
             $table->integer('sort_order')->default(0);
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_order_fin_soft_delete');
         });
 
@@ -406,13 +426,13 @@ return new class extends Migration
             $table->string('country', 100);
             $table->string('postcode', 20)->nullable();
             $table->string('phone', 50)->nullable();
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_order_contact_soft_delete');
         });
 
@@ -428,7 +448,7 @@ return new class extends Migration
             $table->unsignedBigInteger('status_id')->nullable();
             $table->string('comment', 500)->nullable();
             $table->boolean('is_customer_notified')->default(false);
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
@@ -450,13 +470,13 @@ return new class extends Migration
             $table->string('tracking_number', 100)->nullable();
             $table->string('carrier_name', 100)->nullable();
             $table->string('tracking_url', 500)->nullable();
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_order_ship_soft_delete');
         });
 
@@ -471,13 +491,13 @@ return new class extends Migration
             $table->unsignedBigInteger('order_shipment_id')->index();
             $table->unsignedBigInteger('order_item_id');
             $table->integer('quantity')->default(1);
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_order_ship_item_soft_delete');
         });
 
@@ -507,7 +527,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_inv_soft_delete');
         });
 
@@ -526,13 +546,13 @@ return new class extends Migration
             $table->decimal('tax_rate', 5, 2)->default(0);
             $table->decimal('tax_amount', 19, 4);
             $table->decimal('total', 19, 4);
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_inv_item_soft_delete');
         });
 
@@ -549,13 +569,13 @@ return new class extends Migration
             $table->string('code', 50);
             $table->decimal('amount', 19, 4);
             $table->integer('sort_order')->default(0);
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_inv_fin_soft_delete');
         });
 
@@ -574,13 +594,13 @@ return new class extends Migration
             $table->string('country', 100);
             $table->string('tax_office', 100)->nullable();
             $table->string('tax_number', 50)->nullable();
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_inv_contact_soft_delete');
         });
 
@@ -599,13 +619,13 @@ return new class extends Migration
             $table->unsignedTinyInteger('status')->default(0)->comment('Talep durumu');
             $table->integer('quantity')->default(1);
             $table->text('comment')->nullable();
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_refund_soft_delete');
         });
 
@@ -623,13 +643,13 @@ return new class extends Migration
             $table->string('name', 255);
             $table->text('message');
             $table->unsignedTinyInteger('status')->default(0);
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_demand_soft_delete');
         });
 
@@ -648,13 +668,13 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->boolean('status')->default(true);
-            
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('deleted_at')->nullable();
-            
+
             $table->index('deleted_at', 'idx_recurring_soft_delete');
         });
     }

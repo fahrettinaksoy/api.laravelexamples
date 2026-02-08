@@ -15,19 +15,30 @@ return new class extends Migration
 
     // Sıkça Sorulan Sorular (FAQ) Tabloları
     private const FAQ_GROUP_TABLE = 'spprt_faq_group';
+
     private const FAQ_GROUP_TRANSLATION_TABLE = 'spprt_faq_group_translation';
+
     private const FAQ_TABLE = 'spprt_faq';
+
     private const FAQ_TRANSLATION_TABLE = 'spprt_faq_translation';
+
     private const FAQ_FAQ_GROUP_TABLE = 'spprt_faq_faq_group';
 
     // Bilgi Bankası (Knowledge Base) Tabloları
     private const KNOWLEDGE_CATEGORY_TABLE = 'spprt_knowledge_category';
+
     private const KNOWLEDGE_CATEGORY_TRANSLATION_TABLE = 'spprt_knowledge_category_translation';
+
     private const KNOWLEDGE_ARTICLE_TABLE = 'spprt_knowledge_article';
+
     private const KNOWLEDGE_ARTICLE_TRANSLATION_TABLE = 'spprt_knowledge_article_translation';
+
     private const KNOWLEDGE_ARTICLE_CATEGORY_TABLE = 'spprt_knowledge_article_category';
+
     private const KNOWLEDGE_ARTICLE_IMAGE_TABLE = 'spprt_knowledge_article_image';
+
     private const KNOWLEDGE_ARTICLE_VIDEO_TABLE = 'spprt_knowledge_article_video';
+
     private const KNOWLEDGE_ARTICLE_RELATED_TABLE = 'spprt_knowledge_article_related';
 
     // Geri Bildirim (Feedback) Tablosu
@@ -35,12 +46,11 @@ return new class extends Migration
 
     // Destek Talebi (Ticket) Tabloları
     private const TICKET_TABLE = 'spprt_ticket';
+
     private const TICKET_MEETING_TABLE = 'spprt_ticket_meeting'; // 'meeting' yerine 'message' veya 'conversation' daha uygun olabilir
 
     /**
      * Migration'ı çalıştır. Gerekli tüm destek sistemi tablolarını belirtilen 'conn_lsr' bağlantısı üzerinde oluşturur.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -405,8 +415,6 @@ return new class extends Migration
     /**
      * Migration'ı geri al. Tabloları belirtilen 'conn_lsr' bağlantısı üzerinden siler.
      * Bağımlılık sırasına dikkat edilerek silinme işlemi yapılır.
-     *
-     * @return void
      */
     public function down(): void
     {

@@ -7,23 +7,37 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     protected $connection = 'conn_tnt';
-	
+
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_ACCOUNT = 'mem_account';
+
     private const TABLE_ACCOUNT_AUTHORIZED = 'mem_account_authorized';
+
     private const TABLE_ACCOUNT_CONTACT = 'mem_account_contact';
+
     private const TABLE_ACCOUNT_BANK = 'mem_account_bank_account';
+
     private const TABLE_ACCOUNT_DOWNLOAD = 'mem_account_download';
+
     private const TABLE_ACCOUNT_REWARD = 'mem_account_reward';
+
     private const TABLE_ACCOUNT_WISHLIST = 'mem_account_wishlist';
+
     private const TABLE_ACCOUNT_WISHLIST_ITEM = 'mem_account_wishlist_item';
+
     private const TABLE_ACCOUNT_PRICE_ALERT = 'mem_account_price_alert';
+
     private const TABLE_ACCOUNT_PREORDER = 'mem_account_preorder';
+
     private const TABLE_ACCOUNT_PASSWORD_RESET = 'mem_account_password_reset';
+
     private const TABLE_ACCOUNT_VERIFICATION = 'mem_account_verification';
+
     private const TABLE_ACCOUNT_ACCESS_TOKEN = 'mem_account_access_token';
 
     public function up(): void
@@ -73,7 +87,7 @@ return new class extends Migration
             $table->text('notes')->nullable()->comment('Yönetici notları');
             $table->boolean('is_verified')->default(false)->comment('Hesap onaylı mı?');
             $table->boolean('status')->default(false)->index()->comment('Durum (Aktif/Pasif/Banlı)');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -116,7 +130,7 @@ return new class extends Migration
             $table->unsignedInteger('gender_id')->default(0)->comment('Cinsiyet kimliği');
             $table->boolean('is_primary')->default(false)->comment('Ana yetkili mi?');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -144,7 +158,7 @@ return new class extends Migration
             $table->string('tax_number', 50)->nullable()->comment('Vergi numarası');
             $table->string('phone', 20)->nullable()->comment('Telefon');
             $table->string('email', 255)->nullable()->comment('E-posta');
-            
+
             $table->unsignedBigInteger('country_id')->comment('Ülke');
             $table->unsignedBigInteger('city_id')->comment('Şehir');
             $table->unsignedBigInteger('district_id')->comment('İlçe');
@@ -152,11 +166,11 @@ return new class extends Migration
             $table->string('postcode', 20)->nullable()->comment('Posta kodu');
             $table->string('address_1', 255)->comment('Adres satırı 1');
             $table->string('address_2', 255)->nullable()->comment('Adres satırı 2');
-            
+
             $table->boolean('is_default_billing')->default(false)->comment('Varsayılan fatura adresi');
             $table->boolean('is_default_shipping')->default(false)->comment('Varsayılan teslimat adresi');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -186,7 +200,7 @@ return new class extends Migration
             $table->char('currency_code', 3)->default('TRY')->comment('Para birimi');
             $table->boolean('is_default')->default(false)->comment('Varsayılan banka hesabı mı?');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -211,7 +225,7 @@ return new class extends Migration
             $table->unsignedBigInteger('download_id')->comment('İndirme dosyası kimliği');
             $table->unsignedInteger('remaining_count')->default(0)->comment('Kalan indirme hakkı');
             $table->timestamp('expired_at')->nullable()->comment('Erişim bitiş tarihi');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -234,10 +248,10 @@ return new class extends Migration
             $table->unsignedBigInteger('order_id')->default(0)->comment('İlişkili sipariş kimliği (varsa)');
             $table->string('description', 255)->comment('Puan hareketi açıklaması');
             $table->integer('points')->default(0)->comment('Puan miktarı (+/-)');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
-            
+
             $table->index('account_id', 'idx_reward_account');
         });
 
@@ -253,7 +267,7 @@ return new class extends Migration
             $table->string('name', 255)->comment('Liste adı');
             $table->string('token', 100)->unique()->nullable()->comment('Paylaşım tokeni');
             $table->boolean('is_public')->default(false)->comment('Herkese açık mı?');
-            
+
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
@@ -273,10 +287,10 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->comment('Ürün kimliği');
             $table->unsignedInteger('quantity')->default(1)->comment('Hedeflenen adet');
             $table->integer('priority')->default(0)->comment('Öncelik sırası');
-            
+
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
-            
+
             $table->unique(['wishlist_id', 'product_id'], 'idx_wishlist_item_unique');
         });
 
@@ -293,7 +307,7 @@ return new class extends Migration
             $table->decimal('target_price', 19, 4)->nullable()->comment('Hedeflenen fiyat (Altına düşerse bildir)');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('notified_at')->nullable()->comment('Bildirim gönderilme zamanı');
-            
+
             $table->index(['product_id', 'target_price'], 'idx_price_alert_check');
         });
 
@@ -309,9 +323,9 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->comment('Ürün kimliği');
             $table->unsignedInteger('quantity')->default(1)->comment('Talep edilen adet');
             $table->boolean('is_notified')->default(false)->comment('Stok gelince bildirildi mi?');
-            
+
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
-            
+
             $table->index(['product_id', 'is_notified'], 'idx_preorder_product_notification');
         });
 
@@ -329,7 +343,7 @@ return new class extends Migration
             $table->string('recipient', 255)->comment('Kodun gönderildiği adres/numara');
             $table->timestamp('expires_at')->comment('Kodun geçerlilik bitişi');
             $table->timestamp('created_at')->useCurrent()->comment('Oluşturma zamanı');
-            
+
             $table->index(['account_id', 'type', 'code'], 'idx_verification_check');
         });
 

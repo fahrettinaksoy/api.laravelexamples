@@ -7,12 +7,15 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     protected $connection = 'conn_tnt';
-	
+
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_CART = 'shp_cart';
+
     private const TABLE_CART_ITEM = 'shp_cart_item';
 
     public function up(): void
@@ -33,7 +36,7 @@ return new class extends Migration
             $table->string('user_agent', 500)->nullable()->comment('Tarayıcı bilgisi');
             $table->boolean('is_active')->default(true)->comment('Aktif mi? (Siparişleşince pasif olur)');
             $table->boolean('is_locked')->default(false)->comment('Kilitli mi? (Ödeme aşamasında)');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -58,10 +61,10 @@ return new class extends Migration
             $table->unsignedInteger('quantity')->default(1)->comment('Adet');
             $table->longText('options')->nullable()->comment('Ürün seçenekleri ve varyasyonlar (JSON)');
             $table->boolean('is_selected')->default(true)->comment('Seçili mi? (Sepette ama alınmayacaklar için)');
-            
+
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
-            
+
             $table->index('cart_id', 'idx_cart_item_cart');
             $table->index('product_id', 'idx_cart_item_product');
         });

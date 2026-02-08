@@ -9,30 +9,55 @@ return new class extends Migration
     protected $connection = 'conn_lsr';
 
     private const PRODUCT_TABLE = 'ctlg_product';
+
     private const PRODUCT_TRANSLATION_TABLE = 'ctlg_product_translation';
+
     private const PRODUCT_GROUPED_TABLE = 'ctlg_product_grouped';
+
     private const PRODUCT_BUNDLE_TABLE = 'ctlg_product_bundle';
+
     private const PRODUCT_RECURRING_TABLE = 'ctlg_product_recurring';
+
     private const PRODUCT_IMAGE_TABLE = 'ctlg_product_image';
+
     private const PRODUCT_VIDEO_TABLE = 'ctlg_product_video';
+
     private const PRODUCT_FAQ_TABLE = 'ctlg_product_faq';
+
     private const PRODUCT_RELATED_TABLE = 'ctlg_product_related';
+
     private const PRODUCT_POST_TABLE = 'ctlg_product_post';
+
     private const PRODUCT_ATTRIBUTE_TABLE = 'ctlg_product_attribute';
+
     private const PRODUCT_ATTRIBUTE_TRANSLATION_TABLE = 'ctlg_product_attribute_translation';
+
     private const PRODUCT_FIELD_TABLE = 'ctlg_product_field';
+
     private const PRODUCT_FIELD_TRANSLATION_TABLE = 'ctlg_product_field_translation';
+
     private const PRODUCT_FILTER_VALUE_TABLE = 'ctlg_product_filter_value';
+
     private const PRODUCT_OPTION_TABLE = 'ctlg_product_option';
+
     private const PRODUCT_OPTION_VALUE_TABLE = 'ctlg_product_option_value';
+
     private const PRODUCT_VARIANT_TABLE = 'ctlg_product_variant';
+
     private const PRODUCT_VARIANT_STOCK_TABLE = 'ctlg_product_variant_stock';
+
     private const PRODUCT_VARIANT_VARIABLE_TABLE = 'ctlg_product_variant_variable';
+
     private const PRODUCT_ACTIVITY_TABLE = 'ctlg_product_activity';
+
     private const REVIEW_TABLE = 'ctlg_review';
+
     private const CATEGORY_TABLE = 'ctlg_category';
+
     private const CATEGORY_TRANSLATION_TABLE = 'ctlg_category_translation';
+
     private const BRAND_TABLE = 'ctlg_brand';
+
     private const BRAND_TRANSLATION_TABLE = 'ctlg_brand_translation';
 
     public function up(): void

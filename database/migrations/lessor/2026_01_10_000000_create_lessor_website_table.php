@@ -15,13 +15,13 @@ return new class extends Migration
 
     // Form Tabloları
     private const FORM_TABLE = 'wbst_form';
+
     private const FORM_INCOMING_TABLE = 'wbst_form_incoming';
+
     private const FORM_TRANSLATION_TABLE = 'wbst_form_translation';
 
     /**
      * Migration'ı çalıştır. Gerekli tüm web sitesi form tablolarını belirtilen 'conn_lsr' bağlantısı üzerinde oluşturur.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -88,8 +88,6 @@ return new class extends Migration
     /**
      * Migration'ı geri al. Tabloları belirtilen 'conn_lsr' bağlantısı üzerinden siler.
      * Bağımlılık sırasına dikkat edilerek silinme işlemi yapılır.
-     *
-     * @return void
      */
     public function down(): void
     {

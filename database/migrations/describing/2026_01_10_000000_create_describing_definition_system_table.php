@@ -18,8 +18,6 @@ return new class extends Migration
 
     /**
      * Migration'ı çalıştır. Gerekli tüm sistem bileşeni tanımlama tablolarını belirtilen 'conn_desc' bağlantısı üzerinde oluşturur.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -55,8 +53,6 @@ return new class extends Migration
 
     /**
      * Migration'ı geri al. Tabloları belirtilen 'conn_desc' bağlantısı üzerinden siler.
-     *
-     * @return void
      */
     public function down(): void
     {

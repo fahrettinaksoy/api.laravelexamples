@@ -9,19 +9,27 @@ return new class extends Migration
     protected $connection = 'conn_tnt';
 
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_PAGE = 'cont_page';
+
     private const TABLE_PAGE_TRANSLATION = 'cont_page_translation';
+
     private const TABLE_PAGE_IMAGE = 'cont_page_image';
-    
+
     private const TABLE_BLOG_POST = 'cont_blog_post';
+
     private const TABLE_BLOG_POST_TRANSLATION = 'cont_blog_post_translation';
+
     private const TABLE_BLOG_POST_CATEGORY = 'cont_blog_post_category';
+
     private const TABLE_BLOG_POST_IMAGE = 'cont_blog_post_image';
+
     private const TABLE_BLOG_POST_RELATED = 'cont_blog_post_related';
-    
+
     private const TABLE_BLOG_COMMENT = 'cont_blog_comment';
 
     public function up(): void
@@ -43,7 +51,7 @@ return new class extends Migration
             $table->boolean('requires_membership')->default(false)->comment('Üyelik gerektirir mi?');
             $table->boolean('is_legal')->default(false)->comment('Yasal sayfa mı? (Sözleşme vb.)');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -72,7 +80,7 @@ return new class extends Migration
             $table->string('meta_title', 255)->nullable()->comment('SEO başlık');
             $table->string('meta_description', 500)->nullable()->comment('SEO açıklama');
             $table->string('meta_keyword', 255)->nullable()->comment('SEO anahtar kelimeler');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -95,7 +103,7 @@ return new class extends Migration
             $table->unsignedBigInteger('page_id')->index()->comment('Sayfa kimliği');
             $table->string('file', 500)->comment('Dosya yolu');
             $table->unsignedInteger('sort_order')->default(0)->comment('Sıralama');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
         });
@@ -115,7 +123,7 @@ return new class extends Migration
             $table->unsignedInteger('layout_id')->default(0)->comment('Özel düzen');
             $table->boolean('requires_membership')->default(false)->comment('Üyelik gerektirir mi?');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -143,7 +151,7 @@ return new class extends Migration
             $table->string('meta_title', 255)->nullable()->comment('SEO başlık');
             $table->string('meta_description', 500)->nullable()->comment('SEO açıklama');
             $table->string('meta_keyword', 255)->nullable()->comment('SEO anahtar kelimeler');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -165,7 +173,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('post_id')->comment('Yazı kimliği');
             $table->unsignedBigInteger('category_id')->comment('Kategori kimliği');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
 
@@ -183,7 +191,7 @@ return new class extends Migration
             $table->unsignedBigInteger('post_id')->index()->comment('Yazı kimliği');
             $table->string('file', 500)->comment('Dosya yolu');
             $table->unsignedInteger('sort_order')->default(0)->comment('Sıralama');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
         });
@@ -198,9 +206,9 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('post_id')->comment('Ana yazı');
             $table->unsignedBigInteger('related_id')->comment('İlişkili yazı');
-            
+
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
-            
+
             $table->unique(['post_id', 'related_id'], 'idx_post_rel_unique');
         });
 
@@ -219,7 +227,7 @@ return new class extends Migration
             $table->text('content')->comment('Yorum içeriği');
             $table->tinyInteger('rating')->default(0)->comment('Puan (0-5)');
             $table->boolean('status')->default(false)->index()->comment('Onay durumu');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');

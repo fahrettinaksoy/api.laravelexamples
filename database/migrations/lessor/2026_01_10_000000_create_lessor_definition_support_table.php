@@ -15,28 +15,31 @@ return new class extends Migration
 
     // Departman Tanımlamaları
     private const DEPARTMENT_TABLE = 'dfntn_spprt_department';
+
     private const DEPARTMENT_TRANSLATION_TABLE = 'dfntn_spprt_department_translation';
 
     // Destek Talebi Durumu Tanımlamaları
     private const TICKET_STATUS_TABLE = 'dfntn_spprt_ticket_status';
+
     private const TICKET_STATUS_TRANSLATION_TABLE = 'dfntn_spprt_ticket_status_translation';
 
     // Geri Bildirim Durumu Tanımlamaları
     private const FEEDBACK_STATUS_TABLE = 'dfntn_spprt_feedback_status';
+
     private const FEEDBACK_STATUS_TRANSLATION_TABLE = 'dfntn_spprt_feedback_status_translation';
 
     // Öncelik Tanımlamaları
     private const PRIORITY_TABLE = 'dfntn_spprt_priority';
+
     private const PRIORITY_TRANSLATION_TABLE = 'dfntn_spprt_priority_translation';
 
     // İlişki (Relation) Tanımlamaları
     private const RELATION_TABLE = 'dfntn_spprt_relation';
+
     private const RELATION_TRANSLATION_TABLE = 'dfntn_spprt_relation_translation';
 
     /**
      * Migration'ı çalıştır. Gerekli tüm destek tanımlama tablolarını belirtilen 'conn_lsr' bağlantısı üzerinde oluşturur.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -215,8 +218,6 @@ return new class extends Migration
     /**
      * Migration'ı geri al. Tabloları belirtilen 'conn_lsr' bağlantısı üzerinden siler.
      * Bağımlılık sırasına dikkat edilerek silinme işlemi yapılır.
-     *
-     * @return void
      */
     public function down(): void
     {

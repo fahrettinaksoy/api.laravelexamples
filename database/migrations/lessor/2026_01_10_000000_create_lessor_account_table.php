@@ -9,17 +9,27 @@ return new class extends Migration
     protected $connection = 'conn_lsr';
 
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_ACCOUNT = 'wbst_account';
+
     private const TABLE_ACCOUNT_ACCESS = 'wbst_account_access';
+
     private const TABLE_ACCOUNT_ACCESS_TRANSLATION = 'wbst_account_access_translation';
+
     private const TABLE_ACCOUNT_AUTHORIZED = 'wbst_account_authorized';
+
     private const TABLE_ACCOUNT_AUTHORIZED_TOKEN_RESET = 'wbst_account_authorized_token_reset';
+
     private const TABLE_ACCOUNT_TOKEN_ACCESS = 'wbst_account_token_access';
+
     private const TABLE_ACCOUNT_CONTACT = 'wbst_account_contact';
+
     private const TABLE_ACCOUNT_BANK_ACCOUNT = 'wbst_account_bank_account';
+
     private const TABLE_ACCOUNT_SMS_VERIFY = 'wbst_account_sms_verify';
 
     public function up(): void
@@ -34,7 +44,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('type_id')->default(0)->comment('Hesap tipi ID (Bireysel, Kurumsal vb.)');
             $table->unsignedBigInteger('group_id')->default(0)->comment('Hesap grubu ID (VIP, Bayi vb.)');
-            
+
             $table->string('code', 100)->comment('Hesap için benzersiz kod veya kullanıcı adı');
             $table->tinyInteger('shape')->default(0)->comment('Hesap şekli (0: Gerçek Kişi, 1: Tüzel Kişi)');
             $table->string('language_code', 10)->nullable()->comment('Hesabın tercih ettiği dil kodu (tr, en)');
@@ -54,13 +64,13 @@ return new class extends Migration
             $table->unsignedBigInteger('default_bank_account_id')->nullable()->default(0)->comment('Varsayılan banka hesabı ID');
             $table->string('ip_address', 50)->nullable()->comment('Kayıt sırasındaki IP adresi');
             $table->boolean('status')->default(true)->comment('Hesap durumu (Aktif/Pasif)');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Son güncelleyen kullanıcı');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Silinme tarihi (Soft Delete)');
-            
+
             $table->unique('code', 'idx_acc_code_unique');
             $table->index('type_id', 'idx_acc_type');
             $table->index('group_id', 'idx_acc_group');
@@ -68,7 +78,7 @@ return new class extends Migration
             $table->index('tax_number', 'idx_acc_tax_num');
             $table->index('mersis_number', 'idx_acc_mersis');
             $table->index('created_at', 'idx_acc_created_at');
-            
+
             $table->index(['type_id', 'status', 'deleted_at'], 'idx_acc_type_status_del');
             $table->index(['group_id', 'status', 'deleted_at'], 'idx_acc_group_status_del');
             $table->index(['deleted_at', 'status'], 'idx_acc_del_status');
@@ -141,13 +151,13 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Silinme tarihi (Soft Delete)');
-            
+
             $table->unique('code', 'idx_access_code_unique');
             $table->index('account_id', 'idx_access_account');
             $table->index('sector_id', 'idx_access_sector');
             $table->index('domain_address', 'idx_access_domain');
             $table->index('subdomain_name', 'idx_access_subdomain');
-            
+
             $table->index(['status', 'deleted_at'], 'idx_access_status_active');
             $table->index(['domain_address', 'status', 'deleted_at'], 'idx_access_domain_active');
             $table->index(['account_id', 'status', 'deleted_at'], 'idx_access_account_status');
@@ -175,17 +185,17 @@ return new class extends Migration
             $table->string('meta_title', 255)->nullable()->comment('SEO Başlık');
             $table->string('meta_description', 500)->nullable()->comment('SEO Açıklama');
             $table->string('meta_keyword', 255)->nullable()->comment('SEO Anahtarlar');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Son güncelleyen kullanıcı');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Silinme tarihi (Soft Delete)');
-            
+
             $table->index('access_id', 'idx_access_trans_access_id');
             $table->index('language_code', 'idx_access_trans_lang');
             $table->unique(['access_id', 'language_code'], 'idx_access_trans_unique_lang');
-            
+
             $table->index('name', 'idx_access_trans_name');
         });
 
@@ -216,21 +226,21 @@ return new class extends Migration
             $table->string('password', 255)->comment('Şifre (Hash)');
             $table->rememberToken()->comment('Beni hatırla tokenı');
             $table->boolean('status')->default(true)->comment('Durum (Aktif/Pasif)');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Son güncelleyen kullanıcı');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Silinme tarihi (Soft Delete)');
-            
+
             $table->unique('email', 'idx_auth_email_unique');
             $table->unique('phone_mobile', 'idx_auth_phone_unique');
             $table->unique('citizenship_number', 'idx_auth_citizen_unique');
-            
+
             $table->index('account_id', 'idx_auth_account');
             $table->index('authorized_group_id', 'idx_auth_group');
             $table->index('status', 'idx_auth_status');
-            
+
             $table->index(['email', 'status', 'deleted_at'], 'idx_auth_login');
             $table->index(['account_id', 'status', 'deleted_at'], 'idx_auth_acc_active');
         });
@@ -245,11 +255,11 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->string('email', 255)->index()->comment('Sıfırlama talep edilen e-posta');
             $table->string('token', 100)->unique()->comment('Sıfırlama anahtarı');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı');
             $table->timestamp('created_at')->useCurrent()->comment('Token oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Token son güncellenme zamanı');
-            $table->timestamp('deleted_at')->nullable()->comment('Silinme tarihi'); 
+            $table->timestamp('deleted_at')->nullable()->comment('Silinme tarihi');
 
             $table->index('created_at', 'idx_token_reset_created');
         });
@@ -268,13 +278,13 @@ return new class extends Migration
             $table->text('abilities')->nullable()->comment('Yetkiler (JSON)');
             $table->timestamp('last_used_at')->nullable()->comment('Son kullanım zamanı');
             $table->timestamp('expires_at')->nullable()->comment('Geçerlilik bitiş zamanı');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Son güncelleyen kullanıcı');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Silinme tarihi (Soft Delete)');
-            
+
             $table->unique('token', 'idx_api_token_unique');
             $table->index('name', 'idx_api_token_name');
             $table->index(['tokenable_type', 'tokenable_id', 'deleted_at'], 'idx_api_token_model');
@@ -315,7 +325,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Silinme tarihi (Soft Delete)');
-            
+
             $table->index('account_id', 'idx_contact_account');
             $table->index('address_type_id', 'idx_contact_type');
             $table->index('status', 'idx_contact_status');
@@ -341,15 +351,15 @@ return new class extends Migration
             $table->string('account_number', 50)->nullable()->comment('Hesap numarası');
             $table->string('branch_code', 20)->nullable()->comment('Şube kodu');
             $table->string('iban', 50)->comment('IBAN Numarası');
-            
+
             $table->boolean('status')->default(true)->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Son güncelleyen kullanıcı');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Silinme tarihi (Soft Delete)');
-            
+
             $table->unique('iban', 'idx_bank_iban_unique');
             $table->index('account_id', 'idx_bank_account');
             $table->index('bank_id', 'idx_bank_bank_id');
@@ -368,13 +378,13 @@ return new class extends Migration
             $table->unsignedBigInteger('account_authorized_id')->comment('İlgili yetkili ID');
             $table->string('code', 10)->comment('Doğrulama kodu');
             $table->timestamp('expires_at')->nullable()->comment('Kodun geçerlilik süresi');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Son güncelleyen kullanıcı');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Silinme tarihi (Soft Delete)');
-            
+
             $table->index('account_authorized_id', 'idx_sms_auth_id');
             $table->index(['account_authorized_id', 'code', 'expires_at'], 'idx_sms_verify_check');
             $table->index('expires_at', 'idx_sms_expires');

@@ -15,22 +15,28 @@ return new class extends Migration
 
     // Uygulama Kategorisi Tabloları
     private const APP_CATEGORY_TABLE = 'dfntn_app_category';
+
     private const APP_CATEGORY_TRANSLATION_TABLE = 'dfntn_app_category_translation';
 
     // Uygulama Tabloları
     private const APP_APPLICATION_TABLE = 'dfntn_app_application';
+
     private const APP_APPLICATION_TRANSLATION_TABLE = 'dfntn_app_application_translation';
+
     private const APP_APPLICATION_IMAGE_TABLE = 'dfntn_app_application_image';
+
     private const APP_APPLICATION_FAQ_TABLE = 'dfntn_app_application_faq';
+
     private const APP_APPLICATION_POST_TABLE = 'dfntn_app_application_post';
+
     private const APP_APPLICATION_RELATED_TABLE = 'dfntn_app_application_related';
+
     private const APP_APPLICATION_CAMPAIGN_TABLE = 'dfntn_app_application_campaign';
+
     private const APP_APPLICATION_CHANNEL_SERVICES_TABLE = 'dfntn_app_application_channel_services';
 
     /**
      * Migration'ı çalıştır. Gerekli tüm uygulama tanımlama tablolarını belirtilen 'conn_desc' bağlantısı üzerinde oluşturur.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -264,8 +270,6 @@ return new class extends Migration
     /**
      * Migration'ı geri al. Tabloları belirtilen 'conn_desc' bağlantısı üzerinden siler.
      * Bağımlılık sırasına dikkat edilerek silinme işlemi yapılır.
-     *
-     * @return void
      */
     public function down(): void
     {

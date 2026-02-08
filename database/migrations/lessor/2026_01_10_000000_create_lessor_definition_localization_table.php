@@ -30,10 +30,12 @@ return new class extends Migration
 
     // Coğrafi Bölge Tanımlamaları
     private const GEO_TABLE = 'dfntn_lclztn_geo';
+
     private const GEO_ZONE_TABLE = 'dfntn_lclztn_geo_zone';
 
     // Vergi Sınıfı Tanımlamaları
     private const TAX_CLASS_TABLE = 'dfntn_lclztn_tax_class';
+
     private const TAX_CLASS_TRANSLATION_TABLE = 'dfntn_lclztn_tax_class_translation';
 
     // Vergi Oranı Tanımlamaları
@@ -41,16 +43,16 @@ return new class extends Migration
 
     // Birim Tanımlamaları
     private const UNIT_TABLE = 'dfntn_lclztn_unit';
+
     private const UNIT_TRANSLATION_TABLE = 'dfntn_lclztn_unit_translation';
 
     // Adres Tipi Tanımlamaları
     private const ADDRESS_TYPE_TABLE = 'dfntn_lclztn_address_type';
+
     private const ADDRESS_TYPE_TRANSLATION_TABLE = 'dfntn_lclztn_address_type_translation';
 
     /**
      * Migration'ı çalıştır. Gerekli tüm yerelleştirme tanımlama tablolarını belirtilen 'conn_lsr' bağlantısı üzerinde oluşturur.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -359,8 +361,6 @@ return new class extends Migration
     /**
      * Migration'ı geri al. Tabloları belirtilen 'conn_lsr' bağlantısı üzerinden siler.
      * Bağımlılık sırasına dikkat edilerek silinme işlemi yapılır.
-     *
-     * @return void
      */
     public function down(): void
     {

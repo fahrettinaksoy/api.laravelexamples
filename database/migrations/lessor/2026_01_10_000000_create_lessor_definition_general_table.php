@@ -18,17 +18,18 @@ return new class extends Migration
 
     // İş Ortağı Kategori Tanımlamaları
     private const PARTNER_CATEGORY_TABLE = 'prtnr_category';
+
     private const PARTNER_CATEGORY_TRANSLATION_TABLE = 'prtnr_category_translation';
 
     // İşletme (İş Ortağı) Tanımlamaları
     private const PARTNER_BUSINESS_TABLE = 'prtnr_business';
+
     private const PARTNER_BUSINESS_TRANSLATION_TABLE = 'prtnr_business_translation';
+
     private const PARTNER_BUSINESS_CATEGORY_TABLE = 'prtnr_business_category';
 
     /**
      * Migration'ı çalıştır. Gerekli tüm iş ortağı ve şube tanımlama tablolarını belirtilen 'conn_lsr' bağlantısı üzerinde oluşturur.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -206,8 +207,6 @@ return new class extends Migration
     /**
      * Migration'ı geri al. Tabloları belirtilen 'conn_lsr' bağlantısı üzerinden siler.
      * Bağımlılık sırasına dikkat edilerek silinme işlemi yapılır.
-     *
-     * @return void
      */
     public function down(): void
     {

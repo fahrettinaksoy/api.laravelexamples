@@ -9,8 +9,11 @@ return new class extends Migration
     protected $connection = 'conn_lsr';
 
     private const ACCOUNT_TYPE_TABLE = 'dfntn_gnrl_account_type';
+
     private const ACCOUNT_TYPE_TRANSLATION_TABLE = 'dfntn_gnrl_account_type_translation';
+
     private const ACCOUNT_SECTOR_TABLE = 'dfntn_gnrl_account_sector';
+
     private const ACCOUNT_SECTOR_TRANSLATION_TABLE = 'dfntn_gnrl_account_sector_translation';
 
     public function up(): void

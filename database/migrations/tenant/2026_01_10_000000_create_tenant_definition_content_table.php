@@ -9,10 +9,13 @@ return new class extends Migration
     protected $connection = 'conn_tnt';
 
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_BLOG_CATEGORY = 'def_cont_blog_category';
+
     private const TABLE_BLOG_CATEGORY_TRANSLATION = 'def_cont_blog_category_translation';
 
     public function up(): void
@@ -32,7 +35,7 @@ return new class extends Migration
             $table->boolean('requires_membership')->default(false)->comment('Üyelik gerektirir mi?');
             $table->unsignedInteger('layout_id')->default(0)->comment('Özel sayfa düzeni kimliği');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -62,7 +65,7 @@ return new class extends Migration
             $table->string('meta_title', 255)->nullable()->comment('SEO başlık');
             $table->string('meta_description', 500)->nullable()->comment('SEO açıklama');
             $table->string('meta_keyword', 255)->nullable()->comment('SEO anahtar kelimeler');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');

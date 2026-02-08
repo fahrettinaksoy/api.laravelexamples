@@ -15,28 +15,34 @@ return new class extends Migration
 
     // Tema Tanımlamaları
     private const THEME_TABLE = 'dfntn_dsgn_theme';
+
     private const THEME_TRANSLATION_TABLE = 'dfntn_dsgn_theme_translation';
+
     private const THEME_TEMPLATE_TABLE = 'dfntn_dsgn_theme_template'; // Original table name was `template_widget`, renamed for clarity
 
     // Cihaz Tanımlamaları
     private const DEVICE_TABLE = 'dfntn_dsgn_device';
+
     private const DEVICE_TRANSLATION_TABLE = 'dfntn_dsgn_device_translation';
 
     // Pozisyon Tanımlamaları
     private const POSITION_TABLE = 'dfntn_dsgn_position';
+
     private const POSITION_TRANSLATION_TABLE = 'dfntn_dsgn_position_translation';
+
     private const POSITION_TEMPLATE_TABLE = 'dfntn_dsgn_position_template';
 
     // Blok Kategori ve İçerik Tanımlamaları
     private const BLOCK_CATEGORY_TABLE = 'dfntn_dsgn_block_category';
+
     private const BLOCK_CATEGORY_TRANSLATION_TABLE = 'dfntn_dsgn_block_category_translation';
+
     private const BLOCK_ITEM_TABLE = 'dfntn_dsgn_block_item';
+
     private const BLOCK_ITEM_TRANSLATION_TABLE = 'dfntn_dsgn_block_item_translation';
 
     /**
      * Migration'ı çalıştır. Gerekli tüm tasarım tanımlama tablolarını belirtilen 'conn_desc' bağlantısı üzerinde oluşturur.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -305,8 +311,6 @@ return new class extends Migration
     /**
      * Migration'ı geri al. Tabloları belirtilen 'conn_desc' bağlantısı üzerinden siler.
      * Bağımlılık sırasına dikkat edilerek silinme işlemi yapılır.
-     *
-     * @return void
      */
     public function down(): void
     {

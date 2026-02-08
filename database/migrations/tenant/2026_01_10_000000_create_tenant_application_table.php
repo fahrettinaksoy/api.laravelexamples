@@ -9,16 +9,25 @@ return new class extends Migration
     protected $connection = 'conn_tnt';
 
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_APPLICATION = 'app_application';
+
     private const TABLE_APPLICATION_TRANSLATION = 'app_application_translation';
+
     private const TABLE_APPLICATION_IMAGE = 'app_application_image';
+
     private const TABLE_APPLICATION_FAQ = 'app_application_faq';
+
     private const TABLE_APPLICATION_POST = 'app_application_post';
+
     private const TABLE_APPLICATION_RELATED = 'app_application_related';
+
     private const TABLE_APPLICATION_CAMPAIGN = 'app_application_campaign';
+
     private const TABLE_APPLICATION_CHANNEL_SERVICES = 'app_application_channel_services';
 
     public function up(): void
@@ -57,7 +66,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_app_soft_delete');
         });
 
@@ -80,13 +89,13 @@ return new class extends Migration
             $table->string('meta_title', 255)->nullable()->comment('SEO Başlık');
             $table->string('meta_description', 500)->nullable()->comment('SEO Açıklama');
             $table->string('meta_keyword', 500)->nullable()->comment('SEO Anahtarlar');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->unique(['application_id', 'language_code'], 'idx_app_trans_unique');
             $table->index('deleted_at', 'idx_app_trans_soft_delete');
         });
@@ -103,13 +112,13 @@ return new class extends Migration
             $table->string('file', 500)->comment('Görsel yolu');
             $table->string('description', 500)->nullable()->comment('Görsel açıklaması');
             $table->unsignedInteger('sort_order')->default(0)->comment('Sıralama');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_app_img_soft_delete');
         });
 
@@ -123,13 +132,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('application_id')->index()->comment('Uygulama kimliği');
             $table->unsignedBigInteger('faq_id')->comment('Soru kimliği');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_app_faq_soft_delete');
         });
 
@@ -143,13 +152,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('application_id')->index()->comment('Uygulama kimliği');
             $table->unsignedBigInteger('post_id')->comment('Yazı kimliği');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_app_post_soft_delete');
         });
 
@@ -163,13 +172,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('application_id')->index()->comment('Uygulama kimliği');
             $table->unsignedBigInteger('related_id')->comment('Benzer uygulama kimliği');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_app_rel_soft_delete');
         });
 
@@ -183,13 +192,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('application_id')->index()->comment('Uygulama kimliği');
             $table->unsignedBigInteger('campaign_id')->comment('Kampanya kimliği');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_app_camp_soft_delete');
         });
 
@@ -203,13 +212,13 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->string('application_code', 100)->index()->comment('Uygulama Kodu');
             $table->string('channel_service_code', 100)->index()->comment('Servis kodu');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('Kayıt son güncelleme zamanı');
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete zamanı');
-            
+
             $table->index('deleted_at', 'idx_app_ch_serv_soft_delete');
         });
     }

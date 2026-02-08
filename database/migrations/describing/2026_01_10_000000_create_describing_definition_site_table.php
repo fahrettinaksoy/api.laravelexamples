@@ -15,12 +15,11 @@ return new class extends Migration
 
     // URL Tanımlamaları
     private const SITE_URL_TABLE = 'dfntn_site_url';
+
     private const SITE_URL_TRANSLATION_TABLE = 'dfntn_site_url_translation';
 
     /**
      * Migration'ı çalıştır. Gerekli tüm site URL tanımlama tablolarını belirtilen 'conn_desc' bağlantısı üzerinde oluşturur.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -69,8 +68,6 @@ return new class extends Migration
     /**
      * Migration'ı geri al. Tabloları belirtilen 'conn_desc' bağlantısı üzerinden siler.
      * Bağımlılık sırasına dikkat edilerek silinme işlemi yapılır.
-     *
-     * @return void
      */
     public function down(): void
     {

@@ -9,11 +9,15 @@ return new class extends Migration
     protected $connection = 'conn_tnt';
 
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_DEPARTMENT = 'def_cmp_department';
+
     private const TABLE_DEPARTMENT_TRANSLATION = 'def_cmp_department_translation';
+
     private const TABLE_BRANCH = 'def_cmp_branch';
 
     public function up(): void
@@ -29,7 +33,7 @@ return new class extends Migration
             $table->string('code', 50)->unique()->nullable()->comment('Benzersiz kod');
             $table->string('name', 100)->comment('Departman adı');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -50,7 +54,7 @@ return new class extends Migration
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('name', 255)->comment('Departman adı');
             $table->text('description')->nullable()->comment('Açıklama');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -80,7 +84,7 @@ return new class extends Migration
             $table->string('phone', 20)->nullable()->comment('Telefon');
             $table->string('fax', 20)->nullable()->comment('Faks');
             $table->string('gsm', 20)->nullable()->comment('GSM');
-            
+
             $table->unsignedBigInteger('country_id')->nullable()->comment('Ülke kimliği');
             $table->unsignedBigInteger('city_id')->nullable()->comment('Şehir kimliği');
             $table->unsignedBigInteger('district_id')->nullable()->comment('İlçe kimliği');
@@ -89,7 +93,7 @@ return new class extends Migration
             $table->string('address_2', 255)->nullable()->comment('Adres satırı 2');
             $table->string('map_coordinate', 100)->nullable()->comment('Harita koordinatı');
             $table->boolean('status')->default(true)->index()->comment('Durum');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');

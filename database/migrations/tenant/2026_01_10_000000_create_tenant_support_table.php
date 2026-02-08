@@ -7,22 +7,35 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     protected $connection = 'conn_tnt';
-	
+
     private const ENGINE = 'InnoDB';
+
     private const CHARSET = 'utf8mb4';
+
     private const COLLATION = 'utf8mb4_unicode_ci';
 
     private const TABLE_FEEDBACK = 'spprt_feedback';
+
     private const TABLE_TICKET = 'spprt_ticket';
+
     private const TABLE_TICKET_MESSAGE = 'spprt_ticket_message';
+
     private const TABLE_FAQ = 'spprt_faq';
+
     private const TABLE_FAQ_TRANSLATION = 'spprt_faq_translation';
+
     private const TABLE_FAQ_GROUP = 'spprt_faq_group_relation'; // Pivot table for FAQ <-> Group
+
     private const TABLE_ARTICLE = 'spprt_knowledge_article';
+
     private const TABLE_ARTICLE_TRANSLATION = 'spprt_knowledge_article_translation';
+
     private const TABLE_ARTICLE_CATEGORY = 'spprt_knowledge_article_category';
+
     private const TABLE_ARTICLE_IMAGE = 'spprt_knowledge_article_image';
+
     private const TABLE_ARTICLE_VIDEO = 'spprt_knowledge_article_video';
+
     private const TABLE_ARTICLE_RELATED = 'spprt_knowledge_article_related';
 
     public function up(): void
@@ -49,7 +62,7 @@ return new class extends Migration
             $table->unsignedInteger('status_id')->default(0)->index()->comment('Durum kimliği');
             $table->ipAddress('ip_address')->nullable()->comment('Oluşturan IP adresi');
             $table->string('user_agent', 500)->nullable()->comment('Tarayıcı bilgisi');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -79,7 +92,7 @@ return new class extends Migration
             $table->unsignedInteger('status_id')->default(0)->index()->comment('Durum kimliği');
             $table->boolean('is_locked')->default(false)->comment('Kilitli mi?');
             $table->ipAddress('ip_address')->nullable()->comment('Oluşturan IP adresi');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -107,7 +120,7 @@ return new class extends Migration
             $table->boolean('is_read')->default(false)->comment('Okundu bilgisi');
             $table->boolean('is_private')->default(false)->comment('Özel not mu? (Sadece personel görür)');
             $table->ipAddress('ip_address')->nullable()->comment('IP adresi');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -130,7 +143,7 @@ return new class extends Migration
             $table->unsignedInteger('sort_order')->default(0)->comment('Sıralama');
             $table->boolean('requires_membership')->default(false)->comment('Üyelik gerektirir mi?');
             $table->boolean('is_active')->default(true)->index()->comment('Aktif mi?');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -152,7 +165,7 @@ return new class extends Migration
             $table->char('language_code', 5)->comment('Dil kodu');
             $table->string('question', 500)->comment('Soru');
             $table->longText('answer')->nullable()->comment('Cevap');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -174,7 +187,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('faq_id')->comment('SSS kimliği');
             $table->unsignedBigInteger('faq_group_id')->comment('Grup kimliği');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -200,7 +213,7 @@ return new class extends Migration
             $table->unsignedInteger('sort_order')->default(0)->comment('Sıralama');
             $table->boolean('requires_membership')->default(false)->comment('Üyelik gerektirir mi?');
             $table->boolean('status')->default(false)->index()->comment('Durum (Aktif/Pasif)');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -230,7 +243,7 @@ return new class extends Migration
             $table->string('meta_title', 255)->nullable()->comment('SEO başlık');
             $table->string('meta_description', 500)->nullable()->comment('SEO açıklama');
             $table->string('meta_keyword', 255)->nullable()->comment('SEO anahtar kelimeler');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -252,7 +265,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('article_id')->comment('Makale kimliği');
             $table->unsignedBigInteger('category_id')->comment('Kategori kimliği');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -274,7 +287,7 @@ return new class extends Migration
             $table->unsignedBigInteger('article_id')->comment('Makale kimliği');
             $table->string('file', 500)->comment('Dosya yolu');
             $table->unsignedInteger('sort_order')->default(0)->comment('Sıralama');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -298,7 +311,7 @@ return new class extends Migration
             $table->string('content', 1000)->comment('İçerik/URL');
             $table->string('name', 255)->nullable()->comment('Video adı');
             $table->unsignedInteger('sort_order')->default(0)->comment('Sıralama');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');
@@ -319,7 +332,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('Evrensel benzersiz tanımlayıcı');
             $table->unsignedBigInteger('article_id')->comment('Makale kimliği');
             $table->unsignedBigInteger('related_id')->comment('İlişkili makale kimliği');
-            
+
             $table->unsignedBigInteger('created_by')->nullable()->comment('Kaydı oluşturan kullanıcı kimliği');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('Kaydı güncelleyen kullanıcı kimliği');
             $table->timestamp('created_at')->useCurrent()->comment('Kayıt oluşturma zamanı');

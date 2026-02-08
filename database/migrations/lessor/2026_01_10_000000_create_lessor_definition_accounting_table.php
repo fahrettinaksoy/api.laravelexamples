@@ -15,20 +15,21 @@ return new class extends Migration
 
     // Sipariş Operasyon Tanımlamaları
     private const ORDER_OPERATION_TABLE = 'dfntn_accntng_order_operation';
+
     private const ORDER_OPERATION_TRANSLATION_TABLE = 'dfntn_accntng_order_operation_translation';
 
     // Sipariş Durum Tanımlamaları
     private const ORDER_STATUS_TABLE = 'dfntn_accntng_order_status';
+
     private const ORDER_STATUS_TRANSLATION_TABLE = 'dfntn_accntng_order_status_translation';
 
     // Fatura Kategori Tanımlamaları
     private const INVOICE_CATEGORY_TABLE = 'dfntn_accntng_invoice_category';
+
     private const INVOICE_CATEGORY_TRANSLATION_TABLE = 'dfntn_accntng_invoice_category_translation';
 
     /**
      * Migration'ı çalıştır. Gerekli tüm muhasebe tanımlama tablolarını belirtilen 'conn_lsr' bağlantısı üzerinde oluşturur.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -150,8 +151,6 @@ return new class extends Migration
     /**
      * Migration'ı geri al. Tabloları belirtilen 'conn_lsr' bağlantısı üzerinden siler.
      * Bağımlılık sırasına dikkat edilerek silinme işlemi yapılır.
-     *
-     * @return void
      */
     public function down(): void
     {
