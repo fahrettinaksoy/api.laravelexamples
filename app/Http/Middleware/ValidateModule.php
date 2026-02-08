@@ -282,12 +282,17 @@ class ValidateModule
         return Str::plural($snakeName);
     }
 
-    private function buildModelClass(array $pathSegments, ?string $customClassName = null): string
+    private function buildModelClass(array $pathSegments): string
     {
+        // Path segments'i studly case'e çevir
         $namespaceParts = array_map([Str::class, 'studly'], $pathSegments);
-        $fullClassName = 'App\\Models\\'.implode('\\', $namespaceParts);
-
-        return $fullClassName;
+        
+        // Son segment model adı olacak
+        $modelName = end($namespaceParts);
+        
+        // Namespace: App\Models\{Module}\{Model}
+        // Örnek: content/page → App\Models\Content\Page\PageModel
+        return 'App\\Models\\'.implode('\\', $namespaceParts).'\\'.$modelName.'Model';
     }
 
     private function attachModelToRequest(Request $request, array $modelData): void

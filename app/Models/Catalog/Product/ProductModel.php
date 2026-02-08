@@ -2,13 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Models\Catalog;
+namespace App\Models\Catalog\Product;
 
 use App\Models\BaseModel;
+use App\Models\Catalog\Brand\BrandModel;
+use App\Models\Catalog\Category\CategoryModel;
+use App\Models\Catalog\Product\Subs\ProductImageModel;
+use App\Models\Catalog\Product\Subs\ProductTranslationModel;
 use App\SmartQuery\Builders\Filters\AllowedFilter;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Product extends BaseModel
+class ProductModel extends BaseModel
 {
     protected $table = 'cat_product';
 
@@ -72,6 +78,9 @@ class Product extends BaseModel
     public array $allowedRelations = [
         'category',
         'brand',
+        'images',
+        'translations',
+        'primaryImage',
         'createdBy',
         'updatedBy',
     ];
@@ -89,12 +98,28 @@ class Product extends BaseModel
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(CategoryModel::class);
     }
 
     public function brand(): BelongsTo
     {
-        return $this->belongsTo(Brand::class);
+        return $this->belongsTo(BrandModel::class);
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(ProductImageModel::class, 'product_id');
+    }
+
+    public function translations(): HasMany
+    {
+        return $this->hasMany(ProductTranslationModel::class, 'product_id');
+    }
+
+    public function primaryImage(): HasOne
+    {
+        return $this->hasOne(ProductImageModel::class, 'product_id')
+            ->where('is_primary', true);
     }
 
     public function scopeInStock($query)

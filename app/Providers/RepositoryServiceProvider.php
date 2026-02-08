@@ -7,6 +7,8 @@ namespace App\Providers;
 use App\Http\Controllers\CommonController;
 use App\Repositories\BaseRepository;
 use App\Repositories\BaseRepositoryCache;
+use App\Repositories\Catalog\Product\ProductRepositoryCache;
+use App\Repositories\Catalog\Product\ProductRepositoryInterface;
 use App\Services\BaseService;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,8 +17,8 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \App\Repositories\Catalog\Product\ProductRepositoryInterface::class,
-            \App\Repositories\Catalog\Product\ProductRepositoryCache::class
+            ProductRepositoryInterface::class,
+            ProductRepositoryCache::class
         );
 
         $this->app->when(CommonController::class)

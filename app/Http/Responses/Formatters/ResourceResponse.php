@@ -33,8 +33,10 @@ class ResourceResponse implements ResponseInterface
         ];
     }
 
-    private function buildMeta(array $additional = []): array
+    private function buildMeta(): array
     {
+        $additional = [];
+
         return array_merge([
             'timestamp' => now()->toIso8601String(),
             'version' => 'v1',

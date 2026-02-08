@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Models\Content;
+namespace App\Models\Content\Page;
 
 use App\Models\BaseModel;
 use App\SmartQuery\Builders\Filters\AllowedFilter;
 
-class Page extends BaseModel
+class PageModel extends BaseModel
 {
     protected $table = 'cnt_page';
 

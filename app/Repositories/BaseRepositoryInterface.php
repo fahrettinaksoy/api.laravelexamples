@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -13,7 +14,7 @@ interface BaseRepositoryInterface
 
     public function findById(string $id): ?Model;
 
-    public function all(array $filters = []): \Illuminate\Database\Eloquent\Collection;
+    public function all(array $filters = []): Collection;
 
     public function create(array $data): Model;
 
@@ -23,7 +24,7 @@ interface BaseRepositoryInterface
 
     public function findBy(string $field, mixed $value): ?Model;
 
-    public function getBy(string $field, mixed $value): \Illuminate\Database\Eloquent\Collection;
+    public function getBy(string $field, mixed $value): Collection;
 
     public function getModel(): Model;
 }

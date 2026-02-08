@@ -11,14 +11,14 @@ use App\Http\Responses\Formatters\ResourceResponse;
 use App\Http\Responses\Formatters\SuccessResponse;
 use Illuminate\Http\JsonResponse;
 
-class ApiResponse
+readonly class ApiResponse
 {
     public function __construct(
-        private readonly SuccessResponse $successResponse,
-        private readonly ErrorResponse $errorResponse,
-        private readonly ResourceResponse $resourceResponse,
-        private readonly CollectionResponse $collectionResponse,
-        private readonly PaginatedResponse $paginatedResponse,
+        private SuccessResponse $successResponse,
+        private ErrorResponse $errorResponse,
+        private ResourceResponse $resourceResponse,
+        private CollectionResponse $collectionResponse,
+        private PaginatedResponse $paginatedResponse,
     ) {}
 
     public function success(string $message = 'İşlem başarılı', int $status = 200): JsonResponse

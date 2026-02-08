@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories\Catalog\Product;
 
-use App\Models\Catalog\Product;
+use App\Models\Catalog\Product\ProductModel;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 
@@ -32,7 +32,7 @@ class ProductRepositoryCache implements ProductRepositoryInterface
         );
     }
 
-    public function findById(string $id): ?Product
+    public function findById(string $id): ?ProductModel
     {
         return Cache::tags([self::CACHE_TAG])->remember(
             "product.{$id}",
@@ -41,7 +41,7 @@ class ProductRepositoryCache implements ProductRepositoryInterface
         );
     }
 
-    public function findBySku(string $sku): ?Product
+    public function findBySku(string $sku): ?ProductModel
     {
         return Cache::tags([self::CACHE_TAG])->remember(
             "product.sku.{$sku}",
@@ -50,7 +50,7 @@ class ProductRepositoryCache implements ProductRepositoryInterface
         );
     }
 
-    public function findBySlug(string $slug): ?Product
+    public function findBySlug(string $slug): ?ProductModel
     {
         return Cache::tags([self::CACHE_TAG])->remember(
             "product.slug.{$slug}",
@@ -64,7 +64,7 @@ class ProductRepositoryCache implements ProductRepositoryInterface
         return $this->repository->all($filters);
     }
 
-    public function create(array $data): Product
+    public function create(array $data): ProductModel
     {
         $result = $this->repository->create($data);
         $this->clearCache();
@@ -72,7 +72,7 @@ class ProductRepositoryCache implements ProductRepositoryInterface
         return $result;
     }
 
-    public function update(string $id, array $data): Product
+    public function update(string $id, array $data): ProductModel
     {
         $result = $this->repository->update($id, $data);
         $this->clearCache($id);
@@ -88,7 +88,7 @@ class ProductRepositoryCache implements ProductRepositoryInterface
         return $result;
     }
 
-    public function findBy(string $field, mixed $value): ?Product
+    public function findBy(string $field, mixed $value): ?ProductModel
     {
         return $this->repository->findBy($field, $value);
     }
@@ -148,7 +148,7 @@ class ProductRepositoryCache implements ProductRepositoryInterface
         Cache::tags([self::CACHE_TAG])->flush();
     }
 
-    public function getModel(): Product
+    public function getModel(): ProductModel
     {
         return $this->repository->getModel();
     }

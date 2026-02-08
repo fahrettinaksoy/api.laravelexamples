@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\User\UserModel;
 use App\Traits\LocaleHelper;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -42,7 +43,7 @@ abstract class BaseModel extends Model
 
     const UPDATED_AT = 'updated_at';
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 

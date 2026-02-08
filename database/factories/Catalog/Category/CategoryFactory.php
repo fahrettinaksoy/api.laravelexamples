@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Database\Factories\Catalog;
+namespace Database\Factories\Catalog\Category;
 
-use App\Models\Catalog\Category;
+use App\Models\Catalog\Category\CategoryModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Catalog\Category>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Catalog\Category\CategoryModel>
  */
 class CategoryFactory extends Factory
 {
-    protected $model = Category::class;
+    protected $model = CategoryModel::class;
 
     public function definition(): array
     {

@@ -23,9 +23,6 @@ class BaseService
         protected BaseRepositoryInterface $repository,
     ) {
         $model = $this->repository->getModel();
-        if (! $model instanceof Model) {
-            throw new \RuntimeException('BaseService requires an Eloquent model from repository.');
-        }
         $this->model = $model;
 
         $this->actions = [

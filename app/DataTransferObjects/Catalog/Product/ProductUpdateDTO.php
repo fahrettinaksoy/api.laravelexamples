@@ -6,25 +6,25 @@ namespace App\DataTransferObjects\Catalog\Product;
 
 use Illuminate\Http\Request;
 
-class ProductUpdateDTO
+readonly class ProductUpdateDTO
 {
     public function __construct(
-        public readonly string $name,
-        public readonly string $slug,
-        public readonly string $sku,
-        public readonly ?string $description,
-        public readonly ?string $short_description,
-        public readonly float $price,
-        public readonly ?float $sale_price,
-        public readonly ?float $cost,
-        public readonly int $stock,
-        public readonly ?string $category_id,
-        public readonly ?string $brand_id,
-        public readonly bool $is_active,
-        public readonly bool $is_featured,
-        public readonly ?string $meta_title,
-        public readonly ?string $meta_description,
-        public readonly ?string $meta_keywords,
+        public string $name,
+        public string $slug,
+        public string $sku,
+        public ?string $description,
+        public ?string $short_description,
+        public float $price,
+        public ?float $sale_price,
+        public ?float $cost,
+        public int $stock,
+        public ?string $category_id,
+        public ?string $brand_id,
+        public bool $is_active,
+        public bool $is_featured,
+        public ?string $meta_title,
+        public ?string $meta_description,
+        public ?string $meta_keywords,
     ) {}
 
     public static function fromRequest(Request $request): self

@@ -6,6 +6,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class BaseCollection extends ResourceCollection
 {
@@ -30,7 +31,7 @@ class BaseCollection extends ResourceCollection
             'version' => 'v1',
         ];
 
-        if ($this->resource instanceof \Illuminate\Pagination\LengthAwarePaginator) {
+        if ($this->resource instanceof LengthAwarePaginator) {
             $meta['pagination'] = [
                 'total' => $this->resource->total(),
                 'per_page' => $this->resource->perPage(),

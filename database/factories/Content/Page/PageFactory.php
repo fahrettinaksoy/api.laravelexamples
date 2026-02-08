@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Database\Factories\Content;
+namespace Database\Factories\Content\Page;
 
-use App\Models\Content\Page;
+use App\Models\Content\Page\PageModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Content\Page>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Content\Page\PageModel>
  */
 class PageFactory extends Factory
 {
-    protected $model = Page::class;
+    protected $model = PageModel::class;
 
     public function definition(): array
     {

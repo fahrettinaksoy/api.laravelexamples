@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Database\Factories\Catalog;
+namespace Database\Factories\Catalog\Brand;
 
-use App\Models\Catalog\Brand;
+use App\Models\Catalog\Brand\BrandModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Catalog\Brand>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Catalog\Brand\BrandModel>
  */
 class BrandFactory extends Factory
 {
-    protected $model = Brand::class;
+    protected $model = BrandModel::class;
 
     public function definition(): array
     {

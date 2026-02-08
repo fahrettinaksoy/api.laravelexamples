@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories\Catalog\Product;
 
-use App\Models\Catalog\Product;
+use App\Models\Catalog\Product\ProductModel;
 use App\Repositories\BaseRepositoryInterface;
 
 /**
@@ -15,12 +15,12 @@ interface ProductRepositoryInterface extends BaseRepositoryInterface
     /**
      * Find product by SKU
      */
-    public function findBySku(string $sku): ?Product;
+    public function findBySku(string $sku): ?ProductModel;
 
     /**
      * Find product by slug
      */
-    public function findBySlug(string $slug): ?Product;
+    public function findBySlug(string $slug): ?ProductModel;
 
     /**
      * Get products in stock

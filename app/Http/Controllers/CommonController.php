@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BaseDestroyRequest;
+use App\Http\Requests\BaseIndexRequest;
+use App\Http\Requests\BaseShowRequest;
+use App\Http\Requests\BaseStoreRequest;
+use App\Http\Requests\BaseUpdateRequest;
 use App\Http\Resources\BaseCollection;
 use App\Http\Resources\BaseResource;
 use App\Http\Responses\ApiResponse;
@@ -18,11 +23,11 @@ class CommonController extends BaseController
             resourceClass: BaseResource::class,
             collectionClass: BaseCollection::class,
             requests: [
-                'index' => \App\Http\Requests\BaseIndexRequest::class,
-                'show' => \App\Http\Requests\BaseShowRequest::class,
-                'store' => \App\Http\Requests\BaseStoreRequest::class,
-                'update' => \App\Http\Requests\BaseUpdateRequest::class,
-                'destroy' => \App\Http\Requests\BaseDestroyRequest::class,
+                'index' => BaseIndexRequest::class,
+                'show' => BaseShowRequest::class,
+                'store' => BaseStoreRequest::class,
+                'update' => BaseUpdateRequest::class,
+                'destroy' => BaseDestroyRequest::class,
             ]
         );
     }

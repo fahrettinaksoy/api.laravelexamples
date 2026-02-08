@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Catalog\Brand;
-use App\Models\Catalog\Category;
-use App\Models\Catalog\Product;
-use App\Models\Content\Page;
+use App\Models\Catalog\Brand\BrandModel;
+use App\Models\Catalog\Category\CategoryModel;
+use App\Models\Catalog\Product\ProductModel;
+use App\Models\Catalog\Product\Subs\ProductImageModel;
+use App\Models\Catalog\Product\Subs\ProductTranslationModel;
+use App\Models\Content\Page\PageModel;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -31,8 +33,8 @@ class DatabaseSeeder extends Seeder
      */
     private function seedPages(): void
     {
-        Page::factory()->published()->count(10)->create();
-        Page::factory()->draft()->count(5)->create();
+        PageModel::factory()->published()->count(10)->create();
+        PageModel::factory()->draft()->count(5)->create();
     }
 
     /**
@@ -40,7 +42,7 @@ class DatabaseSeeder extends Seeder
      */
     private function seedBrands(): void
     {
-        Brand::factory()->active()->count(10)->create();
+        BrandModel::factory()->active()->count(10)->create();
     }
 
     /**
@@ -49,11 +51,11 @@ class DatabaseSeeder extends Seeder
     private function seedCategories(): void
     {
         // Root categories
-        $rootCategories = Category::factory()->root()->count(5)->create();
+        $rootCategories = CategoryModel::factory()->root()->count(5)->create();
 
         // Child categories
         foreach ($rootCategories as $parent) {
-            Category::factory()
+            CategoryModel::factory()
                 ->withParent($parent->id)
                 ->count(3)
                 ->create();
@@ -65,11 +67,11 @@ class DatabaseSeeder extends Seeder
      */
     private function seedProducts(): void
     {
-        $brands = Brand::all();
-        $categories = Category::whereNull('parent_id')->get();
+        $brands = BrandModel::all();
+        $categories = CategoryModel::whereNull('parent_id')->get();
 
         // Regular products
-        Product::factory()
+        ProductModel::factory()
             ->count(30)
             ->recycle($brands)
             ->recycle($categories)
@@ -78,10 +80,28 @@ class DatabaseSeeder extends Seeder
                 $product->brand_id = $brands->random()->id;
                 $product->category_id = $categories->random()->id;
                 $product->save();
+
+                // Add images
+                ProductImageModel::factory()
+                    ->primary()
+                    ->create(['product_id' => $product->id]);
+
+                ProductImageModel::factory()
+                    ->count(rand(2, 4))
+                    ->create(['product_id' => $product->id]);
+
+                // Add translations
+                ProductTranslationModel::factory()
+                    ->turkish()
+                    ->create(['product_id' => $product->id]);
+
+                ProductTranslationModel::factory()
+                    ->english()
+                    ->create(['product_id' => $product->id]);
             });
 
         // Featured products
-        Product::factory()
+        ProductModel::factory()
             ->featured()
             ->inStock()
             ->count(5)
@@ -92,10 +112,28 @@ class DatabaseSeeder extends Seeder
                 $product->brand_id = $brands->random()->id;
                 $product->category_id = $categories->random()->id;
                 $product->save();
+
+                // Add images
+                ProductImageModel::factory()
+                    ->primary()
+                    ->create(['product_id' => $product->id]);
+
+                ProductImageModel::factory()
+                    ->count(rand(3, 5))
+                    ->create(['product_id' => $product->id]);
+
+                // Add translations
+                ProductTranslationModel::factory()
+                    ->turkish()
+                    ->create(['product_id' => $product->id]);
+
+                ProductTranslationModel::factory()
+                    ->english()
+                    ->create(['product_id' => $product->id]);
             });
 
         // Sale products
-        Product::factory()
+        ProductModel::factory()
             ->onSale()
             ->inStock()
             ->count(10)
@@ -106,6 +144,24 @@ class DatabaseSeeder extends Seeder
                 $product->brand_id = $brands->random()->id;
                 $product->category_id = $categories->random()->id;
                 $product->save();
+
+                // Add images
+                ProductImageModel::factory()
+                    ->primary()
+                    ->create(['product_id' => $product->id]);
+
+                ProductImageModel::factory()
+                    ->count(rand(2, 3))
+                    ->create(['product_id' => $product->id]);
+
+                // Add translations
+                ProductTranslationModel::factory()
+                    ->turkish()
+                    ->create(['product_id' => $product->id]);
+
+                ProductTranslationModel::factory()
+                    ->english()
+                    ->create(['product_id' => $product->id]);
             });
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\SmartQuery\SmartQuery;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -20,7 +22,7 @@ class BaseRepository implements BaseRepositoryInterface
     {
         $perPage = $filters['per_page'] ?? 15;
 
-        return \App\SmartQuery\SmartQuery::for($this->model)
+        return SmartQuery::for($this->model)
             ->allowedFilters($this->model->allowedFiltering)
             ->allowedSorts($this->model->allowedSorting)
             ->allowedIncludes($this->model->allowedRelations)
@@ -33,9 +35,9 @@ class BaseRepository implements BaseRepositoryInterface
         return $this->model->find($id);
     }
 
-    public function all(array $filters = []): \Illuminate\Database\Eloquent\Collection
+    public function all(array $filters = []): Collection
     {
-        return \App\SmartQuery\SmartQuery::for($this->model)
+        return SmartQuery::for($this->model)
             ->allowedFilters($this->model->allowedFiltering)
             ->allowedSorts($this->model->allowedSorting)
             ->allowedIncludes($this->model->allowedRelations)
@@ -77,7 +79,7 @@ class BaseRepository implements BaseRepositoryInterface
         return $this->model->where($field, $value)->first();
     }
 
-    public function getBy(string $field, mixed $value): \Illuminate\Database\Eloquent\Collection
+    public function getBy(string $field, mixed $value): Collection
     {
         return $this->model->where($field, $value)->get();
     }

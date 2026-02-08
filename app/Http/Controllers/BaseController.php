@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Responses\ApiResponse;
+use App\Repositories\BaseRepository;
+use App\Repositories\BaseRepositoryCache;
+use App\Services\BaseService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
@@ -38,9 +41,9 @@ abstract class BaseController extends Controller
             }
 
             $model = app($modelClass);
-            $repository = new \App\Repositories\BaseRepository($model);
-            $cachedRepository = new \App\Repositories\BaseRepositoryCache($repository);
-            $this->service = \App\Services\BaseService::make($cachedRepository);
+            $repository = new BaseRepository($model);
+            $cachedRepository = new BaseRepositoryCache($repository);
+            $this->service = BaseService::make($cachedRepository);
         }
 
         return $this->service;

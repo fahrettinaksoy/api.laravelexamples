@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Models\Catalog;
+namespace App\Models\Catalog\Brand;
 
 use App\Models\BaseModel;
+use App\Models\Catalog\Product\ProductModel;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Brand extends BaseModel
+class BrandModel extends BaseModel
 {
     protected $table = 'cat_brand';
 
@@ -22,8 +24,8 @@ class Brand extends BaseModel
         'is_active' => 'boolean',
     ];
 
-    public function products()
+    public function products(): HasMany
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(ProductModel::class);
     }
 }

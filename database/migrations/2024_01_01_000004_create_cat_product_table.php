@@ -49,6 +49,53 @@ return new class extends Migration
             $table->index('price');
             $table->index('stock');
         });
+
+        // Product Image Table
+        Schema::connection('conn_mysql')->create('cat_product_image', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuid('product_id');
+            $table->string('image_path');
+            $table->string('alt_text')->nullable();
+            $table->integer('sort_order')->default(0);
+            $table->boolean('is_primary')->default(false);
+            $table->uuid('created_by')->nullable();
+            $table->uuid('updated_by')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('product_id')
+                ->references('id')
+                ->on('cat_product')
+                ->onDelete('cascade');
+
+            $table->index('product_id');
+            $table->index('is_primary');
+        });
+
+        // Product Translation Table
+        Schema::connection('conn_mysql')->create('cat_product_translation', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuid('product_id');
+            $table->string('locale', 2);
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->string('short_description')->nullable();
+            $table->string('meta_title')->nullable();
+            $table->string('meta_description')->nullable();
+            $table->string('meta_keywords')->nullable();
+            $table->uuid('created_by')->nullable();
+            $table->uuid('updated_by')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('product_id')
+                ->references('id')
+                ->on('cat_product')
+                ->onDelete('cascade');
+
+            $table->unique(['product_id', 'locale']);
+            $table->index('locale');
+        });
     }
 
     /**
@@ -56,6 +103,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::connection('conn_mysql')->dropIfExists('cat_product_translation');
+        Schema::connection('conn_mysql')->dropIfExists('cat_product_image');
         Schema::connection('conn_mysql')->dropIfExists('cat_product');
     }
 };
