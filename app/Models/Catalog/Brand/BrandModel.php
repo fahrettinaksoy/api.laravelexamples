@@ -12,6 +12,8 @@ class BrandModel extends BaseModel
 {
     protected $table = 'cat_brand';
 
+    protected $primaryKey = 'brand_id';
+
     public $fillable = [
         'name',
         'slug',

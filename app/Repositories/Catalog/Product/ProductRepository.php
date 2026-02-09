@@ -7,9 +7,6 @@ namespace App\Repositories\Catalog\Product;
 use App\Models\Catalog\Product\ProductModel;
 use App\Repositories\BaseRepository;
 
-/**
- * Product Repository
- */
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface
 {
     public function __construct(ProductModel $model)
@@ -42,12 +39,12 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return $this->model->featured()->get();
     }
 
-    public function getByCategory(string $categoryId): \Illuminate\Database\Eloquent\Collection
+    public function getByCategory(int $categoryId): \Illuminate\Database\Eloquent\Collection
     {
         return $this->model->where('category_id', $categoryId)->get();
     }
 
-    public function getByBrand(string $brandId): \Illuminate\Database\Eloquent\Collection
+    public function getByBrand(int $brandId): \Illuminate\Database\Eloquent\Collection
     {
         return $this->model->where('brand_id', $brandId)->get();
     }

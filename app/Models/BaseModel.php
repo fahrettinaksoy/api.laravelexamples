@@ -37,7 +37,7 @@ abstract class BaseModel extends Model
 
     public string $defaultSorting = '-id';
 
-    public $incrementing = false;
+    public $incrementing = true;
 
     const CREATED_AT = 'created_at';
 
@@ -48,13 +48,14 @@ abstract class BaseModel extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = (string) Str::uuid();
+            if (empty($model->uuid)) {
+                $model->uuid = (string) Str::uuid();
             }
 
             if (auth()->check() && empty($model->created_by)) {
                 $model->created_by = auth()->id();
             }
+
             if (auth()->check() && empty($model->updated_by)) {
                 $model->updated_by = auth()->id();
             }

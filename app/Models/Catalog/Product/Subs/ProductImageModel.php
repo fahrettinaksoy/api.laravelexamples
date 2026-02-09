@@ -12,6 +12,8 @@ class ProductImageModel extends BaseModel
 {
     protected $table = 'cat_product_image';
 
+    protected $primaryKey = 'product_image_id';
+
     public $fillable = [
         'product_id',
         'image_path',

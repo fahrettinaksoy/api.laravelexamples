@@ -10,6 +10,6 @@ class MainActionUpdate extends BaseAction
 {
     public function execute(int $id, array $data): mixed
     {
-        return $this->repository->update((string) $id, $data);
+        return $this->repository->update($id, $data);
     }
 }

@@ -8,10 +8,7 @@ use App\Models\Catalog\Product\ProductModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Catalog\Product\ProductModel>
- */
-class ProductFactory extends Factory
+class ProductModelFactory extends Factory
 {
     protected $model = ProductModel::class;
 
@@ -19,7 +16,7 @@ class ProductFactory extends Factory
     {
         $name = fake()->words(3, true);
         $price = fake()->randomFloat(2, 10, 1000);
-        $hasSale = fake()->boolean(30); // 30% on sale
+        $hasSale = fake()->boolean(30);
 
         return [
             'name' => ucfirst($name),
@@ -28,22 +25,19 @@ class ProductFactory extends Factory
             'description' => fake()->paragraphs(3, true),
             'short_description' => fake()->sentence(20),
             'price' => $price,
-            'sale_price' => $hasSale ? $price * 0.8 : null, // 20% discount
-            'cost' => $price * 0.6, // 40% margin
+            'sale_price' => $hasSale ? $price * 0.8 : null,
+            'cost' => $price * 0.6,
             'stock' => fake()->numberBetween(0, 500),
-            'category_id' => null, // Set via relationship
-            'brand_id' => null, // Set via relationship
-            'is_active' => fake()->boolean(85), // 85% active
-            'is_featured' => fake()->boolean(20), // 20% featured
+            'category_id' => null,
+            'brand_id' => null,
+            'is_active' => fake()->boolean(85),
+            'is_featured' => fake()->boolean(20),
             'meta_title' => ucfirst($name).' - '.fake()->words(3, true),
             'meta_description' => fake()->sentence(15),
             'meta_keywords' => implode(', ', fake()->words(5)),
         ];
     }
 
-    /**
-     * Indicate that the product is on sale.
-     */
     public function onSale(): static
     {
         return $this->state(function (array $attributes) {
@@ -55,9 +49,6 @@ class ProductFactory extends Factory
         });
     }
 
-    /**
-     * Indicate that the product is featured.
-     */
     public function featured(): static
     {
         return $this->state(fn (array $attributes) => [
@@ -66,9 +57,6 @@ class ProductFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the product is out of stock.
-     */
     public function outOfStock(): static
     {
         return $this->state(fn (array $attributes) => [
@@ -76,9 +64,6 @@ class ProductFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the product is in stock.
-     */
     public function inStock(): static
     {
         return $this->state(fn (array $attributes) => [
@@ -86,20 +71,14 @@ class ProductFactory extends Factory
         ]);
     }
 
-    /**
-     * Set category for the product.
-     */
-    public function forCategory(string $categoryId): static
+    public function forCategory(int $categoryId): static
     {
         return $this->state(fn (array $attributes) => [
             'category_id' => $categoryId,
         ]);
     }
 
-    /**
-     * Set brand for the product.
-     */
-    public function forBrand(string $brandId): static
+    public function forBrand(int $brandId): static
     {
         return $this->state(fn (array $attributes) => [
             'brand_id' => $brandId,

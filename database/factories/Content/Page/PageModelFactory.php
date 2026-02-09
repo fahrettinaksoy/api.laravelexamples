@@ -8,10 +8,7 @@ use App\Models\Content\Page\PageModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Content\Page\PageModel>
- */
-class PageFactory extends Factory
+class PageModelFactory extends Factory
 {
     protected $model = PageModel::class;
 
@@ -24,7 +21,7 @@ class PageFactory extends Factory
             'slug' => Str::slug($title),
             'content' => fake()->paragraphs(5, true),
             'excerpt' => fake()->paragraph(),
-            'is_active' => fake()->boolean(80), // 80% active
+            'is_active' => fake()->boolean(80),
             'published_at' => fake()->boolean(70) ? fake()->dateTimeBetween('-1 year', 'now') : null,
             'meta_title' => fake()->sentence(8),
             'meta_description' => fake()->sentence(15),
@@ -32,9 +29,6 @@ class PageFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the page is published.
-     */
     public function published(): static
     {
         return $this->state(fn (array $attributes) => [
@@ -43,9 +37,6 @@ class PageFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the page is draft.
-     */
     public function draft(): static
     {
         return $this->state(fn (array $attributes) => [

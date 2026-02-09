@@ -8,7 +8,7 @@ use App\Actions\BaseAction;
 
 class ProductShowAction extends BaseAction
 {
-    public function execute(string $id): mixed
+    public function execute(int $id): mixed
     {
         return $this->repository->findById($id);
     }

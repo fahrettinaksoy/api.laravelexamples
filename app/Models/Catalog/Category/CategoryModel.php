@@ -13,6 +13,8 @@ class CategoryModel extends BaseModel
 {
     protected $table = 'cat_category';
 
+    protected $primaryKey = 'category_id';
+
     public $fillable = [
         'name',
         'slug',

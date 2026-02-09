@@ -8,10 +8,7 @@ use App\Models\Catalog\Category\CategoryModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Catalog\Category\CategoryModel>
- */
-class CategoryFactory extends Factory
+class CategoryModelFactory extends Factory
 {
     protected $model = CategoryModel::class;
 
@@ -23,24 +20,18 @@ class CategoryFactory extends Factory
             'name' => ucfirst($name),
             'slug' => Str::slug($name),
             'description' => fake()->paragraph(),
-            'parent_id' => null, // Default no parent
-            'is_active' => fake()->boolean(85), // 85% active
+            'parent_id' => null,
+            'is_active' => fake()->boolean(85),
         ];
     }
 
-    /**
-     * Indicate that the category has a parent.
-     */
-    public function withParent(string $parentId): static
+    public function withParent(?int $parentId): static
     {
         return $this->state(fn (array $attributes) => [
             'parent_id' => $parentId,
         ]);
     }
 
-    /**
-     * Indicate that the category is a root category.
-     */
     public function root(): static
     {
         return $this->state(fn (array $attributes) => [

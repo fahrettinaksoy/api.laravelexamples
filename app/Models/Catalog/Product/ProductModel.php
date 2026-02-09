@@ -18,6 +18,8 @@ class ProductModel extends BaseModel
 {
     protected $table = 'cat_product';
 
+    protected $primaryKey = 'product_id';
+
     public $fillable = [
         'name',
         'slug',

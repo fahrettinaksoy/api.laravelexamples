@@ -7,10 +7,7 @@ namespace Database\Factories\Catalog\Product\Subs;
 use App\Models\Catalog\Product\Subs\ProductTranslationModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Catalog\Product\Subs\ProductTranslationModel>
- */
-class ProductTranslationFactory extends Factory
+class ProductTranslationModelFactory extends Factory
 {
     protected $model = ProductTranslationModel::class;
 
@@ -29,9 +26,6 @@ class ProductTranslationFactory extends Factory
         ];
     }
 
-    /**
-     * Turkish translation.
-     */
     public function turkish(): static
     {
         return $this->state(fn (array $attributes) => [
@@ -39,9 +33,6 @@ class ProductTranslationFactory extends Factory
         ]);
     }
 
-    /**
-     * English translation.
-     */
     public function english(): static
     {
         return $this->state(fn (array $attributes) => [
@@ -49,9 +40,6 @@ class ProductTranslationFactory extends Factory
         ]);
     }
 
-    /**
-     * German translation.
-     */
     public function german(): static
     {
         return $this->state(fn (array $attributes) => [

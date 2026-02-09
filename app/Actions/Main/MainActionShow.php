@@ -10,6 +10,6 @@ class MainActionShow extends BaseAction
 {
     public function execute(int $id): mixed
     {
-        return $this->repository->findById((string) $id);
+        return $this->repository->findById($id);
     }
 }

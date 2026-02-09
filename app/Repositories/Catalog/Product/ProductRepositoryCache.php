@@ -8,9 +8,6 @@ use App\Models\Catalog\Product\ProductModel;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 
-/**
- * Product Repository Cache Decorator
- */
 class ProductRepositoryCache implements ProductRepositoryInterface
 {
     private const CACHE_TTL = 3600;
@@ -32,7 +29,7 @@ class ProductRepositoryCache implements ProductRepositoryInterface
         );
     }
 
-    public function findById(string $id): ?ProductModel
+    public function findById(int $id): ?ProductModel
     {
         return Cache::tags([self::CACHE_TAG])->remember(
             "product.{$id}",
@@ -72,7 +69,7 @@ class ProductRepositoryCache implements ProductRepositoryInterface
         return $result;
     }
 
-    public function update(string $id, array $data): ProductModel
+    public function update(int $id, array $data): ProductModel
     {
         $result = $this->repository->update($id, $data);
         $this->clearCache($id);
@@ -80,7 +77,7 @@ class ProductRepositoryCache implements ProductRepositoryInterface
         return $result;
     }
 
-    public function delete(string $id): bool
+    public function delete(int $id): bool
     {
         $result = $this->repository->delete($id);
         $this->clearCache($id);
@@ -125,7 +122,7 @@ class ProductRepositoryCache implements ProductRepositoryInterface
         );
     }
 
-    public function getByCategory(string $categoryId): \Illuminate\Database\Eloquent\Collection
+    public function getByCategory(int $categoryId): \Illuminate\Database\Eloquent\Collection
     {
         return Cache::tags([self::CACHE_TAG])->remember(
             "products.category.{$categoryId}",
@@ -134,7 +131,7 @@ class ProductRepositoryCache implements ProductRepositoryInterface
         );
     }
 
-    public function getByBrand(string $brandId): \Illuminate\Database\Eloquent\Collection
+    public function getByBrand(int $brandId): \Illuminate\Database\Eloquent\Collection
     {
         return Cache::tags([self::CACHE_TAG])->remember(
             "products.brand.{$brandId}",
@@ -143,7 +140,7 @@ class ProductRepositoryCache implements ProductRepositoryInterface
         );
     }
 
-    private function clearCache(?string $id = null): void
+    private function clearCache(?int $id = null): void
     {
         Cache::tags([self::CACHE_TAG])->flush();
     }

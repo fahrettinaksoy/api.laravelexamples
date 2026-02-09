@@ -12,6 +12,8 @@ class ProductTranslationModel extends BaseModel
 {
     protected $table = 'cat_product_translation';
 
+    protected $primaryKey = 'product_translation_id';
+
     public $fillable = [
         'product_id',
         'locale',

@@ -8,7 +8,7 @@ use App\Actions\BaseAction;
 
 class ProductDestroyAction extends BaseAction
 {
-    public function execute(string $id): bool
+    public function execute(int $id): bool
     {
         return $this->repository->delete($id);
     }

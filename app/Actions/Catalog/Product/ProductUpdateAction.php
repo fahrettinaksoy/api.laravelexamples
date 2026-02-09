@@ -9,7 +9,7 @@ use App\DataTransferObjects\Catalog\Product\ProductUpdateDTO;
 
 class ProductUpdateAction extends BaseAction
 {
-    public function execute(string $id, ProductUpdateDTO $dto): mixed
+    public function execute(int $id, ProductUpdateDTO $dto): mixed
     {
         return $this->repository->update($id, $dto->toArray());
     }

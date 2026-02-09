@@ -30,7 +30,7 @@ class BaseRepository implements BaseRepositoryInterface
             ->paginate($perPage);
     }
 
-    public function findById(string $id): ?Model
+    public function findById(int $id): ?Model
     {
         return $this->model->find($id);
     }
@@ -50,7 +50,7 @@ class BaseRepository implements BaseRepositoryInterface
         return $this->model->create($data);
     }
 
-    public function update(string $id, array $data): Model
+    public function update(int $id, array $data): Model
     {
         $item = $this->findById($id);
 
@@ -63,7 +63,7 @@ class BaseRepository implements BaseRepositoryInterface
         throw new \RuntimeException("Record with ID {$id} not found");
     }
 
-    public function delete(string $id): bool
+    public function delete(int $id): bool
     {
         $item = $this->findById($id);
 

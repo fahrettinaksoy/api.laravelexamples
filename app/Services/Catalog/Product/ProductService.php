@@ -47,7 +47,7 @@ class ProductService extends BaseService
         event(new ProductDeleted($item));
     }
 
-    protected function getNotFoundException(string $id): \Exception
+    protected function getNotFoundException(int $id): \Exception
     {
         return new ProductNotFoundException("Product with ID {$id} not found");
     }

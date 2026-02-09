@@ -7,10 +7,7 @@ namespace Database\Factories\Catalog\Product\Subs;
 use App\Models\Catalog\Product\Subs\ProductImageModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Catalog\Product\Subs\ProductImageModel>
- */
-class ProductImageFactory extends Factory
+class ProductImageModelFactory extends Factory
 {
     protected $model = ProductImageModel::class;
 
@@ -24,9 +21,6 @@ class ProductImageFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the image is primary.
-     */
     public function primary(): static
     {
         return $this->state(fn (array $attributes) => [

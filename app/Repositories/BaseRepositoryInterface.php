@@ -12,15 +12,15 @@ interface BaseRepositoryInterface
 {
     public function paginate(array $filters = []): LengthAwarePaginator;
 
-    public function findById(string $id): ?Model;
+    public function findById(int $id): ?Model;
 
     public function all(array $filters = []): Collection;
 
     public function create(array $data): Model;
 
-    public function update(string $id, array $data): Model;
+    public function update(int $id, array $data): Model;
 
-    public function delete(string $id): bool;
+    public function delete(int $id): bool;
 
     public function findBy(string $field, mixed $value): ?Model;
 

@@ -33,7 +33,7 @@ class BaseRepositoryCache implements BaseRepositoryInterface
         );
     }
 
-    public function findById(string $id): ?Model
+    public function findById(int $id): ?Model
     {
         return Cache::tags([$this->cacheTag])->remember(
             "{$this->cacheTag}.{$id}",
@@ -55,7 +55,7 @@ class BaseRepositoryCache implements BaseRepositoryInterface
         return $result;
     }
 
-    public function update(string $id, array $data): Model
+    public function update(int $id, array $data): Model
     {
         $result = $this->repository->update($id, $data);
         $this->clearCache($id);
@@ -63,7 +63,7 @@ class BaseRepositoryCache implements BaseRepositoryInterface
         return $result;
     }
 
-    public function delete(string $id): bool
+    public function delete(int $id): bool
     {
         $result = $this->repository->delete($id);
         $this->clearCache($id);
@@ -86,7 +86,7 @@ class BaseRepositoryCache implements BaseRepositoryInterface
         return $this->repository->getModel();
     }
 
-    protected function clearCache(?string $id = null): void
+    protected function clearCache(?int $id = null): void
     {
         Cache::tags([$this->cacheTag])->flush();
     }

@@ -10,7 +10,7 @@ class MainActionDestroy extends BaseAction
 {
     public function execute(int $id): mixed
     {
-        return $this->repository->delete((string) $id);
+        return $this->repository->delete($id);
     }
 
     public function executeWithFilter(mixed $filter): mixed

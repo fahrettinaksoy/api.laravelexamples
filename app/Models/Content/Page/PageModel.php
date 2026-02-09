@@ -11,6 +11,8 @@ class PageModel extends BaseModel
 {
     protected $table = 'cnt_page';
 
+    protected $primaryKey = 'page_id';
+
     public $fillable = [
         'title',
         'slug',
