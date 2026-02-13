@@ -20,10 +20,26 @@ Route::prefix('v1/catalog')->group(function () {
 });
 
 // Dynamic Routes - CommonController (automatic module/resource resolution)
+// Dynamic Routes - CommonController (automatic module/resource resolution)
 Route::prefix('v1')->middleware('validate.module')->group(function () {
-    Route::get('{module}/{resource}', [CommonController::class, 'index']);
-    Route::post('{module}/{resource}', [CommonController::class, 'store']);
-    Route::get('{module}/{resource}/{id}', [CommonController::class, 'show']);
-    Route::put('{module}/{resource}/{id}', [CommonController::class, 'update']);
-    Route::delete('{module}/{resource}/{id}', [CommonController::class, 'destroy']);
+    // 1. Item Routes (Ends with ID)
+    Route::match(['get', 'put', 'delete'], '{path}/{id}', function (Illuminate\Http\Request $request, string $path, string $id) {
+        $method = strtolower($request->method());
+        $action = match ($method) {
+            'get' => 'show',
+            'put' => 'update',
+            'delete' => 'destroy',
+        };
+        return app(CommonController::class)->callAction($action, ['id' => $id]);
+    })->where('id', '[0-9a-f\-]+')->where('path', '.*');
+
+    // 2. Collection Routes (No ID at end) - MUST be defined after Item Routes to avoid conflict if logic was different, but here regex handles it.
+    Route::match(['get', 'post'], '{path}', function (Illuminate\Http\Request $request, string $path) {
+        $method = strtolower($request->method());
+        $action = match ($method) {
+            'get' => 'index',
+            'post' => 'store',
+        };
+        return app(CommonController::class)->callAction($action, []);
+    })->where('path', '.*');
 });
