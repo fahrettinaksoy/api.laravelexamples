@@ -24,8 +24,8 @@ trait FiltersQuery
             }
 
             throw new \InvalidArgumentException(
-                'Filter must be string or AllowedFilter instance. '.
-                'Got: '.get_debug_type($filter)
+                'Filter must be string or AllowedFilter instance. ' .
+                'Got: ' . get_debug_type($filter),
             );
         })->toArray();
     }
@@ -86,7 +86,7 @@ trait FiltersQuery
             if (config('smartquery.throw_on_invalid_filter', true)) {
                 throw InvalidFilterQuery::filterNotAllowed(
                     $filterName,
-                    $this->getAllowedFilterNames()
+                    $this->getAllowedFilterNames(),
                 );
             }
 
@@ -168,7 +168,7 @@ trait FiltersQuery
     {
         return array_map(
             fn (AllowedFilter $filter) => $filter->getName(),
-            $this->allowedFilters
+            $this->allowedFilters,
         );
     }
 }

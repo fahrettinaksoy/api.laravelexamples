@@ -12,7 +12,7 @@ class BeginsWithStrictFilter extends Filter
             return $this->applyRelationshipFilter($query, $value, $property);
         }
 
-        return $query->where($property, 'LIKE', $value.'%');
+        return $query->where($property, 'LIKE', $value . '%');
     }
 
     protected function applyRelationshipFilter($query, $value, string $property)
@@ -22,7 +22,7 @@ class BeginsWithStrictFilter extends Filter
         $relation = implode('.', $parts);
 
         return $query->whereHas($relation, function ($q) use ($column, $value) {
-            $q->where($column, 'LIKE', $value.'%');
+            $q->where($column, 'LIKE', $value . '%');
         });
     }
 }

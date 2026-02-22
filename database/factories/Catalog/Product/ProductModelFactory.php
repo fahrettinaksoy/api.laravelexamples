@@ -32,7 +32,7 @@ class ProductModelFactory extends Factory
             'brand_id' => null,
             'is_active' => fake()->boolean(85),
             'is_featured' => fake()->boolean(20),
-            'meta_title' => ucfirst($name).' - '.fake()->words(3, true),
+            'meta_title' => ucfirst($name) . ' - ' . fake()->words(3, true),
             'meta_description' => fake()->sentence(15),
             'meta_keywords' => implode(', ', fake()->words(5)),
         ];

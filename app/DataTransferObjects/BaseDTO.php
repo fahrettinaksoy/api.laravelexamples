@@ -4,33 +4,23 @@ declare(strict_types=1);
 
 namespace App\DataTransferObjects;
 
-use Illuminate\Http\Request;
-
 abstract class BaseDTO
 {
-    abstract public static function fromRequest(Request $request): static;
-
-    abstract public function toArray(): array;
-
     public static function fromArray(array $data): static
     {
         return new static(...$data);
     }
 
-    public function only(): array
+    public function toArray(): array
     {
-        return array_filter($this->toArray(), function ($value) {
-            return $value !== null;
-        });
+        return get_object_vars($this);
     }
 
-    public function merge(self|array $data): static
+    public function only(): array
     {
-        $mergedData = array_merge(
+        return array_filter(
             $this->toArray(),
-            $data instanceof self ? $data->toArray() : $data
+            static fn (mixed $value): bool => $value !== null,
         );
-
-        return static::fromArray($mergedData);
     }
 }

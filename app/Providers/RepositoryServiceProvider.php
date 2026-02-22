@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Http\Controllers\CommonController;
 use App\Repositories\BaseRepository;
 use App\Repositories\BaseRepositoryCache;
 use App\Repositories\Catalog\Product\ProductRepositoryCache;
@@ -18,24 +17,22 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             ProductRepositoryInterface::class,
-            ProductRepositoryCache::class
+            ProductRepositoryCache::class,
         );
 
-        $this->app->when(CommonController::class)
-            ->needs(BaseService::class)
-            ->give(function ($app) {
-                $modelClass = request()->attributes->get('modelClass');
+        $this->app->bind('dynamic.service', function ($app) {
+            $modelClass = request()->attributes->get('modelClass');
 
-                if (! $modelClass) {
-                    throw new \RuntimeException('ValidateModule middleware required for CommonController');
-                }
+            if (! $modelClass) {
+                return;
+            }
 
-                $model = $app->make($modelClass);
-                $repository = new BaseRepository($model);
-                $cachedRepository = new BaseRepositoryCache($repository);
+            $model = $app->make($modelClass);
+            $repository = new BaseRepository($model);
+            $cachedRepository = new BaseRepositoryCache($repository, $model->getTable());
 
-                return BaseService::make($cachedRepository);
-            });
+            return new BaseService($cachedRepository);
+        });
     }
 
     public function boot(): void {}

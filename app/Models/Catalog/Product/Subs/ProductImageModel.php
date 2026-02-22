@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Catalog\Product\Subs;
 
+use App\DataTransferObjects\Catalog\Product\Subs\ProductImageDTO;
 use App\Models\BaseModel;
 use App\Models\Catalog\Product\ProductModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,32 +15,15 @@ class ProductImageModel extends BaseModel
 
     protected $primaryKey = 'product_image_id';
 
-    public $fillable = [
-        'product_id',
-        'image_path',
-        'alt_text',
-        'sort_order',
-        'is_primary',
-    ];
+    protected static ?string $fieldSource = ProductImageDTO::class;
 
-    public array $allowedFiltering = [
-        'product_id',
-        'is_primary',
-        'sort_order',
-    ];
-
-    public array $allowedSorting = [
-        'sort_order',
-        'created_at',
-    ];
-
-    public array $allowedRelations = [
+    protected array $allowedRelations = [
         'product',
         'createdBy',
         'updatedBy',
     ];
 
-    public string $defaultSorting = 'sort_order';
+    protected string $defaultSorting = 'sort_order';
 
     protected $casts = [
         'sort_order' => 'integer',
@@ -48,6 +32,6 @@ class ProductImageModel extends BaseModel
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(ProductModel::class);
+        return $this->belongsTo(ProductModel::class, 'product_id');
     }
 }

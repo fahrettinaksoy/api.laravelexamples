@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Catalog\Product;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Resources\BaseCollection;
 
-class ProductCollection extends ResourceCollection
+class ProductCollection extends BaseCollection
 {
-    public function toArray(Request $request): array
-    {
-        return [
-            'data' => ProductResource::collection($this->collection),
-        ];
-    }
+    public $collects = ProductResource::class;
 }

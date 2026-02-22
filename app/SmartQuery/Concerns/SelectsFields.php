@@ -8,11 +8,13 @@ use App\SmartQuery\Builders\Fields\AllowedField;
 use App\SmartQuery\Exceptions\InvalidFieldQuery;
 use App\SmartQuery\SmartQueryRequest;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 /**
  * SelectsFields Trait
  *
- * Adds sparse fieldset capabilities to SmartQuery
+ * Adds sparse fieldset capabilities to SmartQuery.
+ * Ana tablo ve ilişki tabloları için field selection destekler.
  */
 trait SelectsFields
 {
@@ -40,7 +42,7 @@ trait SelectsFields
             }
 
             throw new \InvalidArgumentException(
-                'Field must be a string or AllowedField instance'
+                'Field must be a string or AllowedField instance',
             );
         })->toArray();
 
@@ -115,7 +117,7 @@ trait SelectsFields
                 if (config('smartquery.throw_on_invalid_field', true)) {
                     throw InvalidFieldQuery::fieldNotAllowed(
                         $fullFieldName,
-                        $this->getAllowedFieldNames()
+                        $this->getAllowedFieldNames(),
                     );
                 }
 
@@ -125,16 +127,78 @@ trait SelectsFields
 
         // Apply field selection
         if ($this->isMainTable($table)) {
-            // Main table - use select()
             $this->builder->select(array_map(fn ($f) => "{$table}.{$f}", $fields));
-        } else {
-            // Relationship table - modify with() closure
-            if ($this->builder instanceof EloquentBuilder) {
-                // This requires modifying the with() calls which is complex
-                // For now, we'll skip relationship field selection
-                // Full implementation would require tracking with() calls
+        } elseif ($this->builder instanceof EloquentBuilder && isset($this->model)) {
+            $this->applyRelationshipFieldSelection($table, $fields);
+        }
+    }
+
+    /**
+     * İlişki tablosu için field selection uygular.
+     * with() closure kullanarak sadece istenen alanları + foreign key'i seçer.
+     */
+    protected function applyRelationshipFieldSelection(string $table, array $fields): void
+    {
+        $relationName = $this->findRelationForTable($table);
+
+        if ($relationName === null) {
+            return;
+        }
+
+        $relation = $this->model->{$relationName}();
+        $foreignKey = $this->getRelationForeignKey($relation);
+
+        // Foreign key her zaman dahil edilmeli - aksi halde ilişki eşleşmez
+        $selectFields = array_values(array_unique(
+            array_merge($fields, array_filter([$foreignKey])),
+        ));
+
+        $this->builder->with([$relationName => function ($query) use ($selectFields) {
+            $query->select($selectFields);
+        }]);
+    }
+
+    /**
+     * Verilen tablo adını kullanan ilişkiyi bulur.
+     * allowedIncludes üzerinden arar (IncludesRelationships trait'inden gelir).
+     */
+    protected function findRelationForTable(string $table): ?string
+    {
+        if (! isset($this->model) || ! property_exists($this, 'allowedIncludes')) {
+            return null;
+        }
+
+        foreach ($this->allowedIncludes as $include) {
+            $internalName = $include->getInternalName();
+
+            if (! method_exists($this->model, $internalName)) {
+                continue;
+            }
+
+            try {
+                $relation = $this->model->{$internalName}();
+
+                if ($relation instanceof Relation && $relation->getRelated()->getTable() === $table) {
+                    return $internalName;
+                }
+            } catch (\Throwable) {
+                continue;
             }
         }
+
+        return null;
+    }
+
+    /**
+     * İlişkinin foreign key adını döndürür.
+     */
+    protected function getRelationForeignKey(Relation $relation): ?string
+    {
+        if (method_exists($relation, 'getForeignKeyName')) {
+            return $relation->getForeignKeyName();
+        }
+
+        return null;
     }
 
     /**
@@ -170,7 +234,7 @@ trait SelectsFields
     {
         return array_map(
             fn (AllowedField $field) => $field->getName(),
-            $this->allowedFields
+            $this->allowedFields,
         );
     }
 }

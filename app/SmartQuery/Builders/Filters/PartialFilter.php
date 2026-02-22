@@ -7,7 +7,7 @@ namespace App\SmartQuery\Builders\Filters;
 class PartialFilter extends Filter
 {
     public function __construct(
-        protected bool $addRelationConstraint = true
+        protected bool $addRelationConstraint = true,
     ) {}
 
     public function __invoke($query, $value, string $property)
@@ -18,7 +18,7 @@ class PartialFilter extends Filter
 
         return $query->whereRaw(
             "LOWER({$property}) LIKE ?",
-            ['%'.strtolower($value).'%']
+            ['%' . strtolower($value) . '%'],
         );
     }
 
@@ -35,7 +35,7 @@ class PartialFilter extends Filter
         return $query->whereHas($relation, function ($q) use ($column, $value) {
             $q->whereRaw(
                 "LOWER({$column}) LIKE ?",
-                ['%'.strtolower($value).'%']
+                ['%' . strtolower($value) . '%'],
             );
         });
     }

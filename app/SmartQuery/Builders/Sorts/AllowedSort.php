@@ -20,7 +20,7 @@ class AllowedSort
     public function __construct(
         string $name,
         Sort $sortClass,
-        ?string $internalName = null
+        ?string $internalName = null,
     ) {
         $this->name = $name;
         $this->sortClass = $sortClass;
@@ -32,7 +32,7 @@ class AllowedSort
         return new static(
             $name,
             new DefaultSort,
-            $column
+            $column,
         );
     }
 
@@ -41,7 +41,7 @@ class AllowedSort
         return new static(
             $name,
             new CustomSort($sort),
-            $column
+            $column,
         );
     }
 
@@ -50,7 +50,7 @@ class AllowedSort
         return new static(
             $name,
             new CallbackSort($callback),
-            $column
+            $column,
         );
     }
 

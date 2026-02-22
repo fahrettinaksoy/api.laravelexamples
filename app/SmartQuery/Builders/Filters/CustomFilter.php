@@ -7,7 +7,7 @@ namespace App\SmartQuery\Builders\Filters;
 class CustomFilter extends Filter
 {
     public function __construct(
-        protected Filter $filter
+        protected Filter $filter,
     ) {}
 
     public function __invoke($query, $value, string $property)

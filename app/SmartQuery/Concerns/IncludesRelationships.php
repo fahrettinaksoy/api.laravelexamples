@@ -42,7 +42,7 @@ trait IncludesRelationships
             }
 
             throw new \InvalidArgumentException(
-                'Include must be a string or AllowedInclude instance'
+                'Include must be a string or AllowedInclude instance',
             );
         })->toArray();
 
@@ -69,10 +69,10 @@ trait IncludesRelationships
                 $name = $include->getName();
 
                 // Add Count variant
-                $additionalIncludes[] = AllowedInclude::count($name.'Count', $name);
+                $additionalIncludes[] = AllowedInclude::count($name . 'Count', $name);
 
                 // Add Exists variant
-                $additionalIncludes[] = AllowedInclude::exists($name.'Exists', $name);
+                $additionalIncludes[] = AllowedInclude::exists($name . 'Exists', $name);
             }
         }
 
@@ -126,7 +126,7 @@ trait IncludesRelationships
             if (config('smartquery.throw_on_invalid_include', true)) {
                 throw InvalidIncludeQuery::includeNotAllowed(
                     $includeName,
-                    $this->getAllowedIncludeNames()
+                    $this->getAllowedIncludeNames(),
                 );
             }
 
@@ -168,7 +168,7 @@ trait IncludesRelationships
     {
         return array_map(
             fn (AllowedInclude $include) => $include->getName(),
-            $this->allowedIncludes
+            $this->allowedIncludes,
         );
     }
 }

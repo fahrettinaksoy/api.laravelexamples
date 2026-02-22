@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Catalog\Product;
 
+use App\Http\Resources\BaseResource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductResource extends JsonResource
+class ProductResource extends BaseResource
 {
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'product_id' => $this->product_id,
             'name' => $this->name,
             'slug' => $this->slug,
             'sku' => $this->sku,
@@ -32,6 +32,9 @@ class ProductResource extends JsonResource
 
             'category' => $this->whenLoaded('category'),
             'brand' => $this->whenLoaded('brand'),
+            'images' => $this->whenLoaded('images'),
+            'translations' => $this->whenLoaded('translations'),
+            'primary_image' => $this->whenLoaded('primaryImage'),
             'created_by' => $this->whenLoaded('createdBy'),
             'updated_by' => $this->whenLoaded('updatedBy'),
         ];

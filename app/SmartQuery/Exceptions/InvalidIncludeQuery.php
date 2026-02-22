@@ -13,7 +13,7 @@ class InvalidIncludeQuery extends Exception
         $allowedIncludesString = implode(', ', $allowedIncludes);
 
         return new static(
-            "Include '{$include}' is not allowed. Allowed includes: {$allowedIncludesString}"
+            "Include '{$include}' is not allowed. Allowed includes: {$allowedIncludesString}",
         );
     }
 
@@ -23,7 +23,7 @@ class InvalidIncludeQuery extends Exception
         $allowedIncludesString = implode(', ', $allowedIncludes);
 
         return new static(
-            "Includes '{$includesString}' are not allowed. Allowed includes: {$allowedIncludesString}"
+            "Includes '{$includesString}' are not allowed. Allowed includes: {$allowedIncludesString}",
         );
     }
 }

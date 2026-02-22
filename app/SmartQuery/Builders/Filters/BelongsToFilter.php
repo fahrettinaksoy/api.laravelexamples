@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class BelongsToFilter extends Filter
 {
     public function __construct(
-        protected ?string $relationshipPath = null
+        protected ?string $relationshipPath = null,
     ) {}
 
     public function __invoke($query, $value, string $property)
@@ -36,7 +36,7 @@ class BelongsToFilter extends Filter
 
         if (! $relation instanceof BelongsTo) {
             throw new \InvalidArgumentException(
-                "Relationship '{$relationshipPath}' must be a BelongsTo relationship"
+                "Relationship '{$relationshipPath}' must be a BelongsTo relationship",
             );
         }
 
@@ -45,7 +45,7 @@ class BelongsToFilter extends Filter
 
     protected function applyRawFilter($query, $value, string $relationshipPath)
     {
-        $foreignKey = $relationshipPath.'_id';
+        $foreignKey = $relationshipPath . '_id';
 
         return $query->where($foreignKey, $value);
     }

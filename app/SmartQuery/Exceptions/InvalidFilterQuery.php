@@ -13,7 +13,7 @@ class InvalidFilterQuery extends Exception
         $allowedFiltersString = implode(', ', $allowedFilters);
 
         return new static(
-            "Filter '{$filter}' is not allowed. Allowed filters: {$allowedFiltersString}"
+            "Filter '{$filter}' is not allowed. Allowed filters: {$allowedFiltersString}",
         );
     }
 
@@ -23,7 +23,7 @@ class InvalidFilterQuery extends Exception
         $allowedFiltersString = implode(', ', $allowedFilters);
 
         return new static(
-            "Filters '{$filtersString}' are not allowed. Allowed filters: {$allowedFiltersString}"
+            "Filters '{$filtersString}' are not allowed. Allowed filters: {$allowedFiltersString}",
         );
     }
 }

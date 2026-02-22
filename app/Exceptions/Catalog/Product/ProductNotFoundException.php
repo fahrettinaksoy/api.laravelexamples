@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Exceptions\Catalog\Product;
 
-use Exception;
+use App\Exceptions\BaseException;
 
-class ProductNotFoundException extends Exception
+class ProductNotFoundException extends BaseException
 {
-    protected $code = 404;
+    protected int $statusCode = 404;
 
-    protected $message = 'Product not found';
+    protected string $errorCode = 'PRODUCT_NOT_FOUND';
 }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 class ScopeFilter extends Filter
 {
     public function __construct(
-        protected ?string $scopeName = null
+        protected ?string $scopeName = null,
     ) {}
 
     public function __invoke($query, $value, string $property)

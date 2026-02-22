@@ -28,7 +28,7 @@ class AllowedFilter
     public function __construct(
         string $name,
         Filter $filterClass,
-        ?string $internalName = null
+        ?string $internalName = null,
     ) {
         $this->name = $name;
         $this->filterClass = $filterClass;
@@ -38,24 +38,24 @@ class AllowedFilter
     public static function exact(
         string $name,
         ?string $column = null,
-        bool $addRelationConstraint = true
+        bool $addRelationConstraint = true,
     ): static {
         return new static(
             $name,
             new ExactFilter($addRelationConstraint),
-            $column
+            $column,
         );
     }
 
     public static function partial(
         string $name,
         ?string $column = null,
-        bool $addRelationConstraint = true
+        bool $addRelationConstraint = true,
     ): static {
         return new static(
             $name,
             new PartialFilter($addRelationConstraint),
-            $column
+            $column,
         );
     }
 
@@ -64,7 +64,7 @@ class AllowedFilter
         return new static(
             $name,
             new BeginsWithStrictFilter,
-            $column
+            $column,
         );
     }
 
@@ -73,7 +73,7 @@ class AllowedFilter
         return new static(
             $name,
             new EndsWithStrictFilter,
-            $column
+            $column,
         );
     }
 
@@ -82,7 +82,7 @@ class AllowedFilter
         return new static(
             $name,
             new ScopeFilter($scope),
-            $scope
+            $scope,
         );
     }
 
@@ -90,7 +90,7 @@ class AllowedFilter
     {
         return new static(
             $name,
-            new CallbackFilter($callback)
+            new CallbackFilter($callback),
         );
     }
 
@@ -99,7 +99,7 @@ class AllowedFilter
         return new static(
             $name,
             new CustomFilter($filter),
-            $column
+            $column,
         );
     }
 
@@ -108,7 +108,7 @@ class AllowedFilter
         return new static(
             $name,
             new BelongsToFilter($relationship),
-            $relationship
+            $relationship,
         );
     }
 
@@ -116,19 +116,19 @@ class AllowedFilter
     {
         return new static(
             'trashed',
-            new TrashedFilter
+            new TrashedFilter,
         );
     }
 
     public static function operator(
         string $name,
         FilterOperator $operator = FilterOperator::EQUAL,
-        ?string $column = null
+        ?string $column = null,
     ): static {
         return new static(
             $name,
             new OperatorFilter($operator),
-            $column
+            $column,
         );
     }
 

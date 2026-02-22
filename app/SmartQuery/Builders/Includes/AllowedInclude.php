@@ -17,7 +17,7 @@ class AllowedInclude
     public function __construct(
         string $name,
         IncludeInterface $includeClass,
-        ?string $internalName = null
+        ?string $internalName = null,
     ) {
         $this->name = $name;
         $this->includeClass = $includeClass;
@@ -29,7 +29,7 @@ class AllowedInclude
         return new static(
             $name,
             new RelationshipInclude,
-            $internalName
+            $internalName,
         );
     }
 
@@ -40,7 +40,7 @@ class AllowedInclude
         return new static(
             $name,
             new CountInclude,
-            $internal
+            $internal,
         );
     }
 
@@ -51,31 +51,31 @@ class AllowedInclude
         return new static(
             $name,
             new ExistsInclude,
-            $internal
+            $internal,
         );
     }
 
     public static function custom(
         string $name,
         IncludeInterface $include,
-        ?string $internalName = null
+        ?string $internalName = null,
     ): static {
         return new static(
             $name,
             new CustomInclude($include),
-            $internalName
+            $internalName,
         );
     }
 
     public static function callback(
         string $name,
         Closure $callback,
-        ?string $internalName = null
+        ?string $internalName = null,
     ): static {
         return new static(
             $name,
             new CallbackInclude($callback),
-            $internalName
+            $internalName,
         );
     }
 

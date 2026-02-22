@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class BaseUpdateRequest extends FormRequest
+class BaseUpdateRequest extends BaseRequest
 {
-    public function authorize(): bool
+    public function rules(): array
     {
-        return true;
+        return array_merge($this->commonRules(), []);
     }
 
-    public function rules(): array
+    public function messages(): array
     {
         return [];
     }

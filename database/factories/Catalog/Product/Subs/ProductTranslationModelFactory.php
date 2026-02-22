@@ -20,7 +20,7 @@ class ProductTranslationModelFactory extends Factory
             'name' => ucfirst($name),
             'description' => fake()->paragraphs(3, true),
             'short_description' => fake()->sentence(20),
-            'meta_title' => ucfirst($name).' - '.fake()->words(3, true),
+            'meta_title' => ucfirst($name) . ' - ' . fake()->words(3, true),
             'meta_description' => fake()->sentence(15),
             'meta_keywords' => implode(', ', fake()->words(5)),
         ];

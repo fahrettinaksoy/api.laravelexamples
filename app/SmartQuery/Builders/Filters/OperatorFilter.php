@@ -9,7 +9,7 @@ use App\SmartQuery\Enums\FilterOperator;
 class OperatorFilter extends Filter
 {
     public function __construct(
-        protected FilterOperator $operator = FilterOperator::EQUAL
+        protected FilterOperator $operator = FilterOperator::EQUAL,
     ) {}
 
     public function __invoke($query, $value, string $property)

@@ -6,4 +6,10 @@ namespace App\Http\Requests\Catalog\Product;
 
 use App\Http\Requests\BaseIndexRequest;
 
-class ProductIndexRequest extends BaseIndexRequest {}
+class ProductIndexRequest extends BaseIndexRequest
+{
+    public function rules(): array
+    {
+        return array_merge(parent::rules(), []);
+    }
+}

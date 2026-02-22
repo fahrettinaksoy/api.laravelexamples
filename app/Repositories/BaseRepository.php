@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\SmartQuery\SmartQuery;
+use App\Traits\HasSmartQuery;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class BaseRepository implements BaseRepositoryInterface
 {
+    use HasSmartQuery;
+
     protected Model $model;
 
     public function __construct(Model $model)
@@ -18,30 +20,30 @@ class BaseRepository implements BaseRepositoryInterface
         $this->model = $model;
     }
 
-    public function paginate(array $filters = []): LengthAwarePaginator
+    public function paginate(array $queryContext = []): LengthAwarePaginator
     {
-        $perPage = $filters['per_page'] ?? 15;
+        $perPage = $queryContext['limit'] ?? $queryContext['per_page'] ?? 15;
 
-        return SmartQuery::for($this->model)
-            ->allowedFilters($this->model->allowedFiltering)
-            ->allowedSorts($this->model->allowedSorting)
-            ->allowedIncludes($this->model->allowedRelations)
-            ->defaultSort($this->model->defaultSorting)
+        return $this->buildSmartQuery()
             ->paginate($perPage);
     }
 
-    public function findById(int $id): ?Model
+    public function findById(int $id, array $includes = []): ?Model
     {
-        return $this->model->find($id);
+        $query = $this->model->newQuery();
+
+        $resolved = $this->resolveIncludes($includes);
+
+        if (! empty($resolved)) {
+            $query->with($resolved);
+        }
+
+        return $query->findOrFail($id);
     }
 
-    public function all(array $filters = []): Collection
+    public function all(array $queryContext = []): Collection
     {
-        return SmartQuery::for($this->model)
-            ->allowedFilters($this->model->allowedFiltering)
-            ->allowedSorts($this->model->allowedSorting)
-            ->allowedIncludes($this->model->allowedRelations)
-            ->defaultSort($this->model->defaultSorting)
+        return $this->buildSmartQuery()
             ->get();
     }
 
@@ -52,26 +54,39 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function update(int $id, array $data): Model
     {
-        $item = $this->findById($id);
+        $item = $this->model->newQuery()->findOrFail($id);
+        $item->update($data);
 
-        if ($item) {
-            $item->update($data);
-
-            return $item->fresh();
-        }
-
-        throw new \RuntimeException("Record with ID {$id} not found");
+        return $item->refresh();
     }
 
     public function delete(int $id): bool
     {
-        $item = $this->findById($id);
+        $item = $this->model->newQuery()->find($id);
 
         if ($item) {
             return $item->delete();
         }
 
         return false;
+    }
+
+    public function deleteMany(array $criteria): int
+    {
+        $query = $this->model->newQuery();
+
+        if (! empty($criteria['ids'])) {
+            $criteria[$this->model->getKeyName()] = $criteria['ids'];
+            unset($criteria['ids']);
+        }
+
+        foreach ($criteria as $field => $value) {
+            is_array($value)
+                ? $query->whereIn($field, $value)
+                : $query->where($field, $value);
+        }
+
+        return $query->delete();
     }
 
     public function findBy(string $field, mixed $value): ?Model
@@ -82,10 +97,5 @@ class BaseRepository implements BaseRepositoryInterface
     public function getBy(string $field, mixed $value): Collection
     {
         return $this->model->where($field, $value)->get();
-    }
-
-    public function getModel(): Model
-    {
-        return $this->model;
     }
 }

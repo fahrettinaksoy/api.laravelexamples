@@ -9,7 +9,7 @@ use Closure;
 class CallbackInclude implements IncludeInterface
 {
     public function __construct(
-        protected Closure $callback
+        protected Closure $callback,
     ) {}
 
     public function __invoke($query, string $include): void

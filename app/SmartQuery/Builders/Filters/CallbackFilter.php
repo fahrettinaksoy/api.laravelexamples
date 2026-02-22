@@ -9,7 +9,7 @@ use Closure;
 class CallbackFilter extends Filter
 {
     public function __construct(
-        protected Closure $callback
+        protected Closure $callback,
     ) {}
 
     public function __invoke($query, $value, string $property)

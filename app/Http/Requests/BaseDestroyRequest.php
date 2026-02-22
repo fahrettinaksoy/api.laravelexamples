@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class BaseDestroyRequest extends FormRequest
+class BaseDestroyRequest extends BaseRequest
 {
-    public function authorize(): bool
+    public function rules(): array
     {
-        return true;
+        return array_merge($this->commonRules(), [
+            'ids' => 'sometimes',
+            'ids.*' => 'integer|min:1',
+        ]);
     }
 
-    public function rules(): array
+    public function messages(): array
+    {
+        return [];
+    }
+
+    public function attributes(): array
     {
         return [];
     }

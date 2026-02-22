@@ -13,39 +13,4 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         parent::__construct($model);
     }
-
-    public function findBySku(string $sku): ?ProductModel
-    {
-        return $this->model->where('sku', $sku)->first();
-    }
-
-    public function findBySlug(string $slug): ?ProductModel
-    {
-        return $this->model->where('slug', $slug)->first();
-    }
-
-    public function getInStock(): \Illuminate\Database\Eloquent\Collection
-    {
-        return $this->model->inStock()->get();
-    }
-
-    public function getOnSale(): \Illuminate\Database\Eloquent\Collection
-    {
-        return $this->model->onSale()->get();
-    }
-
-    public function getFeatured(): \Illuminate\Database\Eloquent\Collection
-    {
-        return $this->model->featured()->get();
-    }
-
-    public function getByCategory(int $categoryId): \Illuminate\Database\Eloquent\Collection
-    {
-        return $this->model->where('category_id', $categoryId)->get();
-    }
-
-    public function getByBrand(int $brandId): \Illuminate\Database\Eloquent\Collection
-    {
-        return $this->model->where('brand_id', $brandId)->get();
-    }
 }

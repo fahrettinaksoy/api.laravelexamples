@@ -4,59 +4,41 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Actions\Main\MainActionDestroy;
-use App\Actions\Main\MainActionFilter;
-use App\Actions\Main\MainActionShow;
-use App\Actions\Main\MainActionStore;
-use App\Actions\Main\MainActionUpdate;
+use App\Actions\Main\MainDestroyAction;
+use App\Actions\Main\MainIndexAction;
+use App\Actions\Main\MainShowAction;
+use App\Actions\Main\MainStoreAction;
+use App\Actions\Main\MainUpdateAction;
 use App\Repositories\BaseRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class BaseService
 {
-    protected Model $model;
-
-    protected array $actions;
-
     public function __construct(
         protected BaseRepositoryInterface $repository,
+        protected array $actions = [],
     ) {
-        $model = $this->repository->getModel();
-        $this->model = $model;
-
-        $this->actions = [
-            'filter' => new MainActionFilter($this->repository),
-            'show' => new MainActionShow($this->repository),
-            'store' => new MainActionStore($this->repository),
-            'update' => new MainActionUpdate($this->repository),
-            'destroy' => new MainActionDestroy($this->repository),
-        ];
-    }
-
-    public static function make(BaseRepositoryInterface $repository): self
-    {
-        return new self($repository);
-    }
-
-    public function getModel(): Model
-    {
-        return $this->model;
-    }
-
-    public function filter(array $filter): mixed
-    {
-        return $this->actions['filter']->execute($filter);
-    }
-
-    public function show(array $filter): mixed
-    {
-        $id = request()->route('id');
-        if ($id === null) {
-            throw new \InvalidArgumentException('ID parametresi gereklidir.');
+        if (empty($this->actions)) {
+            $this->actions = [
+                'index' => new MainIndexAction($this->repository),
+                'show' => new MainShowAction($this->repository),
+                'store' => new MainStoreAction($this->repository),
+                'update' => new MainUpdateAction($this->repository),
+                'destroy' => new MainDestroyAction($this->repository),
+            ];
         }
+    }
 
-        return $this->actions['show']->execute((int) $id);
+    public function index(array $queryContext = []): LengthAwarePaginator
+    {
+        return $this->actions['index']->execute($queryContext);
+    }
+
+    public function show(int $id, array $includes = []): Model
+    {
+        return $this->actions['show']->execute($id, $includes);
     }
 
     public function store(array $data): Model
@@ -66,36 +48,22 @@ class BaseService
         return $created->fresh() ?? $created;
     }
 
-    public function update(array $data): Model
+    public function update(int $id, array $data): Model
     {
-        $id = request()->route('id');
-        if ($id === null) {
-            throw new \InvalidArgumentException('ID parametresi gereklidir.');
-        }
-
-        return DB::transaction(fn () => $this->actions['update']->execute((int) $id, $data));
+        return DB::transaction(fn () => $this->actions['update']->execute($id, $data));
     }
 
-    public function destroy(array $data = []): mixed
+    public function destroy(int $id): bool
     {
-        $routeId = request()->route('id');
-        $keyName = $this->model->getKeyName();
+        return DB::transaction(fn () => $this->actions['destroy']->execute($id));
+    }
 
-        if ($routeId === null && empty($data[$keyName]) && empty($data['ids'])) {
-            throw new \InvalidArgumentException('Silme için route ID veya body içinde anahtar alan gereklidir.');
+    public function destroyMany(array $criteria): int
+    {
+        if (empty($criteria)) {
+            throw new \InvalidArgumentException('Toplu silme için en az bir kriter gereklidir.');
         }
 
-        return DB::transaction(function () use ($routeId, $data, $keyName) {
-            if ($routeId !== null) {
-                return $this->actions['destroy']->execute((int) $routeId);
-            }
-
-            if (! empty($data['ids'])) {
-                $data[$keyName] = $data['ids'];
-                unset($data['ids']);
-            }
-
-            return $this->actions['destroy']->executeWithFilter($data);
-        });
+        return DB::transaction(fn () => $this->actions['destroy']->executeWithFilter($criteria));
     }
 }

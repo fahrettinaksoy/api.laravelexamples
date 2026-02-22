@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Responses\ApiResponse;
-use App\Repositories\BaseRepository;
-use App\Repositories\BaseRepositoryCache;
 use App\Services\BaseService;
+use App\Support\ResponseReference;
+use App\Traits\HasActionResolver;
+use App\Traits\HasQueryContext;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
@@ -16,111 +16,91 @@ use Illuminate\Routing\Controller;
 abstract class BaseController extends Controller
 {
     use AuthorizesRequests;
+    use HasActionResolver;
+    use HasQueryContext;
     use ValidatesRequests;
 
-    protected ApiResponse $apiResponse;
-
     public function __construct(
-        ApiResponse $apiResponse,
-        protected mixed $service = null,
+        protected ?BaseService $service = null,
         protected string $resourceClass = '',
         protected string $collectionClass = '',
         protected array $requests = [],
-        protected array $dtos = []
+        protected array $dtos = [],
     ) {
-        $this->apiResponse = $apiResponse;
-    }
-
-    protected function getService(): mixed
-    {
-        if ($this->service === null) {
-            $modelClass = request()->attributes->get('modelClass');
-
-            if (! $modelClass) {
-                throw new \RuntimeException('Service not initialized. Either inject service in constructor or use ValidateModule middleware.');
-            }
-
-            $model = app($modelClass);
-            $repository = new BaseRepository($model);
-            $cachedRepository = new BaseRepositoryCache($repository);
-            $this->service = BaseService::make($cachedRepository);
-        }
-
-        return $this->service;
+        $this->validateActionKeys();
     }
 
     public function index(): JsonResponse
     {
-        app($this->requests['index']);
+        $request = $this->resolveRequest('index');
 
-        $data = $this->getService()->filter(request()->all());
+        $data = $this->getService()->index($this->buildQueryContext($request));
 
-        return $this->apiResponse->paginated(
-            $data,
-            $this->collectionClass,
-            'Records retrieved successfully'
-        );
+        return (new $this->collectionClass($data))
+            ->withMessage('Records retrieved successfully')
+            ->response();
     }
 
-    public function show(string $id): JsonResponse
+    public function show(int $id): JsonResponse
     {
-        app($this->requests['show']);
+        $request = $this->resolveRequest('show');
 
-        $data = $this->getService()->show([]);
+        $data = $this->getService()->show($id, $this->parseIncludes($request));
 
-        return $this->apiResponse->resource(
-            $data,
-            $this->resourceClass,
-            'Record retrieved successfully'
-        );
+        return (new $this->resourceClass($data))
+            ->withMessage('Record retrieved successfully')
+            ->response();
     }
 
     public function store(): JsonResponse
     {
-        $request = app($this->requests['store']);
+        $request = $this->resolveRequest('store');
 
-        $dto = $this->createDTO($request, 'store');
-        $data = $this->getService()->store($dto->toArray());
+        $data = $this->createDTO($request, 'store');
+        $result = $this->getService()->store($data);
 
-        return $this->apiResponse->resource(
-            $data,
-            $this->resourceClass,
-            'Record created successfully',
-            201
-        );
+        return (new $this->resourceClass($result))
+            ->withMessage('Record created successfully')
+            ->withStatusCode(201)
+            ->response();
     }
 
-    public function update(string $id): JsonResponse
+    public function update(int $id): JsonResponse
     {
-        $request = app($this->requests['update']);
+        $request = $this->resolveRequest('update');
 
-        $dto = $this->createDTO($request, 'update');
-        $data = $this->getService()->update($dto->toArray());
+        $data = $this->createDTO($request, 'update');
+        $result = $this->getService()->update($id, $data);
 
-        return $this->apiResponse->resource(
-            $data,
-            $this->resourceClass,
-            'Record updated successfully'
-        );
+        return (new $this->resourceClass($result))
+            ->withMessage('Record updated successfully')
+            ->response();
     }
 
-    public function destroy(string $id): JsonResponse
+    public function patch(int $id): JsonResponse
     {
-        app($this->requests['destroy']);
+        $request = $this->resolveRequest('fieldUpdate');
 
-        $this->getService()->destroy([]);
+        $field = $request->validated('field');
+        $value = $request->validated('value');
 
-        return $this->apiResponse->success('Record deleted successfully');
+        $result = $this->getService()->update($id, [$field => $value]);
+
+        return (new $this->resourceClass($result))
+            ->withMessage('Record patched successfully')
+            ->response();
     }
 
-    protected function createDTO($request, string $type): mixed
+    public function destroy(int $id): JsonResponse
     {
-        if (isset($this->dtos[$type])) {
-            $dtoClass = $this->dtos[$type];
+        $this->resolveRequest('destroy');
 
-            return $dtoClass::fromRequest($request);
-        }
+        $this->getService()->destroy($id);
 
-        return $request->validated();
+        return response()->json([
+            'success' => true,
+            'data' => null,
+            'reference' => ResponseReference::build('Record deleted successfully'),
+        ]);
     }
 }

@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Models\BaseModel;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ValidateModule
 {
@@ -39,6 +40,8 @@ class ValidateModule
         $resolvedModel = $this->getResolvedModel($segments);
         $this->attachModelToRequest($request, $resolvedModel);
 
+        $request->route()->forgetParameter('path');
+
         return $next($request);
     }
 
@@ -58,8 +61,9 @@ class ValidateModule
             return $this->resolvedModels[$cacheKey];
         }
 
-        if (Cache::has($cacheKey)) {
-            $cached = Cache::get($cacheKey);
+        $cached = Cache::get($cacheKey);
+
+        if ($cached !== null) {
             $this->resolvedModels[$cacheKey] = $cached;
 
             return $cached;
@@ -75,7 +79,9 @@ class ValidateModule
 
     private function generateCacheKey(array $segments): string
     {
-        return 'model_resolution_'.md5(implode('/', $segments));
+        $pathOnly = array_filter($segments, fn (string $s) => ! is_numeric($s));
+
+        return 'model_resolution_' . md5(implode('/', $pathOnly));
     }
 
     private function cacheResolvedModel(string $cacheKey, array $resolvedModel): void
@@ -118,7 +124,7 @@ class ValidateModule
         $pivotLevels = $this->extractPivotLevels($pathSegments);
 
         if (empty($pivotLevels)) {
-            throw new InvalidArgumentException('Geçersiz pivot route yapısı');
+            throw new NotFoundHttpException('Geçersiz pivot route yapısı');
         }
 
         $deepestLevel = end($pivotLevels);
@@ -210,8 +216,10 @@ class ValidateModule
             );
 
             if (! $modelClass) {
-                throw new InvalidArgumentException(
-                    "'{$level['relationName']}' relation'u {$level['parentModelClass']} sınıfında tanımlı değil",
+                throw new NotFoundHttpException(
+                    config('app.debug')
+                        ? "'{$level['relationName']}' ilişkisi bulunamadı"
+                        : 'Kaynak bulunamadı',
                 );
             }
         }
@@ -224,11 +232,22 @@ class ValidateModule
         try {
             $parentModel = new $parentModelClass;
 
+            if (
+                $parentModel instanceof BaseModel
+                && ! in_array($relationName, $parentModel->getAllowedRelations(), true)
+            ) {
+                return null;
+            }
+
             if (! method_exists($parentModel, $relationName)) {
                 return null;
             }
 
             $relationObject = $parentModel->{$relationName}();
+
+            if (! $relationObject instanceof \Illuminate\Database\Eloquent\Relations\Relation) {
+                return null;
+            }
 
             return get_class($relationObject->getRelated());
 
@@ -242,12 +261,14 @@ class ValidateModule
         $modelPath = $this->extractModelPath($pathSegments);
 
         if (empty($modelPath)) {
-            throw new InvalidArgumentException('Boş model path');
+            throw new NotFoundHttpException('Geçersiz path');
         }
+
+        $modelClass = $this->buildModelClass($modelPath);
 
         return [
             'isPivotRoute' => false,
-            'modelClass' => $this->buildModelClass($modelPath),
+            'modelClass' => $modelClass,
             'tableName' => end($modelPath),
             'mainModelPath' => implode('/', $modelPath),
             'fullPath' => implode('/', $pathSegments),
@@ -284,15 +305,25 @@ class ValidateModule
 
     private function buildModelClass(array $pathSegments): string
     {
-        // Path segments'i studly case'e çevir
+        foreach ($pathSegments as $segment) {
+            if (! preg_match('/^[a-zA-Z][a-zA-Z0-9_-]*$/', $segment)) {
+                throw new NotFoundHttpException('Geçersiz path segment');
+            }
+        }
+
         $namespaceParts = array_map([Str::class, 'studly'], $pathSegments);
-        
-        // Son segment model adı olacak
         $modelName = end($namespaceParts);
-        
-        // Namespace: App\Models\{Module}\{Model}
-        // Örnek: content/page → App\Models\Content\Page\PageModel
-        return 'App\\Models\\'.implode('\\', $namespaceParts).'\\'.$modelName.'Model';
+        $modelClass = 'App\\Models\\' . implode('\\', $namespaceParts) . '\\' . $modelName . 'Model';
+
+        if (! class_exists($modelClass) || ! is_subclass_of($modelClass, BaseModel::class)) {
+            throw new NotFoundHttpException(
+                config('app.debug')
+                    ? "'{$modelClass}' modeli bulunamadı veya geçerli değil"
+                    : 'Kaynak bulunamadı',
+            );
+        }
+
+        return $modelClass;
     }
 
     private function attachModelToRequest(Request $request, array $modelData): void
@@ -300,5 +331,27 @@ class ValidateModule
         foreach ($modelData as $key => $value) {
             $request->attributes->set($key, $value);
         }
+
+        $this->injectParentScope($request, $modelData);
+    }
+
+    private function injectParentScope(Request $request, array $modelData): void
+    {
+        if (empty($modelData['isPivotRoute'])) {
+            return;
+        }
+
+        $parentId = $modelData['parentId'] ?? null;
+        $parentModelClass = $modelData['parentModelClass'] ?? null;
+
+        if (! $parentId || ! $parentModelClass) {
+            return;
+        }
+
+        $parentName = Str::snake(
+            Str::before(class_basename($parentModelClass), 'Model'),
+        );
+
+        $request->merge([$parentName . '_id' => $parentId]);
     }
 }

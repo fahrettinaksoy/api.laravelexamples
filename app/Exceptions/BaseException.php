@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
+use App\Support\ResponseReference;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -20,7 +21,7 @@ abstract class BaseException extends Exception
         string $message,
         ?int $statusCode = null,
         ?string $errorCode = null,
-        array $context = []
+        array $context = [],
     ) {
         parent::__construct($message);
 
@@ -33,42 +34,61 @@ abstract class BaseException extends Exception
         }
 
         $this->context = $context;
-
-        $this->logException();
     }
 
     public function render(): JsonResponse
     {
-        return response()->json([
+        $this->logException();
+
+        $response = [
             'success' => false,
             'message' => $this->getMessage(),
             'error_code' => $this->errorCode,
-            'meta' => $this->buildMeta(),
-        ], $this->statusCode);
-    }
-
-    protected function buildMeta(): array
-    {
-        $meta = [
-            'timestamp' => now()->toIso8601String(),
-            'version' => 'v1',
         ];
 
-        if (config('app.debug') && ! empty($this->context)) {
-            $meta['context'] = $this->context;
+        if (! empty($this->context)) {
+            $response['errors'] = $this->context;
         }
 
-        return $meta;
+        $response['reference'] = ResponseReference::build(
+            $this->getMessage(),
+            $this->statusCode,
+            $this->buildDebug(),
+        );
+
+        return response()->json($response, $this->statusCode);
+    }
+
+    private function buildDebug(): array
+    {
+        if (! config('app.debug')) {
+            return [];
+        }
+
+        return [
+            'exception' => static::class,
+            'file' => $this->getFile(),
+            'line' => $this->getLine(),
+        ];
     }
 
     protected function logException(): void
     {
-        Log::error($this->getMessage(), [
+        $logContext = [
             'error_code' => $this->errorCode,
             'status_code' => $this->statusCode,
             'context' => $this->context,
-            'trace' => $this->getTraceAsString(),
-        ]);
+        ];
+
+        if (config('app.debug')) {
+            $logContext['trace'] = $this->getTraceAsString();
+        }
+
+        if ($this->statusCode >= 500) {
+            Log::error($this->getMessage(), $logContext);
+        } else {
+            Log::warning($this->getMessage(), $logContext);
+        }
     }
 
     public function getStatusCode(): int

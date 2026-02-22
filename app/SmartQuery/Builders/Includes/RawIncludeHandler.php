@@ -56,7 +56,7 @@ class RawIncludeHandler
             $relatedTable,
             "{$parentTable}.{$foreignKey}",
             '=',
-            "{$relatedTable}.{$ownerKey}"
+            "{$relatedTable}.{$ownerKey}",
         );
     }
 
@@ -71,7 +71,7 @@ class RawIncludeHandler
             $relatedTable,
             "{$relatedTable}.{$foreignKey}",
             '=',
-            "{$parentTable}.{$localKey}"
+            "{$parentTable}.{$localKey}",
         );
     }
 
@@ -88,10 +88,10 @@ class RawIncludeHandler
             $foreignKey = $relation->getForeignKeyName();
             $localKey = $relation->getLocalKeyName();
             $parentTable = $relation->getParent()->getTable();
-            $columnName = $relationName.'_count';
+            $columnName = $relationName . '_count';
 
             $query->selectRaw(
-                "(SELECT COUNT(*) FROM {$relatedTable} WHERE {$relatedTable}.{$foreignKey} = {$parentTable}.{$localKey}) as {$columnName}"
+                "(SELECT COUNT(*) FROM {$relatedTable} WHERE {$relatedTable}.{$foreignKey} = {$parentTable}.{$localKey}) as {$columnName}",
             );
         }
     }
@@ -109,10 +109,10 @@ class RawIncludeHandler
             $foreignKey = $relation->getForeignKeyName();
             $localKey = $relation->getLocalKeyName();
             $parentTable = $relation->getParent()->getTable();
-            $columnName = $relationName.'_exists';
+            $columnName = $relationName . '_exists';
 
             $query->selectRaw(
-                "(SELECT EXISTS(SELECT 1 FROM {$relatedTable} WHERE {$relatedTable}.{$foreignKey} = {$parentTable}.{$localKey})) as {$columnName}"
+                "(SELECT EXISTS(SELECT 1 FROM {$relatedTable} WHERE {$relatedTable}.{$foreignKey} = {$parentTable}.{$localKey})) as {$columnName}",
             );
         }
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Catalog\Category;
 
+use App\DataTransferObjects\Catalog\Category\CategoryDTO;
 use App\Models\BaseModel;
 use App\Models\Catalog\Product\ProductModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,13 +16,7 @@ class CategoryModel extends BaseModel
 
     protected $primaryKey = 'category_id';
 
-    public $fillable = [
-        'name',
-        'slug',
-        'description',
-        'parent_id',
-        'is_active',
-    ];
+    protected static ?string $fieldSource = CategoryDTO::class;
 
     protected $casts = [
         'is_active' => 'boolean',
@@ -29,7 +24,7 @@ class CategoryModel extends BaseModel
 
     public function products(): HasMany
     {
-        return $this->hasMany(ProductModel::class);
+        return $this->hasMany(ProductModel::class, 'category_id');
     }
 
     public function parent(): BelongsTo

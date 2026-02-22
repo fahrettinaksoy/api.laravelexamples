@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\Catalog\Product;
 
-use App\Actions\BaseAction;
+use App\Actions\Main\MainDestroyAction;
 
-class ProductDestroyAction extends BaseAction
-{
-    public function execute(int $id): bool
-    {
-        return $this->repository->delete($id);
-    }
-}
+class ProductDestroyAction extends MainDestroyAction {}

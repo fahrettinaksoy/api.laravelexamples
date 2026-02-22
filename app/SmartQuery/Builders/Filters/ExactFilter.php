@@ -7,7 +7,7 @@ namespace App\SmartQuery\Builders\Filters;
 class ExactFilter extends Filter
 {
     public function __construct(
-        protected bool $addRelationConstraint = true
+        protected bool $addRelationConstraint = true,
     ) {}
 
     public function __invoke($query, $value, string $property)

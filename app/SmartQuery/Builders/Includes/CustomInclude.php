@@ -7,7 +7,7 @@ namespace App\SmartQuery\Builders\Includes;
 class CustomInclude implements IncludeInterface
 {
     public function __construct(
-        protected IncludeInterface $include
+        protected IncludeInterface $include,
     ) {}
 
     public function __invoke($query, string $include): void

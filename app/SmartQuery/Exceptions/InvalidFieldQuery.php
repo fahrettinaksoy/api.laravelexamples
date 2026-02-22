@@ -13,7 +13,7 @@ class InvalidFieldQuery extends Exception
         $allowedFieldsString = implode(', ', $allowedFields);
 
         return new static(
-            "Field '{$field}' is not allowed. Allowed fields: {$allowedFieldsString}"
+            "Field '{$field}' is not allowed. Allowed fields: {$allowedFieldsString}",
         );
     }
 
@@ -23,7 +23,7 @@ class InvalidFieldQuery extends Exception
         $allowedFieldsString = implode(', ', $allowedFields);
 
         return new static(
-            "Fields '{$fieldsString}' are not allowed. Allowed fields: {$allowedFieldsString}"
+            "Fields '{$fieldsString}' are not allowed. Allowed fields: {$allowedFieldsString}",
         );
     }
 }

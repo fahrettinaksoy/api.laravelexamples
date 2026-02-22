@@ -42,7 +42,7 @@ trait SortsQuery
             }
 
             throw new \InvalidArgumentException(
-                'Sort must be a string or AllowedSort instance'
+                'Sort must be a string or AllowedSort instance',
             );
         })->toArray();
 
@@ -123,7 +123,7 @@ trait SortsQuery
             if (config('smartquery.throw_on_invalid_sort', true)) {
                 throw InvalidSortQuery::sortNotAllowed(
                     $sortName,
-                    $this->getAllowedSortNames()
+                    $this->getAllowedSortNames(),
                 );
             }
 
@@ -183,7 +183,7 @@ trait SortsQuery
     {
         return array_map(
             fn (AllowedSort $sort) => $sort->getName(),
-            $this->allowedSorts
+            $this->allowedSorts,
         );
     }
 }

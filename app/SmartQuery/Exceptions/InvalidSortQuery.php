@@ -13,7 +13,7 @@ class InvalidSortQuery extends Exception
         $allowedSortsString = implode(', ', $allowedSorts);
 
         return new static(
-            "Sort '{$sort}' is not allowed. Allowed sorts: {$allowedSortsString}"
+            "Sort '{$sort}' is not allowed. Allowed sorts: {$allowedSortsString}",
         );
     }
 
@@ -23,7 +23,7 @@ class InvalidSortQuery extends Exception
         $allowedSortsString = implode(', ', $allowedSorts);
 
         return new static(
-            "Sorts '{$sortsString}' are not allowed. Allowed sorts: {$allowedSortsString}"
+            "Sorts '{$sortsString}' are not allowed. Allowed sorts: {$allowedSortsString}",
         );
     }
 }

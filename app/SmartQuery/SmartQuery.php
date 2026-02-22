@@ -57,7 +57,7 @@ class SmartQuery
             $instance->useEloquent = false;
         } else {
             throw new \InvalidArgumentException(
-                'Subject must be a Model class, Model instance, Eloquent Builder, or Query Builder'
+                'Subject must be a Model class, Model instance, Eloquent Builder, or Query Builder',
             );
         }
 

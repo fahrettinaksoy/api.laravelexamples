@@ -4,44 +4,40 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Support\ResponseReference;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class BaseCollection extends ResourceCollection
 {
+    protected string $responseMessage = 'İşlem başarılı';
+
+    protected int $responseStatusCode = 200;
+
     public function toArray(Request $request): array
     {
+        return $this->collection->toArray();
+    }
+
+    public function with($request): array
+    {
         return [
-            'data' => $this->collection,
+            'success' => true,
+            'reference' => ResponseReference::build($this->responseMessage, $this->responseStatusCode),
         ];
     }
 
-    public function with(Request $request): array
+    public function withMessage(string $message): static
     {
-        return [
-            'meta' => $this->buildMeta(),
-        ];
+        $this->responseMessage = $message;
+
+        return $this;
     }
 
-    protected function buildMeta(): array
+    public function withStatusCode(int $statusCode): static
     {
-        $meta = [
-            'timestamp' => now()->toIso8601String(),
-            'version' => 'v1',
-        ];
+        $this->responseStatusCode = $statusCode;
 
-        if ($this->resource instanceof LengthAwarePaginator) {
-            $meta['pagination'] = [
-                'total' => $this->resource->total(),
-                'per_page' => $this->resource->perPage(),
-                'current_page' => $this->resource->currentPage(),
-                'last_page' => $this->resource->lastPage(),
-                'from' => $this->resource->firstItem(),
-                'to' => $this->resource->lastItem(),
-            ];
-        }
-
-        return $meta;
+        return $this;
     }
 }
