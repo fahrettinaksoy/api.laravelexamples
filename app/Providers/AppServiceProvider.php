@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -15,11 +16,17 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->scoped(\App\Support\ResponseReference::class);
+
+        if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            $this->app->register(TelescopeServiceProvider::class);
+        }
     }
 
     public function boot(): void
     {
         $this->configureRateLimiting();
+        $this->configureGates();
         $this->validateCorsConfiguration();
     }
 
@@ -47,6 +54,13 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute((int) env('RATE_LIMIT_API_AUTH', 10))
                 ->by($request->ip())
                 ->response(fn () => $this->rateLimitResponse());
+        });
+    }
+
+    private function configureGates(): void
+    {
+        Gate::define('viewPulse', function ($user = null) {
+            return $this->app->environment('local');
         });
     }
 
