@@ -114,4 +114,16 @@ return [
 
     'prefix' => env('CACHE_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')) . '-cache-'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Repository Cache TTL
+    |--------------------------------------------------------------------------
+    |
+    | BaseRepositoryCache tarafından kullanılan varsayılan cache süresi (saniye).
+    | Child cache sınıflarında override edilebilir.
+    |
+    */
+
+    'repository_ttl' => (int) env('CACHE_REPOSITORY_TTL', 3600),
+
 ];

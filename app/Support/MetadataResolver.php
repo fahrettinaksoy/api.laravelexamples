@@ -7,9 +7,12 @@ namespace App\Support;
 use App\Attributes\Model\ActionType;
 use App\Attributes\Model\FormField;
 use App\Attributes\Model\TableColumn;
+use App\DataTransferObjects\BaseDTO;
 use ReflectionClass;
+use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionParameter;
+use ReflectionUnionType;
 
 class MetadataResolver
 {
@@ -19,10 +22,18 @@ class MetadataResolver
 
     private static array $tableFieldsCache = [];
 
+    private const MAX_CONSTRUCTOR_PARAMS = 100;
+
     public static function resolve(string $dtoClass): array
     {
         if (isset(self::$metadataCache[$dtoClass])) {
             return self::$metadataCache[$dtoClass];
+        }
+
+        if (! is_subclass_of($dtoClass, BaseDTO::class)) {
+            throw new \InvalidArgumentException(
+                "MetadataResolver only accepts BaseDTO subclasses. Given: {$dtoClass}",
+            );
         }
 
         $reflection = new ReflectionClass($dtoClass);
@@ -32,6 +43,14 @@ class MetadataResolver
             self::$metadataCache[$dtoClass] = [];
 
             return [];
+        }
+
+        $paramCount = $constructor->getNumberOfParameters();
+
+        if ($paramCount > self::MAX_CONSTRUCTOR_PARAMS) {
+            throw new \OverflowException(
+                "DTO constructor exceeds maximum parameter limit ({$paramCount} > " . self::MAX_CONSTRUCTOR_PARAMS . ')',
+            );
         }
 
         $metadata = [];
@@ -110,16 +129,58 @@ class MetadataResolver
     private static function extractParameterMetadata(ReflectionParameter $param): array
     {
         $type = $param->getType();
-        $phpType = $type instanceof ReflectionNamedType ? $type->getName() : 'mixed';
+        [$phpType, $nullable] = self::resolveType($type);
 
         return [
             'name' => $param->getName(),
             'phpType' => $phpType,
-            'nullable' => $type instanceof ReflectionNamedType && $type->allowsNull(),
+            'nullable' => $nullable,
             'actions' => self::extractActionTypes($param),
             'form' => self::extractFormField($param),
             'table' => self::extractTableColumn($param),
         ];
+    }
+
+    private static function resolveType(
+        ReflectionNamedType|ReflectionUnionType|ReflectionIntersectionType|null $type,
+    ): array {
+        if ($type === null) {
+            return ['mixed', true];
+        }
+
+        if ($type instanceof ReflectionNamedType) {
+            return [$type->getName(), $type->allowsNull()];
+        }
+
+        if ($type instanceof ReflectionUnionType) {
+            return self::resolveUnionType($type);
+        }
+
+        return ['mixed', false];
+    }
+
+    private static function resolveUnionType(ReflectionUnionType $type): array
+    {
+        $nullable = false;
+        $primaryType = 'mixed';
+
+        foreach ($type->getTypes() as $memberType) {
+            if (! $memberType instanceof ReflectionNamedType) {
+                continue;
+            }
+
+            if ($memberType->getName() === 'null') {
+                $nullable = true;
+
+                continue;
+            }
+
+            if ($primaryType === 'mixed') {
+                $primaryType = $memberType->getName();
+            }
+        }
+
+        return [$primaryType, $nullable];
     }
 
     private static function extractActionTypes(ReflectionParameter $param): array

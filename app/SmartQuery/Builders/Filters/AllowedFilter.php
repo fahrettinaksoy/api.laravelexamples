@@ -59,6 +59,24 @@ class AllowedFilter
         );
     }
 
+    public static function beginsWith(string $name, ?string $column = null): static
+    {
+        return new static(
+            $name,
+            new BeginsWithFilter,
+            $column,
+        );
+    }
+
+    public static function endsWith(string $name, ?string $column = null): static
+    {
+        return new static(
+            $name,
+            new EndsWithFilter,
+            $column,
+        );
+    }
+
     public static function beginsWithStrict(string $name, ?string $column = null): static
     {
         return new static(

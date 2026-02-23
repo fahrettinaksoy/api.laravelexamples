@@ -19,7 +19,7 @@ class BaseResource extends JsonResource
     use HasRelationshipSeparation;
     use HasResourceLinks;
 
-    protected string $responseMessage = 'İşlem başarılı';
+    protected string $responseMessage = '';
 
     protected int $responseStatusCode = 200;
 
@@ -61,7 +61,10 @@ class BaseResource extends JsonResource
     {
         return [
             'success' => true,
-            'reference' => ResponseReference::build($this->responseMessage, $this->responseStatusCode),
+            'reference' => app(ResponseReference::class)->build(
+                $this->responseMessage ?: __('api.success'),
+                $this->responseStatusCode,
+            ),
         ];
     }
 
@@ -81,6 +84,16 @@ class BaseResource extends JsonResource
 
     public function response($request = null): JsonResponse
     {
+        if ($this->resource === null) {
+            return response()->json(
+                array_merge(
+                    ['data' => null],
+                    $this->with(request()),
+                ),
+                $this->responseStatusCode,
+            );
+        }
+
         return parent::response($request)->setStatusCode($this->responseStatusCode);
     }
 }

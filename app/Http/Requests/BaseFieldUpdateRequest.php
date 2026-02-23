@@ -19,10 +19,10 @@ class BaseFieldUpdateRequest extends BaseRequest
     public function messages(): array
     {
         return [
-            'field.required' => 'Alan adı zorunludur',
-            'field.string' => 'Alan adı metin olmalıdır',
-            'field.in' => "':input' alanı güncellenemez",
-            'value.present' => 'Değer alanı gönderilmelidir',
+            'field.required' => __('api.validation.field_update.field_required'),
+            'field.string' => __('api.validation.field_update.field_string'),
+            'field.in' => __('api.validation.field_update.field_not_updatable'),
+            'value.present' => __('api.validation.field_update.value_present'),
         ];
     }
 
@@ -31,7 +31,9 @@ class BaseFieldUpdateRequest extends BaseRequest
         $modelClass = $this->attributes->get('modelClass');
 
         if ($modelClass === null) {
-            return [];
+            throw new \RuntimeException(
+                __('api.controller.model_not_resolved'),
+            );
         }
 
         return app($modelClass)->getFillable();

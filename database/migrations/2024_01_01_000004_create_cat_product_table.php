@@ -66,11 +66,6 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('product_id')
-                ->references('product_id')
-                ->on('cat_product')
-                ->onDelete('cascade');
-
             $table->index('uuid');
             $table->index('product_id');
             $table->index('is_primary');
@@ -92,11 +87,6 @@ return new class extends Migration
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('product_id')
-                ->references('product_id')
-                ->on('cat_product')
-                ->onDelete('cascade');
 
             $table->index('uuid');
             $table->unique(['product_id', 'locale']);

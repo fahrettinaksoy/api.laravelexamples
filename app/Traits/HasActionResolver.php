@@ -7,6 +7,7 @@ namespace App\Traits;
 use App\Http\Requests\BaseRequest;
 use App\Services\BaseService;
 use App\Support\DTOFactory;
+use App\Support\DynamicServiceFactory;
 
 trait HasActionResolver
 {
@@ -20,8 +21,10 @@ trait HasActionResolver
 
         if (! empty($invalidRequestKeys)) {
             throw new \RuntimeException(
-                'Invalid request action keys: ' . implode(', ', $invalidRequestKeys)
-                . '. Valid keys: ' . implode(', ', static::$validRequestActions),
+                __('api.controller.invalid_request_keys', [
+                    'keys' => implode(', ', $invalidRequestKeys),
+                    'valid' => implode(', ', static::$validRequestActions),
+                ]),
             );
         }
 
@@ -29,21 +32,29 @@ trait HasActionResolver
 
         if (! empty($invalidDtoKeys)) {
             throw new \RuntimeException(
-                'Invalid DTO action keys: ' . implode(', ', $invalidDtoKeys)
-                . '. Valid keys: ' . implode(', ', static::$validDtoActions),
+                __('api.controller.invalid_dto_keys', [
+                    'keys' => implode(', ', $invalidDtoKeys),
+                    'valid' => implode(', ', static::$validDtoActions),
+                ]),
             );
         }
     }
 
     protected function getService(): BaseService
     {
-        $this->service ??= app('dynamic.service');
+        if ($this->service !== null) {
+            return $this->service;
+        }
 
-        if ($this->service === null) {
+        $modelClass = request()->attributes->get('modelClass');
+
+        if (! $modelClass) {
             throw new \RuntimeException(
-                'Service not initialized. Inject service via constructor or configure RepositoryServiceProvider.',
+                __('api.controller.service_not_initialized'),
             );
         }
+
+        $this->service = app(DynamicServiceFactory::class)->make($modelClass);
 
         return $this->service;
     }
@@ -51,13 +62,17 @@ trait HasActionResolver
     protected function resolveRequest(string $action): BaseRequest
     {
         if (! isset($this->requests[$action])) {
-            throw new \RuntimeException("Request class not defined for action: {$action}");
+            throw new \RuntimeException(
+                __('api.controller.request_not_defined', ['action' => $action]),
+            );
         }
 
         $requestClass = $this->requests[$action];
 
         if (! is_subclass_of($requestClass, BaseRequest::class)) {
-            throw new \RuntimeException("Request class '{$requestClass}' must extend BaseRequest");
+            throw new \RuntimeException(
+                __('api.controller.request_must_extend_base', ['class' => $requestClass]),
+            );
         }
 
         return app($requestClass);

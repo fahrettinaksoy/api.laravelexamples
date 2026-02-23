@@ -14,20 +14,23 @@ trait FiltersQuery
 
     protected function normalizeFilters(array $filters): array
     {
-        return collect($filters)->map(function ($filter) {
+        $normalized = [];
+
+        foreach ($filters as $filter) {
             if (is_string($filter)) {
-                return AllowedFilter::partial($filter);
+                $filter = AllowedFilter::partial($filter);
+            } elseif (! $filter instanceof AllowedFilter) {
+                throw new \InvalidArgumentException(
+                    __('api.smartquery.invalid_filter_type', [
+                        'type' => get_debug_type($filter),
+                    ]),
+                );
             }
 
-            if ($filter instanceof AllowedFilter) {
-                return $filter;
-            }
+            $normalized[$filter->getName()] = $filter;
+        }
 
-            throw new \InvalidArgumentException(
-                'Filter must be string or AllowedFilter instance. ' .
-                'Got: ' . get_debug_type($filter),
-            );
-        })->toArray();
+        return $normalized;
     }
 
     public function allowedFilters($filters): static
@@ -42,14 +45,6 @@ trait FiltersQuery
 
         if (method_exists($this->getModel(), 'getAllowedFilters')) {
             $modelFilters = $this->getModel()->getAllowedFilters();
-            $this->allowedFilters = $this->normalizeFilters($modelFilters);
-            $this->applyFilters();
-
-            return $this;
-        }
-
-        if (property_exists($this->getModel(), 'allowedFiltering')) {
-            $modelFilters = $this->getModel()->allowedFiltering;
             $this->allowedFilters = $this->normalizeFilters($modelFilters);
             $this->applyFilters();
 
@@ -134,13 +129,7 @@ trait FiltersQuery
 
     protected function findAllowedFilter(string $name): ?AllowedFilter
     {
-        foreach ($this->allowedFilters as $filter) {
-            if ($filter->getName() === $name) {
-                return $filter;
-            }
-        }
-
-        return null;
+        return $this->allowedFilters[$name] ?? null;
     }
 
     protected function isIgnoredValue(AllowedFilter $filter, $value): bool
@@ -166,9 +155,6 @@ trait FiltersQuery
 
     protected function getAllowedFilterNames(): array
     {
-        return array_map(
-            fn (AllowedFilter $filter) => $filter->getName(),
-            $this->allowedFilters,
-        );
+        return array_keys($this->allowedFilters);
     }
 }

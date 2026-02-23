@@ -20,11 +20,12 @@ class BaseIndexRequest extends BaseRequest
     public function messages(): array
     {
         return [
-            'fields.array' => 'Alanlar bir dizi olmalıdır.',
-            'include.string' => 'Dahil edilecek veriler metin olmalıdır.',
-            'sort.string' => 'Sıralama bilgisi metin olmalıdır.',
-            'limit.integer' => 'Limit bir tamsayı olmalıdır.',
-            'limit.min' => 'Limit en az 1 olmalıdır.',
+            'fields.array' => __('api.validation.fields_array'),
+            'include.string' => __('api.validation.include_string'),
+            'sort.string' => __('api.validation.sort_string'),
+            'limit.integer' => __('api.validation.limit_integer'),
+            'limit.min' => __('api.validation.limit_min'),
+            'filter.array' => __('api.validation.filter_array'),
         ];
     }
 

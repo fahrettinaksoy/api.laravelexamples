@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\BaseService;
-use App\Support\ResponseReference;
 use App\Traits\HasActionResolver;
 use App\Traits\HasQueryContext;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -37,7 +36,7 @@ abstract class BaseController extends Controller
         $data = $this->getService()->index($this->buildQueryContext($request));
 
         return (new $this->collectionClass($data))
-            ->withMessage('Records retrieved successfully')
+            ->withMessage(__('api.success'))
             ->response();
     }
 
@@ -48,7 +47,7 @@ abstract class BaseController extends Controller
         $data = $this->getService()->show($id, $this->parseIncludes($request));
 
         return (new $this->resourceClass($data))
-            ->withMessage('Record retrieved successfully')
+            ->withMessage(__('api.success'))
             ->response();
     }
 
@@ -60,7 +59,7 @@ abstract class BaseController extends Controller
         $result = $this->getService()->store($data);
 
         return (new $this->resourceClass($result))
-            ->withMessage('Record created successfully')
+            ->withMessage(__('api.created'))
             ->withStatusCode(201)
             ->response();
     }
@@ -73,7 +72,7 @@ abstract class BaseController extends Controller
         $result = $this->getService()->update($id, $data);
 
         return (new $this->resourceClass($result))
-            ->withMessage('Record updated successfully')
+            ->withMessage(__('api.updated'))
             ->response();
     }
 
@@ -87,7 +86,7 @@ abstract class BaseController extends Controller
         $result = $this->getService()->update($id, [$field => $value]);
 
         return (new $this->resourceClass($result))
-            ->withMessage('Record patched successfully')
+            ->withMessage(__('api.updated'))
             ->response();
     }
 
@@ -97,10 +96,8 @@ abstract class BaseController extends Controller
 
         $this->getService()->destroy($id);
 
-        return response()->json([
-            'success' => true,
-            'data' => null,
-            'reference' => ResponseReference::build('Record deleted successfully'),
-        ]);
+        return (new $this->resourceClass(null))
+            ->withMessage(__('api.deleted'))
+            ->response();
     }
 }

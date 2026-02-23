@@ -10,20 +10,21 @@ class InvalidFieldQuery extends Exception
 {
     public static function fieldNotAllowed(string $field, array $allowedFields): self
     {
-        $allowedFieldsString = implode(', ', $allowedFields);
-
         return new static(
-            "Field '{$field}' is not allowed. Allowed fields: {$allowedFieldsString}",
+            __('api.smartquery.field_not_allowed', [
+                'field' => $field,
+                'allowed' => implode(', ', $allowedFields),
+            ]),
         );
     }
 
     public static function fieldsNotAllowed(array $fields, array $allowedFields): self
     {
-        $fieldsString = implode(', ', $fields);
-        $allowedFieldsString = implode(', ', $allowedFields);
-
         return new static(
-            "Fields '{$fieldsString}' are not allowed. Allowed fields: {$allowedFieldsString}",
+            __('api.smartquery.fields_not_allowed', [
+                'fields' => implode(', ', $fields),
+                'allowed' => implode(', ', $allowedFields),
+            ]),
         );
     }
 }

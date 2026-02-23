@@ -50,7 +50,7 @@ abstract class BaseException extends Exception
             $response['errors'] = $this->context;
         }
 
-        $response['reference'] = ResponseReference::build(
+        $response['reference'] = app(ResponseReference::class)->build(
             $this->getMessage(),
             $this->statusCode,
             $this->buildDebug(),

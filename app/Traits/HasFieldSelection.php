@@ -6,20 +6,8 @@ namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * Resource attribute'larini request'teki fields parametresine gore filtreler.
- * Sparse fieldset destegi saglar (ornek: ?fields[products]=name,price).
- *
- * @mixin \Illuminate\Http\Resources\Json\JsonResource
- */
 trait HasFieldSelection
 {
-    /**
-     * Istenen alanlara gore attribute'lari filtreler.
-     *
-     * @param  array<string, mixed>  $attributes
-     * @return array<string, mixed>
-     */
     protected function applyFieldSelection(array $attributes, mixed $request): array
     {
         $requestedFields = $request->input('fields', []);

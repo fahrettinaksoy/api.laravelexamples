@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Traits;
 
 use App\SmartQuery\SmartQuery;
+use Illuminate\Support\Facades\Log;
 
 trait HasSmartQuery
 {
@@ -72,7 +73,13 @@ trait HasSmartQuery
                         $fields[] = "{$relatedTable}.{$field}";
                     }
                 }
-            } catch (\Throwable) {
+            } catch (\Throwable $e) {
+                Log::debug('SmartQuery: Failed to resolve fields for relation', [
+                    'model' => get_class($this->model),
+                    'relation' => $relationName,
+                    'error' => $e->getMessage(),
+                ]);
+
                 continue;
             }
         }
@@ -89,6 +96,8 @@ trait HasSmartQuery
             return $defaults;
         }
 
-        return array_values(array_intersect($includes, $allowed));
+        $resolved = array_values(array_intersect($includes, $allowed));
+
+        return array_values(array_unique(array_merge($defaults, $resolved)));
     }
 }

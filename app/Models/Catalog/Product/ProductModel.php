@@ -72,12 +72,12 @@ class ProductModel extends BaseModel
 
     public function images(): HasMany
     {
-        return $this->hasMany(ProductImageModel::class, 'product_id', 'product_id');
+        return $this->hasMany(ProductImageModel::class, 'product_id');
     }
 
     public function translations(): HasMany
     {
-        return $this->hasMany(ProductTranslationModel::class, 'product_id', 'product_id');
+        return $this->hasMany(ProductTranslationModel::class, 'product_id');
     }
 
     public function primaryImage(): HasOne

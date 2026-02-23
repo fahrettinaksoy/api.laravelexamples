@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace App\SmartQuery\Builders\Filters;
 
-class PartialFilter extends Filter
+class EndsWithFilter extends Filter
 {
-    public function __construct(
-        protected bool $addRelationConstraint = true,
-    ) {}
-
     public function __invoke($query, $value, string $property)
     {
         if (str_contains($property, '.')) {
@@ -20,7 +16,7 @@ class PartialFilter extends Filter
 
         return $query->whereRaw(
             "LOWER({$wrapped}) LIKE ?",
-            ['%' . strtolower($value) . '%'],
+            ['%' . strtolower($value)],
         );
     }
 
@@ -30,16 +26,12 @@ class PartialFilter extends Filter
         $column = array_pop($parts);
         $relation = implode('.', $parts);
 
-        if (! $this->addRelationConstraint) {
-            return $query;
-        }
-
         return $query->whereHas($relation, function ($q) use ($column, $value) {
             $wrapped = $q->getGrammar()->wrap($column);
 
             $q->whereRaw(
                 "LOWER({$wrapped}) LIKE ?",
-                ['%' . strtolower($value) . '%'],
+                ['%' . strtolower($value)],
             );
         });
     }

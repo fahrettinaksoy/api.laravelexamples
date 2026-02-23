@@ -10,20 +10,30 @@ class InvalidFilterQuery extends Exception
 {
     public static function filterNotAllowed(string $filter, array $allowedFilters): self
     {
-        $allowedFiltersString = implode(', ', $allowedFilters);
-
         return new static(
-            "Filter '{$filter}' is not allowed. Allowed filters: {$allowedFiltersString}",
+            __('api.smartquery.filter_not_allowed', [
+                'filter' => $filter,
+                'allowed' => implode(', ', $allowedFilters),
+            ]),
         );
     }
 
     public static function filtersNotAllowed(array $filters, array $allowedFilters): self
     {
-        $filtersString = implode(', ', $filters);
-        $allowedFiltersString = implode(', ', $allowedFilters);
-
         return new static(
-            "Filters '{$filtersString}' are not allowed. Allowed filters: {$allowedFiltersString}",
+            __('api.smartquery.filters_not_allowed', [
+                'filters' => implode(', ', $filters),
+                'allowed' => implode(', ', $allowedFilters),
+            ]),
+        );
+    }
+
+    public static function invalidDynamicOperator(string $value): self
+    {
+        return new static(
+            __('api.smartquery.invalid_dynamic_operator', [
+                'value' => $value,
+            ]),
         );
     }
 }

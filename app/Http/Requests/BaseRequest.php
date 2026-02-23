@@ -35,13 +35,15 @@ abstract class BaseRequest extends FormRequest
 
     protected function failedValidation(Validator $validator): void
     {
+        $message = __('api.validation.error');
+
         throw new HttpResponseException(
             response()->json([
                 'success' => false,
-                'message' => 'Doğrulama hatası',
+                'message' => $message,
                 'error_code' => 'VALIDATION_ERROR',
                 'errors' => $validator->errors()->toArray(),
-                'reference' => ResponseReference::build('Doğrulama hatası', 422),
+                'reference' => app(ResponseReference::class)->build($message, 422),
             ], 422),
         );
     }

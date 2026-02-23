@@ -10,20 +10,21 @@ class InvalidIncludeQuery extends Exception
 {
     public static function includeNotAllowed(string $include, array $allowedIncludes): self
     {
-        $allowedIncludesString = implode(', ', $allowedIncludes);
-
         return new static(
-            "Include '{$include}' is not allowed. Allowed includes: {$allowedIncludesString}",
+            __('api.smartquery.include_not_allowed', [
+                'include' => $include,
+                'allowed' => implode(', ', $allowedIncludes),
+            ]),
         );
     }
 
     public static function includesNotAllowed(array $includes, array $allowedIncludes): self
     {
-        $includesString = implode(', ', $includes);
-        $allowedIncludesString = implode(', ', $allowedIncludes);
-
         return new static(
-            "Includes '{$includesString}' are not allowed. Allowed includes: {$allowedIncludesString}",
+            __('api.smartquery.includes_not_allowed', [
+                'includes' => implode(', ', $includes),
+                'allowed' => implode(', ', $allowedIncludes),
+            ]),
         );
     }
 }

@@ -10,20 +10,21 @@ class InvalidSortQuery extends Exception
 {
     public static function sortNotAllowed(string $sort, array $allowedSorts): self
     {
-        $allowedSortsString = implode(', ', $allowedSorts);
-
         return new static(
-            "Sort '{$sort}' is not allowed. Allowed sorts: {$allowedSortsString}",
+            __('api.smartquery.sort_not_allowed', [
+                'sort' => $sort,
+                'allowed' => implode(', ', $allowedSorts),
+            ]),
         );
     }
 
     public static function sortsNotAllowed(array $sorts, array $allowedSorts): self
     {
-        $sortsString = implode(', ', $sorts);
-        $allowedSortsString = implode(', ', $allowedSorts);
-
         return new static(
-            "Sorts '{$sortsString}' are not allowed. Allowed sorts: {$allowedSortsString}",
+            __('api.smartquery.sorts_not_allowed', [
+                'sorts' => implode(', ', $sorts),
+                'allowed' => implode(', ', $allowedSorts),
+            ]),
         );
     }
 }

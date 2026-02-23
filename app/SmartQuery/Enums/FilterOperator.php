@@ -12,7 +12,7 @@ enum FilterOperator: string
     case LESS_THAN = '<';
     case GREATER_THAN_OR_EQUAL = '>=';
     case LESS_THAN_OR_EQUAL = '<=';
-    case DYNAMIC = 'dynamic';  // User specifies operator in value
+    case DYNAMIC = 'dynamic';
 
     public static function parseDynamic(string $value): array
     {
@@ -23,9 +23,6 @@ enum FilterOperator: string
             ];
         }
 
-        return [
-            'operator' => '=',
-            'value' => $value,
-        ];
+        throw \App\SmartQuery\Exceptions\InvalidFilterQuery::invalidDynamicOperator($value);
     }
 }

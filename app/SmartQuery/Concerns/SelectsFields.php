@@ -10,50 +10,35 @@ use App\SmartQuery\SmartQueryRequest;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-/**
- * SelectsFields Trait
- *
- * Adds sparse fieldset capabilities to SmartQuery.
- * Ana tablo ve ilişki tabloları için field selection destekler.
- */
 trait SelectsFields
 {
     protected array $allowedFields = [];
 
-    /**
-     * Set allowed fields
-     *
-     * @param  array|string  $fields
-     * @return $this
-     */
     public function allowedFields($fields): static
     {
         $fields = is_array($fields) ? $fields : func_get_args();
 
-        $this->allowedFields = collect($fields)->map(function ($field) {
-            // String field name
+        $normalized = [];
+
+        foreach ($fields as $field) {
             if (is_string($field)) {
-                return new AllowedField($field);
+                $field = new AllowedField($field);
+            } elseif (! $field instanceof AllowedField) {
+                throw new \InvalidArgumentException(
+                    'Field must be a string or AllowedField instance',
+                );
             }
 
-            // AllowedField instance
-            if ($field instanceof AllowedField) {
-                return $field;
-            }
+            $normalized[$field->getName()] = $field;
+        }
 
-            throw new \InvalidArgumentException(
-                'Field must be a string or AllowedField instance',
-            );
-        })->toArray();
+        $this->allowedFields = $normalized;
 
         $this->applyFields();
 
         return $this;
     }
 
-    /**
-     * Apply fields from request
-     */
     protected function applyFields(): void
     {
         $requestedFields = $this->getRequestedFields();
@@ -62,7 +47,6 @@ trait SelectsFields
             return;
         }
 
-        // Group fields by table/resource
         $fieldsByTable = $this->groupFieldsByTable($requestedFields);
 
         foreach ($fieldsByTable as $table => $fields) {
@@ -70,9 +54,6 @@ trait SelectsFields
         }
     }
 
-    /**
-     * Get requested fields from request
-     */
     protected function getRequestedFields(): array
     {
         $fieldsParam = $this->request->input('fields', []);
@@ -84,9 +65,6 @@ trait SelectsFields
         return $fieldsParam;
     }
 
-    /**
-     * Group fields by table
-     */
     protected function groupFieldsByTable(array $requestedFields): array
     {
         $grouped = [];
@@ -104,12 +82,10 @@ trait SelectsFields
         return $grouped;
     }
 
-    /**
-     * Apply fields for a specific table
-     */
     protected function applyFieldsForTable(string $table, array $fields): void
     {
-        // Validate fields
+        $validFields = [];
+
         foreach ($fields as $field) {
             $fullFieldName = "{$table}.{$field}";
 
@@ -121,22 +97,40 @@ trait SelectsFields
                     );
                 }
 
-                return;
+                continue;
             }
+
+            $validFields[] = $field;
         }
 
-        // Apply field selection
+        if (empty($validFields)) {
+            return;
+        }
+
         if ($this->isMainTable($table)) {
-            $this->builder->select(array_map(fn ($f) => "{$table}.{$f}", $fields));
+            $primaryKey = isset($this->model) ? $this->model->getKeyName() : null;
+            $fieldsWithPK = $validFields;
+
+            if ($primaryKey && ! in_array($primaryKey, $fieldsWithPK, true)) {
+                array_unshift($fieldsWithPK, $primaryKey);
+            }
+
+            $qualifiedFields = array_map(fn ($f) => "{$table}.{$f}", $fieldsWithPK);
+
+            $existingColumns = $this->builder instanceof EloquentBuilder
+                ? $this->builder->getQuery()->columns
+                : ($this->builder->columns ?? null);
+
+            if (! empty($existingColumns)) {
+                $this->builder->addSelect($qualifiedFields);
+            } else {
+                $this->builder->select($qualifiedFields);
+            }
         } elseif ($this->builder instanceof EloquentBuilder && isset($this->model)) {
-            $this->applyRelationshipFieldSelection($table, $fields);
+            $this->applyRelationshipFieldSelection($table, $validFields);
         }
     }
 
-    /**
-     * İlişki tablosu için field selection uygular.
-     * with() closure kullanarak sadece istenen alanları + foreign key'i seçer.
-     */
     protected function applyRelationshipFieldSelection(string $table, array $fields): void
     {
         $relationName = $this->findRelationForTable($table);
@@ -148,7 +142,6 @@ trait SelectsFields
         $relation = $this->model->{$relationName}();
         $foreignKey = $this->getRelationForeignKey($relation);
 
-        // Foreign key her zaman dahil edilmeli - aksi halde ilişki eşleşmez
         $selectFields = array_values(array_unique(
             array_merge($fields, array_filter([$foreignKey])),
         ));
@@ -158,10 +151,6 @@ trait SelectsFields
         }]);
     }
 
-    /**
-     * Verilen tablo adını kullanan ilişkiyi bulur.
-     * allowedIncludes üzerinden arar (IncludesRelationships trait'inden gelir).
-     */
     protected function findRelationForTable(string $table): ?string
     {
         if (! isset($this->model) || ! property_exists($this, 'allowedIncludes')) {
@@ -189,9 +178,6 @@ trait SelectsFields
         return null;
     }
 
-    /**
-     * İlişkinin foreign key adını döndürür.
-     */
     protected function getRelationForeignKey(Relation $relation): ?string
     {
         if (method_exists($relation, 'getForeignKeyName')) {
@@ -201,9 +187,6 @@ trait SelectsFields
         return null;
     }
 
-    /**
-     * Check if table is the main query table
-     */
     protected function isMainTable(string $table): bool
     {
         if (isset($this->model)) {
@@ -213,28 +196,13 @@ trait SelectsFields
         return false;
     }
 
-    /**
-     * Check if field is allowed
-     */
     protected function isFieldAllowed(string $fieldName): bool
     {
-        foreach ($this->allowedFields as $field) {
-            if ($field->getName() === $fieldName) {
-                return true;
-            }
-        }
-
-        return false;
+        return isset($this->allowedFields[$fieldName]);
     }
 
-    /**
-     * Get all allowed field names
-     */
     protected function getAllowedFieldNames(): array
     {
-        return array_map(
-            fn (AllowedField $field) => $field->getName(),
-            $this->allowedFields,
-        );
+        return array_keys($this->allowedFields);
     }
 }

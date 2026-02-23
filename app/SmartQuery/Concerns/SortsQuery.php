@@ -30,21 +30,21 @@ trait SortsQuery
     {
         $sorts = is_array($sorts) ? $sorts : func_get_args();
 
-        $this->allowedSorts = collect($sorts)->map(function ($sort) {
-            // String sort name - use default sort
+        $normalized = [];
+
+        foreach ($sorts as $sort) {
             if (is_string($sort)) {
-                return new AllowedSort($sort, new DefaultSort);
+                $sort = new AllowedSort($sort, new DefaultSort);
+            } elseif (! $sort instanceof AllowedSort) {
+                throw new \InvalidArgumentException(
+                    'Sort must be a string or AllowedSort instance',
+                );
             }
 
-            // AllowedSort instance
-            if ($sort instanceof AllowedSort) {
-                return $sort;
-            }
+            $normalized[$sort->getName()] = $sort;
+        }
 
-            throw new \InvalidArgumentException(
-                'Sort must be a string or AllowedSort instance',
-            );
-        })->toArray();
+        $this->allowedSorts = $normalized;
 
         $this->applySorts();
 
@@ -162,28 +162,13 @@ trait SortsQuery
         }
     }
 
-    /**
-     * Find allowed sort by name
-     */
     protected function findAllowedSort(string $name): ?AllowedSort
     {
-        foreach ($this->allowedSorts as $sort) {
-            if ($sort->getName() === $name) {
-                return $sort;
-            }
-        }
-
-        return null;
+        return $this->allowedSorts[$name] ?? null;
     }
 
-    /**
-     * Get all allowed sort names
-     */
     protected function getAllowedSortNames(): array
     {
-        return array_map(
-            fn (AllowedSort $sort) => $sort->getName(),
-            $this->allowedSorts,
-        );
+        return array_keys($this->allowedSorts);
     }
 }

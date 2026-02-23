@@ -11,8 +11,7 @@ class FormField
 {
     public function __construct(
         public string $type,
-        public string $default = '',
-        public string $value = '',
+        public mixed $default = null,
         public array $relationship = [],
         public array $options = [],
         public int $sort_order = 0,

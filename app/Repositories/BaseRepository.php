@@ -62,13 +62,9 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function delete(int $id): bool
     {
-        $item = $this->model->newQuery()->find($id);
+        $item = $this->model->newQuery()->findOrFail($id);
 
-        if ($item) {
-            return $item->delete();
-        }
-
-        return false;
+        return $item->delete();
     }
 
     public function deleteMany(array $criteria): int

@@ -20,15 +20,15 @@ class BaseService
         protected BaseRepositoryInterface $repository,
         protected array $actions = [],
     ) {
-        if (empty($this->actions)) {
-            $this->actions = [
-                'index' => new MainIndexAction($this->repository),
-                'show' => new MainShowAction($this->repository),
-                'store' => new MainStoreAction($this->repository),
-                'update' => new MainUpdateAction($this->repository),
-                'destroy' => new MainDestroyAction($this->repository),
-            ];
-        }
+        $defaults = [
+            'index' => new MainIndexAction($this->repository),
+            'show' => new MainShowAction($this->repository),
+            'store' => new MainStoreAction($this->repository),
+            'update' => new MainUpdateAction($this->repository),
+            'destroy' => new MainDestroyAction($this->repository),
+        ];
+
+        $this->actions = array_merge($defaults, $this->actions);
     }
 
     public function index(array $queryContext = []): LengthAwarePaginator
@@ -43,9 +43,7 @@ class BaseService
 
     public function store(array $data): Model
     {
-        $created = DB::transaction(fn () => $this->actions['store']->execute($data));
-
-        return $created->fresh() ?? $created;
+        return DB::transaction(fn () => $this->actions['store']->execute($data));
     }
 
     public function update(int $id, array $data): Model
@@ -60,10 +58,6 @@ class BaseService
 
     public function destroyMany(array $criteria): int
     {
-        if (empty($criteria)) {
-            throw new \InvalidArgumentException('Toplu silme için en az bir kriter gereklidir.');
-        }
-
         return DB::transaction(fn () => $this->actions['destroy']->executeWithFilter($criteria));
     }
 }

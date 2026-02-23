@@ -31,66 +31,72 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {
             if ($request->is('api/*')) {
-                $message = $e->getMessage() ?: 'Kaynak bulunamadı';
+                $message = $e->getMessage() ?: __('api.not_found');
 
                 return response()->json([
                     'success' => false,
                     'message' => $message,
                     'error_code' => 'RESOURCE_NOT_FOUND',
-                    'reference' => ResponseReference::build($message, 404),
+                    'reference' => app(ResponseReference::class)->build($message, 404),
                 ], 404);
             }
         });
 
         $exceptions->renderable(function (ModelNotFoundException $e, Request $request) {
             if ($request->is('api/*')) {
+                $message = __('api.not_found');
+
                 return response()->json([
                     'success' => false,
-                    'message' => 'Kaynak bulunamadı',
+                    'message' => $message,
                     'error_code' => 'RESOURCE_NOT_FOUND',
-                    'reference' => ResponseReference::build('Kaynak bulunamadı', 404),
+                    'reference' => app(ResponseReference::class)->build($message, 404),
                 ], 404);
             }
         });
 
         $exceptions->renderable(function (TooManyRequestsHttpException $e, Request $request) {
             if ($request->is('api/*')) {
+                $message = __('api.too_many_requests');
+
                 return response()->json([
                     'success' => false,
-                    'message' => 'Çok fazla istek gönderildi',
+                    'message' => $message,
                     'error_code' => 'TOO_MANY_REQUESTS',
-                    'reference' => ResponseReference::build('Çok fazla istek gönderildi', 429),
+                    'reference' => app(ResponseReference::class)->build($message, 429),
                 ], 429);
             }
         });
 
         $exceptions->renderable(function (AuthenticationException $e, Request $request) {
             if ($request->is('api/*')) {
+                $message = __('api.unauthorized');
+
                 return response()->json([
                     'success' => false,
-                    'message' => 'Kimlik doğrulama gerekli',
+                    'message' => $message,
                     'error_code' => 'UNAUTHORIZED',
-                    'reference' => ResponseReference::build('Kimlik doğrulama gerekli', 401),
+                    'reference' => app(ResponseReference::class)->build($message, 401),
                 ], 401);
             }
         });
 
         $exceptions->renderable(function (HttpException $e, Request $request) {
             if ($request->is('api/*')) {
-                $message = $e->getMessage() ?: 'Sunucu hatası';
+                $message = $e->getMessage() ?: __('api.internal_error');
 
                 return response()->json([
                     'success' => false,
                     'message' => $message,
                     'error_code' => 'SERVER_ERROR',
-                    'reference' => ResponseReference::build($message, $e->getStatusCode()),
+                    'reference' => app(ResponseReference::class)->build($message, $e->getStatusCode()),
                 ], $e->getStatusCode());
             }
         });
 
         $exceptions->renderable(function (Throwable $e, Request $request) {
             if ($request->is('api/*')) {
-                $message = config('app.debug') ? $e->getMessage() : 'Sunucu hatası';
+                $message = config('app.debug') ? $e->getMessage() : __('api.internal_error');
 
                 $debugTrace = config('app.debug') ? [
                     'exception' => get_class($e),
@@ -102,7 +108,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     'success' => false,
                     'message' => $message,
                     'error_code' => 'INTERNAL_SERVER_ERROR',
-                    'reference' => ResponseReference::build($message, 500, $debugTrace),
+                    'reference' => app(ResponseReference::class)->build($message, 500, $debugTrace),
                 ], 500);
             }
         });

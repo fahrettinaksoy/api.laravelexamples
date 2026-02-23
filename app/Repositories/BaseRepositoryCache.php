@@ -4,108 +4,65 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Traits\HasCacheStrategy;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Cache;
 
 class BaseRepositoryCache implements BaseRepositoryInterface
 {
-    private const CACHE_TTL = 3600;
-
-    protected string $cacheTag;
+    use HasCacheStrategy;
 
     public function __construct(
         protected readonly BaseRepositoryInterface $repository,
         string $cacheTag,
     ) {
         $this->cacheTag = $cacheTag;
+        $this->cacheTtl = (int) config('cache.repository_ttl', 3600);
     }
 
     public function paginate(array $queryContext = []): LengthAwarePaginator
     {
-        $cacheKey = "{$this->cacheTag}.paginate." . md5(json_encode($queryContext, JSON_THROW_ON_ERROR));
-
-        return Cache::tags([$this->cacheTag])->remember(
-            $cacheKey,
-            self::CACHE_TTL,
-            fn () => $this->repository->paginate($queryContext),
-        );
+        return $this->cached('paginate', $queryContext, fn () => $this->repository->paginate($queryContext));
     }
 
     public function findById(int $id, array $includes = []): ?Model
     {
-        $includeKey = ! empty($includes) ? '.' . md5(implode(',', $includes)) : '';
-
-        return Cache::tags([$this->cacheTag])->remember(
-            "{$this->cacheTag}.{$id}{$includeKey}",
-            self::CACHE_TTL,
-            fn () => $this->repository->findById($id, $includes),
-        );
+        return $this->cached("findById.{$id}", $includes, fn () => $this->repository->findById($id, $includes));
     }
 
     public function all(array $queryContext = []): Collection
     {
-        $cacheKey = "{$this->cacheTag}.all." . md5(json_encode($queryContext, JSON_THROW_ON_ERROR));
-
-        return Cache::tags([$this->cacheTag])->remember(
-            $cacheKey,
-            self::CACHE_TTL,
-            fn () => $this->repository->all($queryContext),
-        );
+        return $this->cached('all', $queryContext, fn () => $this->repository->all($queryContext));
     }
 
     public function create(array $data): Model
     {
-        $result = $this->repository->create($data);
-        Cache::tags([$this->cacheTag])->flush();
-
-        return $result;
+        return $this->invalidating(fn () => $this->repository->create($data));
     }
 
     public function update(int $id, array $data): Model
     {
-        $result = $this->repository->update($id, $data);
-        Cache::tags([$this->cacheTag])->flush();
-
-        return $result;
+        return $this->invalidating(fn () => $this->repository->update($id, $data));
     }
 
     public function delete(int $id): bool
     {
-        $result = $this->repository->delete($id);
-        Cache::tags([$this->cacheTag])->flush();
-
-        return $result;
+        return $this->invalidating(fn () => $this->repository->delete($id));
     }
 
     public function deleteMany(array $criteria): int
     {
-        $result = $this->repository->deleteMany($criteria);
-        Cache::tags([$this->cacheTag])->flush();
-
-        return $result;
+        return $this->invalidating(fn () => $this->repository->deleteMany($criteria));
     }
 
     public function findBy(string $field, mixed $value): ?Model
     {
-        $cacheKey = "{$this->cacheTag}.findBy.{$field}." . md5(serialize($value));
-
-        return Cache::tags([$this->cacheTag])->remember(
-            $cacheKey,
-            self::CACHE_TTL,
-            fn () => $this->repository->findBy($field, $value),
-        );
+        return $this->cached("findBy.{$field}", $value, fn () => $this->repository->findBy($field, $value));
     }
 
     public function getBy(string $field, mixed $value): Collection
     {
-        $cacheKey = "{$this->cacheTag}.getBy.{$field}." . md5(serialize($value));
-
-        return Cache::tags([$this->cacheTag])->remember(
-            $cacheKey,
-            self::CACHE_TTL,
-            fn () => $this->repository->getBy($field, $value),
-        );
+        return $this->cached("getBy.{$field}", $value, fn () => $this->repository->getBy($field, $value));
     }
 }

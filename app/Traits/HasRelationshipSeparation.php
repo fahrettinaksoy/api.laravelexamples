@@ -7,20 +7,8 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-/**
- * Resolved resource verisini attributes ve relationships olarak ayirir.
- * Model uzerindeki yuklenmis iliskileri tespit ederek JSON:API yapisina uygun ayristirma saglar.
- *
- * @mixin \Illuminate\Http\Resources\Json\JsonResource
- */
 trait HasRelationshipSeparation
 {
-    /**
-     * Resolved veriyi attributes ve relationships olarak ikiye ayirir.
-     *
-     * @param  array<string, mixed>  $data
-     * @return array{0: array<string, mixed>, 1: array<string, mixed>}
-     */
     protected function separateAttributesAndRelationships(array $data): array
     {
         $relationKeys = $this->getLoadedRelationKeys();
@@ -39,12 +27,6 @@ trait HasRelationshipSeparation
         return [$attributes, $relationships];
     }
 
-    /**
-     * Model uzerindeki yuklenmis iliskilerin key listesini dondurur.
-     * Hem camelCase hem snake_case varyantlarini icerir.
-     *
-     * @return array<int, string>
-     */
     protected function getLoadedRelationKeys(): array
     {
         if (! $this->resource instanceof Model) {
